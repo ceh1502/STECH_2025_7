@@ -145,6 +145,7 @@ const ServiceSidebar = () => {
             logout();
         } finally {
             setIsLoading(false);
+            navigate('/service');           
         }
     };
 

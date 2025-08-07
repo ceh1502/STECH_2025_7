@@ -18,7 +18,10 @@ const ServiceLayout = () => {
         <ServiceSidebar className="serviceSidebar" />
 
         <main className="flex-1">
-          {location.pathname.startsWith("/service/") && (
+          {location.pathname.startsWith("/service/game") && (
+            <ServiceHeader onNewVideo={() => setShowUpload(true)} />
+          )}
+          {location.pathname.startsWith("/service/guest") && (
             <ServiceHeader onNewVideo={() => setShowUpload(true)} />
           )}
           <Outlet />
