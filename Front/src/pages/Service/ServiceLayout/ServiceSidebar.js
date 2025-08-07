@@ -21,9 +21,10 @@ const ServiceSidebar = () => {
     const [expandedMenus, setExpandedMenus] = useState({}); // 펼쳐진 메뉴 상태 관리
 
     // Menu Items (Guest)
+    //Description 수정
     const  guestMenuItems = [
         {
-            path: '/service/guest',
+            path: '/service',
             label: '홈',
             icon: <GoHome />,
             description: 'Dashboard overview',
@@ -144,6 +145,7 @@ const ServiceSidebar = () => {
             logout();
         } finally {
             setIsLoading(false);
+            navigate('/service');           
         }
     };
 
