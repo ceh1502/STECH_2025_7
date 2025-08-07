@@ -1,26 +1,42 @@
 import React from 'react';
 import './index.css';
 import {useNavigate } from 'react-router-dom';
+import  logo from '../../../../assets/images/logos/stech2.png';
+
+const VimeoEmbed = ({ videoId, title }) => {
+  return (
+    <div>
+      <iframe 
+        src={`https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
+        frameBorder="0" 
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+        referrerPolicy="strict-origin-when-cross-origin" 
+        style={{
+          top: 0,
+          left: 0,
+          width: '50%',
+          height: '15%'
+        }}
+        title={title}
+      />
+    </div>
+  );
+};
 
 const MemberHomePage = () => {
-  const HEADERTEXTS=['Date', 'Game Score', 'Detail', 'Report'];
   const navigate = useNavigate();
 
   return(
     <div className='serviceHomeContainer'>
       <div className='serviceHomeHeader'>
-        <div className='headerTextsBox'>
-          {HEADERTEXTS.map((t)=>(
-            <div className='headerTexts'>
-              {t}
-            </div>
-          ))
-          }
-        </div>
+        <img src={logo} alt="STECH Logo" className='serviceHomeLogo' />
+        <h1 className='serviceHomeTitle'>사용방법</h1>
       </div>
-      <div className='gameListBox'>
-        
-      </div>
+      <div className='tutorialContainer'>
+        <VimeoEmbed 
+          videoId="1108074372" 
+          title="미식축구 영상 분석 서비스 사용법" 
+        />      </div>
     </div>
   )
 }
