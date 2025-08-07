@@ -278,18 +278,6 @@
     color: #f5f5f5;
 }
 
-/* 활성 상태 인디케이터 */
-.activeIndicator {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 16px;
-    background: linear-gradient(45deg, #10b981, #34d399);
-    border-radius: 2px;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-}
 
 /* 호버 툴팁 */
 .navTooltip {
