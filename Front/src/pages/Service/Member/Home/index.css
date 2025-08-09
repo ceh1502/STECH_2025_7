@@ -9,7 +9,7 @@
   color: white;
   justify-content: center;
   align-items: center;
-  font-family: 'Inter', 'Pretendard', 'Noto Sans KR', sans-serif;
+  font-family: Noto Sans KR;
   font-size: 40px; /*추후 변경 -> 2.5rem;*/
   font-weight: 600;
   line-height: normal;
