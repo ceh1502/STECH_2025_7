@@ -28,11 +28,17 @@ export default function AppRouter() {
                 <Route path="faq" element={<ServicePages.FAQPage />} />
                 <Route path="profile" element={<ServicePages.ProfilePage />} />
                 <Route path="settings" element={<ServicePages.SettingsPage />} />
+
+                {/* Guest Pages */}
                 <Route path="guest" element={<ServicePages.GuestLayout />}>
                     <Route index element={<ServicePages.GuestHomePage />} />
                     <Route path="game" element={<ServicePages.GuestGamePage />} />
                     <Route path="clip" element={<ServicePages.GuestClipPage />} />
-                    <Route path="stat" element={<ServicePages.GuestStatPage />} />
+                    <Route path="stat" element={<ServicePages.GuestStatLayout />} >
+                        <Route index element={<ServicePages.GuestLeagueTeamPage />} />
+                        <Route path="team" element={<ServicePages.GuestLeagueTeamPage />} />
+                        <Route path="position" element={<ServicePages.GuestLeaguePositionPage />} />
+                    </Route>
                 </Route>
             </Route>
 

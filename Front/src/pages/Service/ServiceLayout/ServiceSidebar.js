@@ -42,10 +42,25 @@ const ServiceSidebar = () => {
             description: 'Performance analytics',
         },
         {
-            path: '/service/guest/stat',
+            path: '/service/guest/stat/team',
             label: '스탯',
             icon: <BiSolidBarChartAlt2 />,
             description: 'AI recommendations',
+            hasSubmenu: true,
+            submenu: [
+                {
+                    path: '/service/guest/stat/team',
+                    label: '리그 팀 순위',
+                    icon: <BiSolidBarChartAlt2 />,
+                    description: 'Team rankings'
+                },
+                {
+                    path: '/service/guest/stat/position',
+                    label: '리그 포지션 순위',
+                    icon: <BiSolidBarChartAlt2 />,
+                    description: 'Position rankings'
+                }
+            ]
         },
     ];
 
@@ -154,16 +169,7 @@ const ServiceSidebar = () => {
         navigate('/auth');
     };
 
-    // 스탯 메뉴 클릭 핸들러
-    const handleStatMenuClick = (menuPath) => {
-        // 페이지 이동
-        navigate(menuPath);
-        // 하위 메뉴 펼치기
-        setExpandedMenus(prev => ({
-            ...prev,
-            [menuPath]: true
-        }));
-    };
+    
 
     // 다른 메뉴 클릭 시 스탯 메뉴 닫기
     const handleOtherMenuClick = () => {
@@ -183,16 +189,16 @@ const ServiceSidebar = () => {
     };
 
     // 페이지 로드 시 현재 경로에 해당하는 상위 메뉴 자동 확장
-    React.useEffect(() => {
-        memberMenuItems.forEach(item => {
-            if (item.hasSubmenu && isStatMenuActive(item)) {
-                setExpandedMenus(prev => ({
-                    ...prev,
-                    [item.path]: true
-                }));
-            }
-        });
-    }, [location.pathname]);
+React.useEffect(() => {
+    [...guestMenuItems, ...memberMenuItems].forEach(item => {
+        if (item.hasSubmenu && isStatMenuActive(item)) {
+            setExpandedMenus(prev => ({
+                ...prev,
+                [item.path]: true
+            }));
+        }
+    });
+}, [location.pathname]);
 
     // 메뉴 아이템 렌더링 함수
     const renderMenuItem = (item) => {
@@ -213,7 +219,8 @@ const ServiceSidebar = () => {
                     >
                         <span className="navIcon">{item.icon}</span>
                         <span className="navLabel">{item.label}</span>
-                        {isActive && <div className="activeIndicator" />}
+
+
                         {hoveredItem === item.path && (
                             <div className="navTooltip">
                                 <span>{item.description}</span>
