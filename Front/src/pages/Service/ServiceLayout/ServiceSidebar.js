@@ -42,10 +42,25 @@ const ServiceSidebar = () => {
             description: 'Performance analytics',
         },
         {
-            path: '/service/guest/stat',
+            path: '/service/guest/stat/team',
             label: '스탯',
             icon: <BiSolidBarChartAlt2 />,
             description: 'AI recommendations',
+            hasSubmenu: true,
+            submenu: [
+                {
+                    path: '/service/guest/stat/team',
+                    label: '리그 팀 순위',
+                    icon: <BiSolidBarChartAlt2 />,
+                    description: 'Team rankings'
+                },
+                {
+                    path: '/service/guest/stat/position',
+                    label: '리그 포지션 순위',
+                    icon: <BiSolidBarChartAlt2 />,
+                    description: 'Position rankings'
+                }
+            ]
         },
     ];
 
