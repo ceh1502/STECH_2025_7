@@ -7,14 +7,7 @@ const GuestLeagueTeamPage = () => {
             <StatTeam
                 data={FALL_2024_DATA}
                 teams={TEAMS}
-                showLogos={true}
-                labels={{
-                    groupStage: "조별리그",
-                    playoffs: "플레이오프",
-                    promotion: "승강전",
-                    date: "날짜",
-                    place: "장소",
-                }}
+
                 />
         </div>
     );

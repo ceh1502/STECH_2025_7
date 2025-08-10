@@ -21,7 +21,7 @@ const ServiceLayout = () => {
           {location.pathname.startsWith("/service/game") && (
             <ServiceHeader onNewVideo={() => setShowUpload(true)} />
           )}
-          {location.pathname.startsWith("/service/guest") && (
+          {location.pathname.startsWith("/service/guest/game") && (
             <ServiceHeader onNewVideo={() => setShowUpload(true)} />
           )}
           <Outlet />
