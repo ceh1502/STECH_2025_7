@@ -8,6 +8,7 @@
 -   Dev1 (Gun)
 -   Dev2 (Bin)
 -   Dev3 (Seok)
+-   Dev4 (Jenicoon)
 
 # 일하는 순서
 
