@@ -59,18 +59,16 @@ export function GroupStandings({ group, teams = [] }) {
 
   return (
     <div className="group-standings-container">
-
       <div className="group-standings">
         <div className="standings-header">
-          <div className="standings-cell rank-cell">순위</div>
-          <div className="standings-cell logo-cell"></div>
-          <div className="standings-cell team-cell">팀 이름</div>
-          <div className="standings-cell stat-cell">승</div>
-          <div className="standings-cell stat-cell">패</div>
-          <div className="standings-cell stat-cell">승률</div>
-          <div className="standings-cell stat-cell">득점</div>
-          <div className="standings-cell stat-cell">실점</div>
-          <div className="standings-cell stat-cell">득실차</div>
+          <div className="standings-cell">순위</div>
+          <div className="standings-cell"></div>
+          <div className="standings-cell team-cell title">팀 이름</div>
+          <div className="standings-cell">승</div>
+          <div className="standings-cell">패</div>
+          <div className="standings-cell">승률</div>
+          <div className="standings-cell">득점</div>
+          <div className="standings-cell">실점</div>
         </div>
         {standings.map((team, index) => {
           const teamInfo = teams.find((t) => t.name === team.name);
@@ -92,14 +90,6 @@ export function GroupStandings({ group, teams = [] }) {
               <div className="standings-cell stat-cell">{team.winRate}%</div>
               <div className="standings-cell stat-cell">{team.pointsFor}</div>
               <div className="standings-cell stat-cell">{team.pointsAgainst}</div>
-              <div
-                className={`standings-cell stat-cell ${
-                  team.pointsDiff >= 0 ? "positive" : "negative"
-                }`}
-              >
-                {team.pointsDiff >= 0 ? "+" : ""}
-                {team.pointsDiff}
-              </div>
             </div>
           );
         })}
