@@ -77,12 +77,22 @@
   transition: background-color 0.2s;
 }
 
+.standings-row.rank-1st {
+  border: 3px solid #D5A11E;
+}
 
+.standings-row.rank-2nd {
+  border: 3px solid #FFF;
+}
+
+.standings-row.rank-3rd {
+  border: 3px solid #CD7F32;
+}
 
 
 /* 각 셀 공통 스타일 */
 .standings-cell {
-  padding: 12px 8px;
+  padding: 0.75rem 0.5rem;
   text-align: center;
   display: flex;
   align-items: center;
@@ -99,16 +109,13 @@
 
 /* 로고 셀 */
 .logo-cell {
-  padding: 8px;
+  padding: 0.5rem;
 }
 
 .team-logo {
-  width: 32px;
-  height: 32px;
+  width: 1.563rem; /* 25px */
+  height: 1.563rem;
   object-fit: contain;
-  border-radius: 4px;
-  color:#ffffff;
-
 }
 
 /* 팀명 셀 */
@@ -116,7 +123,7 @@
   text-align: left;
   justify-content: flex-start;
   font-weight: 500;
-  padding-left: 12px;
+  padding-left: 0.75rem;
   color:#ffffff;
 }
 .team-cell.title {

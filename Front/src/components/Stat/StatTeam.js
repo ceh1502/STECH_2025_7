@@ -57,6 +57,16 @@ function calculateGroupStandings(group) {
 export function GroupStandings({ group, teams = [] }) {
   const standings = calculateGroupStandings(group);
 
+    const getRankClass = (index) => {
+    switch (index) {
+      case 0: return 'rank-1st'; // 1위 - 금색
+      case 1: return 'rank-2nd'; // 2위 - 은색  
+      case 2: return 'rank-3rd'; // 3위 - 동색
+      case 3: return 'rank-4th'; // 4위 - 파란색
+      default: return '';
+    }
+  };
+
   return (
     <div className="group-standings-container">
       <div className="group-standings">
@@ -73,7 +83,7 @@ export function GroupStandings({ group, teams = [] }) {
         {standings.map((team, index) => {
           const teamInfo = teams.find((t) => t.name === team.name);
           return (
-            <div key={team.name} className="standings-row">
+            <div key={team.name} className={`standings-row ${getRankClass(index)}`}>
               <div className="standings-cell rank-cell">{index + 1}</div>
               <div className="standings-cell logo-cell">
                 {teamInfo?.logo && (
