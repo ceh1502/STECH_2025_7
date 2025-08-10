@@ -1,0 +1,28 @@
+.statTeamContainer{
+  color: #FFFFFF;
+}
+
+.group-standings {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.standings-header {
+  display: flex;
+}
+.standings-row {
+  display: flex;
+}
+
+.groups-container {
+  display:flex;
+}
+
+.match-header{
+  display:flex;
+}
+
+.team-logo {
+  width: 1.563rem;
+}
