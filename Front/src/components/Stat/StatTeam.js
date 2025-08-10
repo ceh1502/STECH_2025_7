@@ -54,12 +54,11 @@ function calculateGroupStandings(group) {
 }
 
 // 그룹 순위표 컴포넌트 (분리됨)
-export function GroupStandings({group, teams = []}) {
+export function GroupStandings({ group, teams = [] }) {
   const standings = calculateGroupStandings(group);
 
   return (
     <div className="group-standings-container">
-      <div className="group-header"></div>
 
       <div className="group-standings">
         <div className="standings-header">
@@ -73,34 +72,37 @@ export function GroupStandings({group, teams = []}) {
           <div className="standings-cell stat-cell">실점</div>
           <div className="standings-cell stat-cell">득실차</div>
         </div>
-        {standings.map((team, index) => (
-          <div key={team.name} className="standings-row">
-            <div className="standings-cell rank-cell">{index + 1}</div>
-            <div className='standings-cell logo-cell'>
-              {teams.find((t) => t.name === team.name)?.logo && (
-                <img
-                  src={teams.find((t) => t.name === team.name).logo}
-                  alt={`${team.name} 로고`}
-                  className="team-logo"
-                />
-              )}
+        {standings.map((team, index) => {
+          const teamInfo = teams.find((t) => t.name === team.name);
+          return (
+            <div key={team.name} className="standings-row">
+              <div className="standings-cell rank-cell">{index + 1}</div>
+              <div className="standings-cell logo-cell">
+                {teamInfo?.logo && (
+                  <img
+                    src={teamInfo.logo}
+                    alt={`${team.name} 로고`}
+                    className="team-logo"
+                  />
+                )}
+              </div>
+              <div className="standings-cell team-cell">{team.name}</div>
+              <div className="standings-cell stat-cell">{team.wins}</div>
+              <div className="standings-cell stat-cell">{team.losses}</div>
+              <div className="standings-cell stat-cell">{team.winRate}%</div>
+              <div className="standings-cell stat-cell">{team.pointsFor}</div>
+              <div className="standings-cell stat-cell">{team.pointsAgainst}</div>
+              <div
+                className={`standings-cell stat-cell ${
+                  team.pointsDiff >= 0 ? "positive" : "negative"
+                }`}
+              >
+                {team.pointsDiff >= 0 ? "+" : ""}
+                {team.pointsDiff}
+              </div>
             </div>
-            <div className="standings-cell team-cell">{team.name}</div>
-            <div className="standings-cell stat-cell">{team.wins}</div>
-            <div className="standings-cell stat-cell">{team.losses}</div>
-            <div className="standings-cell stat-cell">{team.winRate}%</div>
-            <div className="standings-cell stat-cell">{team.pointsFor}</div>
-            <div className="standings-cell stat-cell">{team.pointsAgainst}</div>
-            <div
-              className={`standings-cell stat-cell ${
-                team.pointsDiff >= 0 ? "positive" : "negative"
-              }`}
-            >
-              {team.pointsDiff >= 0 ? "+" : ""}
-              {team.pointsDiff}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -204,7 +206,6 @@ export default function StatTeam({data, teams = []}) {
   return (
     <div className="statTeamContainer">
       <div className="tournament-header">
-        {/* 부 선택 버튼 */}
         <div className="division-buttons">
           {data.divisions.map((div) => (
             <button
@@ -229,6 +230,9 @@ export default function StatTeam({data, teams = []}) {
               <div className="groups-container">
                 {currentDivision.groups.map((group) => (
                   <div key={group.name} className="group-section">
+                    <div className="group-header">
+                      {currentDivision.name} {group.name} 순위
+                    </div>
                     <div className="standings-section">
                       <GroupStandings group={group} teams={teams} />
                     </div>
