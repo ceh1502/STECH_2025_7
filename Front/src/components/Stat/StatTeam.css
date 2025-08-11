@@ -1,0 +1,138 @@
+.statTeamContainer{
+  color: #FFFFFF;
+  width: 100%;
+  padding-left:3.75rem;
+  padding-right:3.75rem;
+}
+
+.tournament-header {
+  display: flex;
+  align-items: center;
+  padding-top:4.063rem;
+}
+.division-buttons {
+  display: flex;
+  gap: 1.875rem;
+}
+
+.division-button{
+  width: 6.25rem;
+  height:3.125rem;
+  border-radius: 0.5rem;
+  background: #6E6E6E;
+  display:flex;
+  align-items: center;
+  justify-content: center;  
+  color: #FFFFFF;
+  font-size:1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  /* font-family: Noto Sans KR; */
+}
+
+.division-button.active {
+  background: #0711D9;;
+}
+
+.groups-container {
+  display:flex;
+  justify-content: space-between;;
+  gap:1.25rem;
+  padding-top: 3.125rem;
+
+}
+.group-section{
+  width:45.625rem;
+}
+.group-header{
+  display: flex;
+  align-items: center;
+  font-size:1.25rem;
+  border-bottom: 1px solid #FFFFFF;
+}
+
+
+.group-standings {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap:1.25rem;
+}
+
+/* 헤더 행 */
+.standings-header {
+  display: grid;
+  grid-template-columns: 3.75rem 3.75rem 1fr 3.75rem 3.75rem 5rem 3.75rem 3.75rem;
+  font-weight: bold;
+  color: #A5A5A5;
+  padding-top: 0.5rem;
+}
+
+/* 데이터 행 */
+.standings-row {
+  display: grid;
+  grid-template-columns: 3.75rem 3.75rem 1fr 3.75rem 3.75rem 5rem 3.75rem 3.75rem;
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.40);
+  transition: background-color 0.2s;
+}
+
+.standings-row.rank-1st {
+  border: 3px solid #D5A11E;
+}
+
+.standings-row.rank-2nd {
+  border: 3px solid #FFF;
+}
+
+.standings-row.rank-3rd {
+  border: 3px solid #CD7F32;
+}
+
+
+/* 각 셀 공통 스타일 */
+.standings-cell {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #A5A5A5;
+}
+
+/* 순위 셀 */
+.rank-cell {
+  font-weight: bold;
+  font-size: 18px;
+  color:#ffffff;
+}
+
+/* 로고 셀 */
+.logo-cell {
+  padding: 0.5rem;
+}
+
+.team-logo {
+  width: 1.563rem; /* 25px */
+  height: 1.563rem;
+  object-fit: contain;
+}
+
+/* 팀명 셀 */
+.team-cell {
+  text-align: left;
+  justify-content: flex-start;
+  font-weight: 500;
+  padding-left: 0.75rem;
+  color:#ffffff;
+}
+.team-cell.title {
+  color:#a5a5a5;
+}
+
+/* 통계 셀 */
+.stat-cell {
+  font-weight: 500;
+    color:#ffffff;
+
+}

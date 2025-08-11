@@ -1,5 +1,5 @@
 :root {
-    --sidebar-width: 280px;
+    --sidebar-width: 300px;
 } /* 한 줄만 바꾸면 폭 수정 가능 */
 
 /* ------ 사이드바 ------ */
@@ -44,4 +44,10 @@ main > .serviceHeader {
 main > .routesBody {
     flex: 1; /* 남은 높이 전부 */
     overflow-y: auto; /* 스크롤(선택) */
+}
+
+
+.flex-1 {
+    flex: 1; /* 남은 공간 전부 차지 */
+  background-color: #111214;
 }
