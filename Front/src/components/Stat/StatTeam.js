@@ -90,7 +90,7 @@ export function GroupStandings({currentDivision, group, teams = []}) {
           return (
             <div
               key={team.name}
-              className={`standings-row ${currentDivision.name=="2부" ? "minor" : "" } ${getRankClass(index)}`}
+              className={`standings-row ${currentDivision.name==="2부" ? "minor" : "" } ${getRankClass(index)}`}
             >
               <div className="standings-cell rank-cell">{index + 1}</div>
               <div className="standings-cell logo-cell">
@@ -139,7 +139,7 @@ function MatchRow({currentDivision, group, index, match, teams = []}) {
   };
 
   return (
-    <div className={`match-row ${currentDivision.name=="2부" ? "minor" : ""}`}>
+    <div className={`match-row ${currentDivision.name==="2부" ? "minor" : ""}`}>
       {group ? (
         <div className="match-round">
           {group} {index + 1} 경기
