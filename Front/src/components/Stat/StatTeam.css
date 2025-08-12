@@ -115,12 +115,21 @@
   padding: 0.5rem;
 }
 
+
 .team-logo {
   width: 1.563rem; /* 25px */
   height: 1.563rem;
-  object-fit: contain;
+  overflow: hidden; 
+  display:flex;
+  align-items: center;
+  justify-content: center;
 }
-
+.team-logo-img {
+  width: 4rem;
+  height: 4rem;             
+  object-fit: cover;       
+  object-position: center;   
+}
 /* 팀명 셀 */
 .team-cell {
   text-align: left;

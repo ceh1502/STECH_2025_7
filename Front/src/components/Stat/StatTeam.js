@@ -95,11 +95,13 @@ export function GroupStandings({currentDivision, group, teams = []}) {
               <div className="standings-cell rank-cell">{index + 1}</div>
               <div className="standings-cell logo-cell">
                 {teamInfo?.logo && (
+                  <div className="team-logo">
                   <img
                     src={teamInfo.logo}
                     alt={`${team.name} 로고`}
-                    className="team-logo"
+                    className="team-logo-img"
                   />
+                  </div>
                 )}
               </div>
               <div className="standings-cell team-cell">{team.name}</div>
@@ -166,16 +168,17 @@ function MatchRow({currentDivision, group, index, match, teams = []}) {
             </div>
           <div className="match-score">{getScore()}</div>
           <div className={`away-team`}>
-            <div className='team-name'>
-            {awayTeam.name}
-            </div>
-            <div className='team-logo'>
+                    <div className='team-logo'>
                 <img
                   src={awayTeam.logo}
                   alt={`${awayTeam.name} 로고`}
                   className="team-logo-img"
                 />
             </div>
+            <div className='team-name'>
+            {awayTeam.name}
+            </div>
+
             </div>
         </div>
       </div>
