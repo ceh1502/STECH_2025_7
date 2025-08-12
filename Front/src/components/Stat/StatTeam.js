@@ -54,7 +54,7 @@ function calculateGroupStandings(group) {
 }
 
 // 그룹 순위표 컴포넌트 (분리됨)
-export function GroupStandings({group, teams = []}) {
+export function GroupStandings({currentDivision, group, teams = []}) {
   const standings = calculateGroupStandings(group);
 
   const getRankClass = (index) => {
@@ -90,7 +90,7 @@ export function GroupStandings({group, teams = []}) {
           return (
             <div
               key={team.name}
-              className={`standings-row ${getRankClass(index)}`}
+              className={`standings-row ${currentDivision.name=="2부" ? "minor" : "" } ${getRankClass(index)}`}
             >
               <div className="standings-cell rank-cell">{index + 1}</div>
               <div className="standings-cell logo-cell">
@@ -137,7 +137,7 @@ function MatchRow({currentDivision, group, index, match, teams = []}) {
   };
 
   return (
-    <div className="match-row">
+    <div className={`match-row ${currentDivision.name=="2부" ? "minor" : ""}`}>
       {group ? (
         <div className="match-round">
           {group} {index + 1} 경기
@@ -243,13 +243,13 @@ function PlayoffsMatches({currentDivision, teams = []}) {
 
 function PromotionMatch({currentDivision, teams = []}) {
   return (
-    <div className="matches-container">
+    <div className="promotion-matches-container">
       <div className="promotion-header">
         <div className="promotion-title">승강전</div>
       </div>
       <MatchList
         currentDivision={currentDivision}
-        matches={currentDivision.playoffs}
+        matches={currentDivision.promotion}
         teams={teams}
       />
     </div>
@@ -316,7 +316,7 @@ export default function StatTeam({data, teams = []}) {
                       {currentDivision.name} {group.name} 순위
                     </div>
                     <div className="standings-section">
-                      <GroupStandings group={group} teams={teams} />
+                      <GroupStandings currentDivision={currentDivision} group={group} teams={teams} />
                     </div>
                   </div>
                 ))}
@@ -355,7 +355,6 @@ export default function StatTeam({data, teams = []}) {
               <PromotionMatch
                 currentDivision={currentDivision}
                 teams={teams}
-                title="승강전"
               />
             )}
         </div>
