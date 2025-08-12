@@ -44,11 +44,14 @@
 .group-section{
   width:45.625rem;
 }
-.group-header{
+.group-header, .playoffs-header, .final-header, .promotion-header {
   display: flex;
   align-items: center;
   font-size:1.25rem;
   border-bottom: 1px solid #FFFFFF;
+  padding-bottom: 1rem;
+  color:#f5f5f5;
+  font-weight: 700;
 }
 
 
@@ -135,4 +138,94 @@
   font-weight: 500;
     color:#ffffff;
 
+}
+
+.match-row, .match-header {
+  display:grid;
+  grid-template-columns: 12.5rem 2fr 1.5fr 10rem;
+}
+
+.match-header div, .match-row div{
+  text-align:center;
+  vertical-align: middle;
+}
+
+.match-teams {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-vs {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  align-items: center;
+  column-gap: 1.25rem;
+
+}
+
+.match-score{
+  justify-self: center;  /* 그리드 셀에서 가운데 */
+  width:3.75rem;
+  height:1.375rem;
+  flex-shrink: 0;
+  background: #363636;
+  font-size:0.875rem;
+  font-weight: 600;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-row{
+  width: 93.75rem;
+  height: 3.75rem;
+  border-radius: 0.5rem;
+  border: 0.015rem solid #6E6E6E;
+  background: rgba(255, 255, 255, 0.40);
+  color: #FFF;
+
+  font-family: Inter;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+
+.match-list{
+  display:flex;
+  flex-direction: column;
+  gap:1.25rem;
+}
+
+.matches-container{
+  padding-top:6.25rem;
+}
+
+.match-header{
+  padding: 0.75rem 0;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: #A5A5A5;
+}
+.match-round, .match-location, .match-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-team {
+  display: flex;
+  gap:0.625rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.away-team{
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap:0.625rem;
 }
