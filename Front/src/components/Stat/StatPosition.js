@@ -1,18 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
-const StatPosition = ({ 
-  players = [], 
-  divisions = ['1부', '2부'],
-  initialDivision = '1부',
-  initialPosition = 'QB',
-  onPlayerClick = () => {},
-  className = ''
-}) => {
-  const [selectedDivision, setSelectedDivision] = useState(initialDivision);
-  const [selectedPosition, setSelectedPosition] = useState(initialPosition);
-  const [selectedStatType, setSelectedStatType] = useState('패스');
+const StatPosition = ({ data }) => {
+  const [selectedDivision, setSelectedDivision] = useState("1부");
+  const [selectedPosition, setSelectedPosition] = useState('QB');
+  const [selectedStatType, setSelectedStatType] = useState('pass');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'desc' });
+
 
   // 포지션별 사용 가능한 통계 카테고리
   const positionCategories = {
@@ -241,9 +235,9 @@ const StatPosition = ({
 
   // 정렬된 데이터
   const sortedPlayers = useMemo(() => {
-    const filteredPlayers = players.filter(player => 
-      player.division === selectedDivision && 
-      player.position === selectedPosition
+    const filteredPlayers = data.filter(data => 
+      data.division === selectedDivision && 
+      data.position === selectedPosition
     );
     
     if (!sortConfig.key) return filteredPlayers;
@@ -260,187 +254,23 @@ const StatPosition = ({
       }
       return 0;
     });
-  }, [sortConfig, selectedDivision, selectedPosition, players]);
+  }, [sortConfig, selectedDivision, selectedPosition, data]);
 
   // 현재 선택된 통계 타입의 컬럼들
   const currentColumns = statColumns[selectedPosition]?.[selectedStatType] || [];
 
-  const styles = {
-    container: {
-      width: '100%',
-      backgroundColor: '#1a1a2e',
-      color: '#ffffff',
-      fontFamily: 'Arial, sans-serif'
-    },
-    header: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '16px',
-      marginBottom: '24px',
-      padding: '16px',
-      backgroundColor: '#16213e',
-      borderBottom: '1px solid #2a2a3e'
-    },
-    title: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      color: '#ffffff'
-    },
-    divisionButtons: {
-      display: 'flex',
-      gap: '8px'
-    },
-    divisionButton: {
-      padding: '8px 16px',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      transition: 'all 0.2s'
-    },
-    divisionButtonActive: {
-      backgroundColor: '#3b82f6',
-      color: '#ffffff'
-    },
-    divisionButtonInactive: {
-      backgroundColor: '#374151',
-      color: '#d1d5db'
-    },
-    positionContainer: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '4px',
-      marginBottom: '16px',
-      padding: '0 16px'
-    },
-    positionButton: {
-      padding: '6px 12px',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontSize: '12px',
-      transition: 'all 0.2s'
-    },
-    positionButtonActive: {
-      backgroundColor: '#3b82f6',
-      color: '#ffffff'
-    },
-    positionButtonInactive: {
-      backgroundColor: '#374151',
-      color: '#9ca3af'
-    },
-    categoryContainer: {
-      display: 'flex',
-      gap: '8px',
-      marginBottom: '16px',
-      padding: '0 16px'
-    },
-    categoryButton: {
-      padding: '8px 16px',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      transition: 'all 0.2s'
-    },
-    categoryButtonActive: {
-      backgroundColor: '#4b5563',
-      color: '#ffffff'
-    },
-    categoryButtonInactive: {
-      backgroundColor: '#374151',
-      color: '#9ca3af'
-    },
-    tableHeader: {
-      backgroundColor: '#16213e',
-      borderBottom: '1px solid #374151',
-      padding: '12px'
-    },
-    tableTitle: {
-      fontSize: '18px',
-      fontWeight: '500',
-      margin: 0
-    },
-    table: {
-      width: '100%',
-      borderCollapse: 'collapse',
-      overflowX: 'auto',
-      display: 'block',
-      whiteSpace: 'nowrap'
-    },
-    thead: {
-      backgroundColor: '#374151',
-      display: 'table-header-group'
-    },
-    tbody: {
-      display: 'table-row-group'
-    },
-    tr: {
-      display: 'table-row'
-    },
-    th: {
-      textAlign: 'left',
-      padding: '12px',
-      fontSize: '14px',
-      fontWeight: '500',
-      cursor: 'pointer',
-      userSelect: 'none',
-      display: 'table-cell',
-      minWidth: '100px',
-      position: 'relative'
-    },
-    thHover: {
-      backgroundColor: '#4b5563'
-    },
-    td: {
-      padding: '12px',
-      fontSize: '14px',
-      display: 'table-cell',
-      borderBottom: '1px solid #2a2a3e'
-    },
-    playerName: {
-      fontWeight: '500',
-      color: '#3b82f6',
-      cursor: 'pointer'
-    },
-    teamName: {
-      color: '#9ca3af'
-    },
-    sortContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '4px'
-    },
-    sortArrows: {
-      display: 'flex',
-      flexDirection: 'column',
-      marginLeft: '4px'
-    },
-    rowEven: {
-      backgroundColor: '#1a1a2e'
-    },
-    rowOdd: {
-      backgroundColor: '#16213e'
-    },
-    rowHover: {
-      backgroundColor: '#374151'
-    }
-  };
-
   return (
-    <div style={styles.container} className={className}>
-      {/* 헤더 */}
-      <div style={styles.header}>
-        <h1 style={styles.title}>Stech</h1>
-        <div style={styles.divisionButtons}>
-          {divisions.map((division) => (
-            <button 
+    <div className={`stat-position`}>
+      <div className="stat-header">
+        <div className="division-buttons">
+          {['1부', '2부'].map((division) => (
+            <button
               key={division}
-              style={{
-                ...styles.divisionButton,
-                ...(selectedDivision === division ? styles.divisionButtonActive : styles.divisionButtonInactive)
+              className={`division-button ${selectedDivision === division ? 'active' : ''}`}
+              onClick={() => {
+                setSelectedDivision(division);
+                setSortConfig({ key: null, direction: 'desc' });
               }}
-              onClick={() => setSelectedDivision(division)}
             >
               {division}
             </button>
@@ -449,14 +279,11 @@ const StatPosition = ({
       </div>
 
       {/* 포지션 선택 */}
-      <div style={styles.positionContainer}>
+      <div className="position-container">
         {Object.keys(positionCategories).map((position) => (
           <button
             key={position}
-            style={{
-              ...styles.positionButton,
-              ...(selectedPosition === position ? styles.positionButtonActive : styles.positionButtonInactive)
-            }}
+            className={`position-button ${selectedPosition === position ? 'active' : 'inactive'}`}
             onClick={() => {
               setSelectedPosition(position);
               setSelectedStatType(positionCategories[position][0]);
@@ -469,14 +296,11 @@ const StatPosition = ({
       </div>
 
       {/* 통계 카테고리 선택 */}
-      <div style={styles.categoryContainer}>
+      <div className="category-container">
         {positionCategories[selectedPosition]?.map((category) => (
           <button
             key={category}
-            style={{
-              ...styles.categoryButton,
-              ...(selectedStatType === category ? styles.categoryButtonActive : styles.categoryButtonInactive)
-            }}
+            className={`category-button ${selectedStatType === category ? 'active' : 'inactive'}`}
             onClick={() => {
               setSelectedStatType(category);
               setSortConfig({ key: null, direction: 'desc' });
@@ -488,36 +312,34 @@ const StatPosition = ({
       </div>
 
       {/* 테이블 헤더 */}
-      <div style={styles.tableHeader}>
-        <h3 style={styles.tableTitle}>포지션별 선수 순위</h3>
+      <div className="table-header">
+        <div className="table-title">포지션별 선수 순위</div>
       </div>
 
       {/* 통계 테이블 */}
-      <div style={{ overflowX: 'auto' }}>
-        <table style={styles.table}>
-          <thead style={styles.thead}>
-            <tr style={styles.tr}>
-              <th style={{...styles.th, minWidth: '60px'}}>순위</th>
-              <th style={{...styles.th, minWidth: '120px'}}>선수명</th>
-              <th style={{...styles.th, minWidth: '120px'}}>팀</th>
+      <div className="table-wrapper">
+        <table className="stat-table">
+          <thead className="table-head">
+            <tr className="table-row">
+              <th className="table-header-cell rank-column">순위</th>
+              <th className="table-header-cell player-column">선수명</th>
+              <th className="table-header-cell team-column">팀</th>
               {currentColumns.map((column) => (
                 <th
                   key={column.key}
-                  style={styles.th}
+                  className="table-header-cell stat-column sortable"
                   onClick={() => handleSort(column.key)}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#4b5563'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
                 >
-                  <div style={styles.sortContainer}>
-                    <span style={{ fontSize: '12px' }}>{column.label}</span>
-                    <div style={styles.sortArrows}>
+                  <div className="sort-container">
+                    <span className="column-label">{column.label}</span>
+                    <div className="sort-arrows">
                       <ChevronUp 
                         size={10} 
-                        color={sortConfig.key === column.key && sortConfig.direction === 'asc' ? '#3b82f6' : '#6b7280'}
+                        className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'asc' ? 'active' : ''}`}
                       />
                       <ChevronDown 
                         size={10} 
-                        color={sortConfig.key === column.key && sortConfig.direction === 'desc' ? '#3b82f6' : '#6b7280'}
+                        className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'desc' ? 'active' : ''}`}
                       />
                     </div>
                   </div>
@@ -525,30 +347,23 @@ const StatPosition = ({
               ))}
             </tr>
           </thead>
-          <tbody style={styles.tbody}>
-            {sortedPlayers.map((player, index) => (
+          <tbody className="table-body">
+            {sortedPlayers.map((data, index) => (
               <tr 
-                key={player.id || player.name}
-                style={{
-                  ...styles.tr,
-                  ...(index % 2 === 0 ? styles.rowEven : styles.rowOdd)
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#374151'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = index % 2 === 0 ? '#1a1a2e' : '#16213e'}
+                key={data.id || data.name}
+                className={`table-row ${index % 2 === 0 ? 'even' : 'odd'}`}
               >
-                <td style={styles.td}>{player.rank || index + 1}</td>
+                <td className="table-cell">{data.rank || index + 1}</td>
                 <td 
-                  style={{...styles.td, ...styles.playerName}}
-                  onClick={() => onPlayerClick(player)}
-                >
-                  {player.name}
+                  className="table-cell player-name clickable"                >
+                  {data.name}
                 </td>
-                <td style={{...styles.td, ...styles.teamName}}>{player.team}</td>
+                <td className="table-cell team-name">{data.team}</td>
                 {currentColumns.map((column) => (
-                  <td key={column.key} style={styles.td}>
-                    {typeof player[column.key] === 'number' && player[column.key] % 1 !== 0
-                      ? player[column.key].toFixed(1)
-                      : player[column.key] || '0'
+                  <td key={column.key} className="table-cell">
+                    {typeof data[column.key] === 'number' && data[column.key] % 1 !== 0
+                      ? data[column.key].toFixed(1)
+                      : data[column.key] || '0'
                     }
                   </td>
                 ))}
@@ -558,17 +373,6 @@ const StatPosition = ({
         </table>
       </div>
 
-      {/* 데이터가 없을 때 */}
-      {sortedPlayers.length === 0 && (
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '40px', 
-          color: '#9ca3af',
-          fontSize: '16px'
-        }}>
-          선택한 조건에 맞는 선수가 없습니다.
-        </div>
-      )}
     </div>
   );
 };

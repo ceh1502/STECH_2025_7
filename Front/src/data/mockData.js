@@ -1,5 +1,5 @@
 // mockData.js
-export const mockPlayers = [
+export const mockData = [
   {
     id: 1,
     rank: 1,
