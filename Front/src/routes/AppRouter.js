@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import * as  LandingPages from '../pages/Landing';
+import * as LandingPages from '../pages/Landing';
 import * as ServicePages from '../pages/Service';
 import * as AuthPages from '../pages/Auth';
 import * as CommonPages from '../pages/Common';
@@ -15,8 +15,10 @@ export default function AppRouter() {
             {/* Service Pages */}
             <Route path="/service" element={<ServicePages.ServiceLayout />}>
                 <Route index element={<ServicePages.ServiceHome />} />
-                <Route path="clip" element={<ServicePages.ClipPage />} />
-                <Route path="game" element={<ServicePages.GamePage />} />
+                <Route path="game" element={<ServicePages.GameLayout />} >
+                    <Route index element={<ServicePages.GamePage />} />
+                    <Route path="clip" element={<ServicePages.ClipPage />} />
+                </Route>
                 <Route path="stat" element={<ServicePages.StatLayout />} >
                     <Route index element={<ServicePages.LeagueTeamPage />} />
                     <Route path="team" element={<ServicePages.LeagueTeamPage />} />
