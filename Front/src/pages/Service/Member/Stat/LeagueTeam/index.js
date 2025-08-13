@@ -1,9 +1,7 @@
+import StatTeam from "../../../../../components/Stat/StatTeam";
+import {FALL_2024_DATA, TEAMS} from "../../../../../data/fall2024";
+
 const LeagueTeamPage = () => {
-    return (
-        <div>
-            <h1>League Team Page</h1>
-            <p>This is the League Team page content.</p>
-        </div>
-    );
-}
+  return <StatTeam data={FALL_2024_DATA} teams={TEAMS} />;
+};
 export default LeagueTeamPage;

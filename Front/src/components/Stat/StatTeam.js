@@ -10,7 +10,9 @@ function calculateGroupStandings(group) {
     standings[team] = {
       name: team,
       wins: 0,
+      draws: 0,
       losses: 0,
+      points: 0, // 승점
       pointsFor: 0,
       pointsAgainst: 0,
       games: 0,
@@ -20,25 +22,70 @@ function calculateGroupStandings(group) {
   // 경기 결과 반영
   group.matches.forEach((match) => {
     if (match.homeScore !== null && match.awayScore !== null) {
+      // 득점/실점 기록
       standings[match.home].pointsFor += match.homeScore;
       standings[match.home].pointsAgainst += match.awayScore;
       standings[match.home].games++;
-
+      
       standings[match.away].pointsFor += match.awayScore;
       standings[match.away].pointsAgainst += match.homeScore;
       standings[match.away].games++;
 
-      if (match.winner === match.home) {
+      // 승부 결과에 따른 승점 부여
+      if (match.homeScore > match.awayScore) {
+        // 홈팀 승리
         standings[match.home].wins++;
+        standings[match.home].points += 3;
         standings[match.away].losses++;
-      } else {
+        standings[match.away].points += 0;
+      } else if (match.homeScore < match.awayScore) {
+        // 원정팀 승리
         standings[match.away].wins++;
+        standings[match.away].points += 3;
         standings[match.home].losses++;
+        standings[match.home].points += 0;
+      } else {
+        // 무승부
+        standings[match.home].draws++;
+        standings[match.home].points += 1;
+        standings[match.away].draws++;
+        standings[match.away].points += 1;
       }
     }
   });
 
-  // 승률 계산 및 순위 정렬
+  // 상호 전적 계산 함수 (승점 동률 시 사용)
+  function getHeadToHeadRecord(teamA, teamB) {
+    const h2h = {
+      [teamA]: { points: 0, pointsFor: 0, pointsAgainst: 0 },
+      [teamB]: { points: 0, pointsFor: 0, pointsAgainst: 0 }
+    };
+
+    group.matches.forEach((match) => {
+      if ((match.home === teamA && match.away === teamB) || 
+          (match.home === teamB && match.away === teamA)) {
+        if (match.homeScore !== null && match.awayScore !== null) {
+          h2h[match.home].pointsFor += match.homeScore;
+          h2h[match.home].pointsAgainst += match.awayScore;
+          h2h[match.away].pointsFor += match.awayScore;
+          h2h[match.away].pointsAgainst += match.homeScore;
+
+          if (match.homeScore > match.awayScore) {
+            h2h[match.home].points += 3;
+          } else if (match.homeScore < match.awayScore) {
+            h2h[match.away].points += 3;
+          } else {
+            h2h[match.home].points += 1;
+            h2h[match.away].points += 1;
+          }
+        }
+      }
+    });
+
+    return h2h;
+  }
+
+  // 순위 정렬
   const sortedStandings = Object.values(standings)
     .map((team) => ({
       ...team,
@@ -46,12 +93,33 @@ function calculateGroupStandings(group) {
       pointsDiff: team.pointsFor - team.pointsAgainst,
     }))
     .sort((a, b) => {
-      if (a.wins !== b.wins) return b.wins - a.wins;
-      return b.pointsDiff - a.pointsDiff;
+      // 1. 승점 비교
+      if (a.points !== b.points) return b.points - a.points;
+      
+      // 2. 승점 동률 시 상호 전적 비교
+      const h2h = getHeadToHeadRecord(a.name, b.name);
+      if (h2h[a.name].points !== h2h[b.name].points) {
+        return h2h[b.name].points - h2h[a.name].points;
+      }
+      
+      // 3. 상호 전적도 동률 시 상호 전적 득실차
+      const h2hDiffA = h2h[a.name].pointsFor - h2h[a.name].pointsAgainst;
+      const h2hDiffB = h2h[b.name].pointsFor - h2h[b.name].pointsAgainst;
+      if (h2hDiffA !== h2hDiffB) return h2hDiffB - h2hDiffA;
+      
+      // 4. 전체 득실차 비교
+      if (a.pointsDiff !== b.pointsDiff) return b.pointsDiff - a.pointsDiff;
+      
+      // 5. 다득점 비교
+      if (a.pointsFor !== b.pointsFor) return b.pointsFor - a.pointsFor;
+      
+      // 6. 최소실점 비교
+      return a.pointsAgainst - b.pointsAgainst;
     });
 
   return sortedStandings;
 }
+
 
 // 그룹 순위표 컴포넌트 (분리됨)
 export function GroupStandings({currentDivision, group, teams = []}) {
@@ -80,6 +148,7 @@ export function GroupStandings({currentDivision, group, teams = []}) {
           <div className="standings-cell"></div>
           <div className="standings-cell team-cell title">팀 이름</div>
           <div className="standings-cell">승</div>
+          <div className="standings-cell">무</div>
           <div className="standings-cell">패</div>
           <div className="standings-cell">승률</div>
           <div className="standings-cell">득점</div>
@@ -106,6 +175,7 @@ export function GroupStandings({currentDivision, group, teams = []}) {
               </div>
               <div className="standings-cell team-cell">{team.name}</div>
               <div className="standings-cell stat-cell">{team.wins}</div>
+              <div className="standings-cell stat-cell">{team.draws}</div>
               <div className="standings-cell stat-cell">{team.losses}</div>
               <div className="standings-cell stat-cell">{team.winRate}%</div>
               <div className="standings-cell stat-cell">{team.pointsFor}</div>
