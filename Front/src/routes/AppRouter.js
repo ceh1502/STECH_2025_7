@@ -11,6 +11,7 @@ export default function AppRouter() {
             {/* Landing Pages */}
             <Route path="/" element={<LandingPages.LandingLayout />} />
             <Route index element={<LandingPages.LandingPage />} />
+            <Route path="Team" element={<LandingPages.Team />} />
 
             {/* Service Pages */}
             <Route path="/service" element={<ServicePages.ServiceLayout />}>

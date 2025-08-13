@@ -1,14 +1,14 @@
 import React from 'react';
-import Header from '../Header';
-import Footer from '../Footer';
-import TeamLogo from '../../../Assets/png/TeamPng/teamLogo.png';
-import T1 from '../../../Assets/png/TeamPng/T1.png';
-import T2 from '../../../Assets/png/TeamPng/T2.png';
-import T3 from '../../../Assets/png/TeamPng/T3.png';
-import T4 from '../../../Assets/png/TeamPng/T4.png';
-import T5 from '../../../Assets/png/TeamPng/T5.png';
-import T6 from '../../../Assets/png/TeamPng/T6.png';
-import T7 from '../../../Assets/png/TeamPng/T7.png';
+import Header from '../LandingHome/Header';
+import Footer from '../LandingHome/Footer';
+import TeamLogo from '../../../assets/images/png/TeamPng/teamLogo.png';
+import T1 from '../../../assets/images/png/TeamPng/T1.png';
+import T2 from '../../../assets/images/png/TeamPng/T2.png';
+import T3 from '../../../assets/images/png/TeamPng/T3.png';
+import T4 from '../../../assets/images/png/TeamPng/T4.png';
+import T5 from '../../../assets/images/png/TeamPng/T5.png';
+import T6 from '../../../assets/images/png/TeamPng/T6.png';
+import T7 from '../../../assets/images/png/TeamPng/T7.png';
 import './index.css';
 
 const Team = () => {

@@ -25,6 +25,7 @@ import Detail from './images/detail.png';
 import Screen from './images/screen.png';
 import MobileScreen from './images/mobilescreen.png';
 import Gameimage from './images/Gameimage.png';
+
 const LandingPage = () => {
     usePageTitle('Stech');
     return (
