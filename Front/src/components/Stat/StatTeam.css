@@ -10,29 +10,39 @@
   align-items: center;
   padding-top:4.063rem;
 }
-.division-buttons {
+.dropdown-group {
   display: flex;
   gap: 1.875rem;
 }
 
-.division-button{
-  width: 6.25rem;
-  height:3.125rem;
-  border-radius: 0.5rem;
-  background: #6E6E6E;
+.dropdown-container {
   display:flex;
   align-items: center;
   justify-content: center;  
-  color: #FFFFFF;
-  font-size:1.5rem;
+  color: #C2C2C2;
+  font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
-  /* font-family: Noto Sans KR; */
 }
 
-.division-button.active {
-  background: #0711D9;;
+.dropdown-trigger{
+  width: 4.375rem;
+  height: 1.25rem;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.75rem;
+  border-radius:0.5rem;
+  border: 1px solid var(--Gray-100, #E4E7E9);
+  background: rgba(110, 110, 110, 0.20);
 }
+
+.dropdown-arrow{
+  width: 1rem;
+  height: 1rem;
+  color: #C2C2C2;
+}
+
 
 .groups-container {
   display:flex;

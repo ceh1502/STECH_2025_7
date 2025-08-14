@@ -1,5 +1,82 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
+import { FaChevronDown } from 'react-icons/fa';
 import "./StatTeam.css"; // 스타일 파일 임포트
+
+// 드롭다운 컴포넌트
+const Dropdown = ({
+  options = [],
+  value = '',
+  onChange = () => {},
+  placeholder = '선택하세요',
+  className = '',
+  disabled = false,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleToggle = () => {
+    if (!disabled) {
+      setIsOpen(!isOpen);
+    }
+  };
+
+  const handleSelect = (option) => {
+    onChange(option);
+    setIsOpen(false);
+  };
+
+  const selectedOption = options.find(option => option.value === value);
+  const displayText = selectedOption ? selectedOption.label : placeholder;
+
+  return (
+    <div 
+      className={`dropdown-container ${className}`} 
+      ref={dropdownRef}
+    >
+      <button
+        className={`dropdown-trigger ${isOpen ? 'open' : ''} ${disabled ? 'disabled' : ''}`}
+        onClick={handleToggle}
+        disabled={disabled}
+        type="button"
+      >
+        <span className="dropdown-text">{displayText}</span>
+        <FaChevronDown 
+          className={`dropdown-arrow ${isOpen ? 'rotated' : ''}`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="dropdown-menu">
+          <ul className="dropdown-list">
+            {options.map((option) => (
+              <li key={option.value} className="dropdown-item">
+                <button
+                  className={`dropdown-option ${value === option.value ? 'selected' : ''}`}
+                  onClick={() => handleSelect(option)}
+                  type="button"
+                >
+                  {option.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // 조별리그 순위 계산 함수
 function calculateGroupStandings(group) {
@@ -349,6 +426,29 @@ function GroupMatches({currentDivision, group, teams = []}) {
 
 // 메인 StatTeam 컴포넌트
 export default function StatTeam({data, teams = []}) {
+  const yearOptions= [
+    { value: '2024', label: '2024' },
+    { value: '2025', label: '2025' },
+  ]
+
+  const leagueOptions = [
+    { value: '서울', label: '서울' },
+    { value: '경기강원', label: '경기강원' },
+    { value: '대구경북', label: '대구경북' },
+    { value: '부산경남', label: '부산경남' }, 
+    { value: '사회인', label: '사회인' },
+    { value: '타이거볼', label: '타이거볼' },
+    { value: '챌린지볼', label: '챌린지볼' },
+  ]
+
+  const divisionOptions = [
+    { value: '1부', label: '1부' },
+    { value: '2부', label: '2부' },
+  ]
+  
+  // 상태 관리
+  const [selectedYear, setSelectedYear] = useState("2024");
+  const [selectedLeague, setSelectedLeague] = useState("서울");
   const [selectedDivision, setSelectedDivision] = useState("1부");
 
   if (!data) {
@@ -362,18 +462,27 @@ export default function StatTeam({data, teams = []}) {
   return (
     <div className="statTeamContainer">
       <div className="tournament-header">
-        <div className="division-buttons">
-          {data.divisions.map((div) => (
-            <button
-              key={div.name}
-              className={`division-button ${
-                selectedDivision === div.name ? "active" : ""
-              }`}
-              onClick={() => setSelectedDivision(div.name)}
-            >
-              {div.name}
-            </button>
-          ))}
+        <div className="dropdown-group">
+          <Dropdown
+          options={yearOptions}
+          value={selectedYear}
+          onChange={(option) => setSelectedYear(option.value)}
+          className="year-dropdown"
+        />
+        
+        <Dropdown
+          options={leagueOptions}
+          value={selectedLeague}
+          onChange={(option) => setSelectedLeague(option.value)}
+          className="league-dropdown"
+        />
+        
+        <Dropdown
+          options={divisionOptions}
+          value={selectedDivision}
+          onChange={(option) => setSelectedDivision(option.value)}
+          className="division-dropdown"
+        />
         </div>
       </div>
 

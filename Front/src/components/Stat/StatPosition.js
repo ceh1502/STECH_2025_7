@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { FaChevronDown } from 'react-icons/fa';
 
 const StatPosition = ({ data }) => {
   const [selectedDivision, setSelectedDivision] = useState("1부");
@@ -333,11 +333,11 @@ const StatPosition = ({ data }) => {
                   <div className="sort-container">
                     <span className="column-label">{column.label}</span>
                     <div className="sort-arrows">
-                      <ChevronUp 
+                      <FaChevronDown
                         size={10} 
                         className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'asc' ? 'active' : ''}`}
                       />
-                      <ChevronDown 
+                      <FaChevronDown 
                         size={10} 
                         className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'desc' ? 'active' : ''}`}
                       />
