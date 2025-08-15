@@ -256,3 +256,172 @@
 .promotion-matches-container {
   padding-bottom:6.25rem;
 }
+
+.dropdown-group {
+  display: flex;
+  gap: 1.875rem;
+}
+
+.dropdown-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  color: #C2C2C2;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dropdown-trigger {
+  width: 4.375rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E4E7E9;
+  background: rgba(110, 110, 110, 0.20);
+  color: #C2C2C2;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdown-trigger:hover:not(.disabled) {
+  background: rgba(110, 110, 110, 0.35);
+}
+
+.dropdown-trigger.open {
+  background: rgba(110, 110, 110, 0.35);
+}
+
+.dropdown-trigger.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown-text {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-arrow {
+  width: 1rem;
+  height: 1rem;
+  color: #C2C2C2;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dropdown-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin-top: 0.25rem;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+.dropdown-option {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  color: #C2C2C2;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dropdown-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-option.selected {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.dropdown-option.selected:hover {
+  background-color: #2563eb;
+}
+
+.selected-values {
+  background-color: #333;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.selected-values p {
+  margin: 0.25rem 0;
+}
+
+/* 스크롤바 스타일링 */
+
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+
+/* 접근성 개선 */
+.dropdown-trigger:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.dropdown-option:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+/* 애니메이션 */
+.dropdown-menu {
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

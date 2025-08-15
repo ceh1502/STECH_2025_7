@@ -1,35 +1,32 @@
 import React, {useState, useRef, useEffect} from "react";
-import { FaChevronDown } from 'react-icons/fa';
+import {FaChevronDown} from "react-icons/fa";
 import "./StatTeam.css"; // 스타일 파일 임포트
 
 // 드롭다운 컴포넌트
 const Dropdown = ({
   options = [],
-  value = '',
+  value = "",
   onChange = () => {},
-  placeholder = '선택하세요',
-  className = '',
+  placeholder = "",
+  className = "",
   disabled = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // 외부 클릭 시 드롭다운 닫기
+  // 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleToggle = () => {
-    if (!disabled) {
-      setIsOpen(!isOpen);
-    }
+    if (!disabled) setIsOpen((o) => !o);
   };
 
   const handleSelect = (option) => {
@@ -37,24 +34,19 @@ const Dropdown = ({
     setIsOpen(false);
   };
 
-  const selectedOption = options.find(option => option.value === value);
+  const selectedOption = options.find((option) => option.value === value);
   const displayText = selectedOption ? selectedOption.label : placeholder;
 
   return (
-    <div 
-      className={`dropdown-container ${className}`} 
-      ref={dropdownRef}
-    >
+    <div className={`dropdown-container ${className}`} ref={dropdownRef}>
       <button
-        className={`dropdown-trigger ${isOpen ? 'open' : ''} ${disabled ? 'disabled' : ''}`}
+        className={`dropdown-trigger ${isOpen ? "open" : ""} ${disabled ? "disabled" : ""}`}
         onClick={handleToggle}
         disabled={disabled}
         type="button"
       >
         <span className="dropdown-text">{displayText}</span>
-        <FaChevronDown 
-          className={`dropdown-arrow ${isOpen ? 'rotated' : ''}`}
-        />
+        <FaChevronDown size={16} className={`dropdown-arrow ${isOpen ? "rotated" : ""}`} />
       </button>
 
       {isOpen && (
@@ -63,7 +55,7 @@ const Dropdown = ({
             {options.map((option) => (
               <li key={option.value} className="dropdown-item">
                 <button
-                  className={`dropdown-option ${value === option.value ? 'selected' : ''}`}
+                  className={`dropdown-option ${value === option.value ? "selected" : ""}`}
                   onClick={() => handleSelect(option)}
                   type="button"
                 >
@@ -89,7 +81,7 @@ function calculateGroupStandings(group) {
       wins: 0,
       draws: 0,
       losses: 0,
-      points: 0, // 승점
+      points: 0,
       pointsFor: 0,
       pointsAgainst: 0,
       games: 0,
@@ -103,7 +95,7 @@ function calculateGroupStandings(group) {
       standings[match.home].pointsFor += match.homeScore;
       standings[match.home].pointsAgainst += match.awayScore;
       standings[match.home].games++;
-      
+
       standings[match.away].pointsFor += match.awayScore;
       standings[match.away].pointsAgainst += match.homeScore;
       standings[match.away].games++;
@@ -134,13 +126,15 @@ function calculateGroupStandings(group) {
   // 상호 전적 계산 함수 (승점 동률 시 사용)
   function getHeadToHeadRecord(teamA, teamB) {
     const h2h = {
-      [teamA]: { points: 0, pointsFor: 0, pointsAgainst: 0 },
-      [teamB]: { points: 0, pointsFor: 0, pointsAgainst: 0 }
+      [teamA]: {points: 0, pointsFor: 0, pointsAgainst: 0},
+      [teamB]: {points: 0, pointsFor: 0, pointsAgainst: 0},
     };
 
     group.matches.forEach((match) => {
-      if ((match.home === teamA && match.away === teamB) || 
-          (match.home === teamB && match.away === teamA)) {
+      if (
+        (match.home === teamA && match.away === teamB) ||
+        (match.home === teamB && match.away === teamA)
+      ) {
         if (match.homeScore !== null && match.awayScore !== null) {
           h2h[match.home].pointsFor += match.homeScore;
           h2h[match.home].pointsAgainst += match.awayScore;
@@ -172,31 +166,30 @@ function calculateGroupStandings(group) {
     .sort((a, b) => {
       // 1. 승점 비교
       if (a.points !== b.points) return b.points - a.points;
-      
+
       // 2. 승점 동률 시 상호 전적 비교
       const h2h = getHeadToHeadRecord(a.name, b.name);
       if (h2h[a.name].points !== h2h[b.name].points) {
         return h2h[b.name].points - h2h[a.name].points;
       }
-      
+
       // 3. 상호 전적도 동률 시 상호 전적 득실차
       const h2hDiffA = h2h[a.name].pointsFor - h2h[a.name].pointsAgainst;
       const h2hDiffB = h2h[b.name].pointsFor - h2h[b.name].pointsAgainst;
       if (h2hDiffA !== h2hDiffB) return h2hDiffB - h2hDiffA;
-      
+
       // 4. 전체 득실차 비교
       if (a.pointsDiff !== b.pointsDiff) return b.pointsDiff - a.pointsDiff;
-      
+
       // 5. 다득점 비교
       if (a.pointsFor !== b.pointsFor) return b.pointsFor - a.pointsFor;
-      
+
       // 6. 최소실점 비교
       return a.pointsAgainst - b.pointsAgainst;
     });
 
   return sortedStandings;
 }
-
 
 // 그룹 순위표 컴포넌트 (분리됨)
 export function GroupStandings({currentDivision, group, teams = []}) {
@@ -236,17 +229,19 @@ export function GroupStandings({currentDivision, group, teams = []}) {
           return (
             <div
               key={team.name}
-              className={`standings-row ${currentDivision.name==="2부" ? "minor" : "" } ${getRankClass(index)}`}
+              className={`standings-row ${
+                currentDivision.name === "2부" ? "minor" : ""
+              } ${getRankClass(index)}`}
             >
               <div className="standings-cell rank-cell">{index + 1}</div>
               <div className="standings-cell logo-cell">
                 {teamInfo?.logo && (
                   <div className="team-logo">
-                  <img
-                    src={teamInfo.logo}
-                    alt={`${team.name} 로고`}
-                    className="team-logo-img"
-                  />
+                    <img
+                      src={teamInfo.logo}
+                      alt={`${team.name} 로고`}
+                      className="team-logo-img"
+                    />
                   </div>
                 )}
               </div>
@@ -286,47 +281,42 @@ function MatchRow({currentDivision, group, index, match, teams = []}) {
   };
 
   return (
-    <div className={`match-row ${currentDivision.name==="2부" ? "minor" : ""}`}>
+    <div
+      className={`match-row ${currentDivision.name === "2부" ? "minor" : ""}`}
+    >
       {group ? (
         <div className="match-round">
           {group} {index + 1} 경기
         </div>
-      ) 
-      : (
+      ) : (
         <div className="match-round">
           {currentDivision.name} {match.stage}
         </div>
-      )
-      }
+      )}
 
       <div className="match-teams">
         <div className="team-vs">
-          <div className={`home-team`}>
+          <div className='home-team'>
             <div className="team-logo">
-                <img
-                  src={homeTeam.logo}
-                  alt={`${homeTeam.name} 로고`}
-                  className="team-logo-img"
-                />
+              <img
+                src={homeTeam.logo}
+                alt={`${homeTeam.name} 로고`}
+                className="team-logo-img"
+              />
             </div>
-            <div className="team-name">  
-              {homeTeam.name}
-            </div>
-            </div>
+            <div className="team-name">{homeTeam.name}</div>
+          </div>
           <div className="match-score">{getScore()}</div>
           <div className={`away-team`}>
-                    <div className='team-logo'>
-                <img
-                  src={awayTeam.logo}
-                  alt={`${awayTeam.name} 로고`}
-                  className="team-logo-img"
-                />
+            <div className="team-logo">
+              <img
+                src={awayTeam.logo}
+                alt={`${awayTeam.name} 로고`}
+                className="team-logo-img"
+              />
             </div>
-            <div className='team-name'>
-            {awayTeam.name}
-            </div>
-
-            </div>
+            <div className="team-name">{awayTeam.name}</div>
+          </div>
         </div>
       </div>
       <div className="match-location">{match.location || "-"}</div>
@@ -425,64 +415,83 @@ function GroupMatches({currentDivision, group, teams = []}) {
 }
 
 // 메인 StatTeam 컴포넌트
-export default function StatTeam({data, teams = []}) {
-  const yearOptions= [
-    { value: '2024', label: '2024' },
-    { value: '2025', label: '2025' },
-  ]
+export default function StatTeam({ data, teams = [] }) {
+  const yearOptions = [
+    { value: "2024", label: "2024" },
+    { value: "2025", label: "2025" },
+  ];
 
   const leagueOptions = [
-    { value: '서울', label: '서울' },
-    { value: '경기강원', label: '경기강원' },
-    { value: '대구경북', label: '대구경북' },
-    { value: '부산경남', label: '부산경남' }, 
-    { value: '사회인', label: '사회인' },
-    { value: '타이거볼', label: '타이거볼' },
-    { value: '챌린지볼', label: '챌린지볼' },
-  ]
+    { value: "서울", label: "서울" },
+    { value: "경기강원", label: "경기강원" },
+    { value: "대구경북", label: "대구경북" },
+    { value: "부산경남", label: "부산경남" },
+    { value: "사회인", label: "사회인" },
+    { value: "타이거볼", label: "타이거볼" },
+    { value: "챌린지볼", label: "챌린지볼" },
+  ];
 
   const divisionOptions = [
-    { value: '1부', label: '1부' },
-    { value: '2부', label: '2부' },
-  ]
-  
-  // 상태 관리
+    { value: "1부", label: "1부" },
+    { value: "2부", label: "2부" },
+  ];
+
+  // 상태
   const [selectedYear, setSelectedYear] = useState("2024");
   const [selectedLeague, setSelectedLeague] = useState("서울");
   const [selectedDivision, setSelectedDivision] = useState("1부");
 
-  if (!data) {
+  // 부가 있는 리그
+  const leaguesWithDivisions = ["서울", "경기강원", "대구경북", "부산경남"];
+  const hasDivisions = leaguesWithDivisions.includes(selectedLeague);
+
+  // ✅ 훅은 조건부가 아닌 최상위에서만 호출
+  useEffect(() => {
+    if (!hasDivisions) {
+      if (selectedDivision !== "") setSelectedDivision(""); // 부 개념이 없으면 숨김 + 값 비움
+    } else {
+      if (!["1부", "2부"].includes(selectedDivision)) setSelectedDivision("1부"); // 기본값 보정
+    }
+  }, [hasDivisions, selectedDivision]);
+
+  // data 안전 접근
+  const divisions = data?.divisions ?? [];
+  const currentDivision = hasDivisions
+    ? divisions.find((div) => div.name === selectedDivision) ?? null
+    : divisions[0] ?? null;
+
+  // 훅 호출 이후에 처리
+  if (!data || divisions.length === 0) {
     return <div className="tournament-status">데이터가 없습니다</div>;
   }
-
-  const currentDivision = data.divisions.find(
-    (div) => div.name === selectedDivision
-  );
 
   return (
     <div className="statTeamContainer">
       <div className="tournament-header">
         <div className="dropdown-group">
           <Dropdown
-          options={yearOptions}
-          value={selectedYear}
-          onChange={(option) => setSelectedYear(option.value)}
-          className="year-dropdown"
-        />
-        
-        <Dropdown
-          options={leagueOptions}
-          value={selectedLeague}
-          onChange={(option) => setSelectedLeague(option.value)}
-          className="league-dropdown"
-        />
-        
-        <Dropdown
-          options={divisionOptions}
-          value={selectedDivision}
-          onChange={(option) => setSelectedDivision(option.value)}
-          className="division-dropdown"
-        />
+            options={yearOptions}
+            value={selectedYear}
+            onChange={(option) => setSelectedYear(option.value)}
+            className="year-dropdown"
+            placeholder="연도"
+          />
+          <Dropdown
+            options={leagueOptions}
+            value={selectedLeague}
+            onChange={(option) => setSelectedLeague(option.value)}
+            className="league-dropdown"
+            placeholder="리그"
+          />
+          {hasDivisions && (
+            <Dropdown
+              options={divisionOptions}
+              value={selectedDivision}
+              onChange={(option) => setSelectedDivision(option.value)}
+              className="division-dropdown"
+              placeholder="부"
+            />
+          )}
         </div>
       </div>
 
@@ -503,27 +512,20 @@ export default function StatTeam({data, teams = []}) {
                   </div>
                 ))}
               </div>
-              {/* 결승 경기 결과 */}
+
               {currentDivision.final && currentDivision.final.length > 0 && (
                 <FinalMatch currentDivision={currentDivision} teams={teams} />
               )}
-              {/* 플레이오프 경기 결과 */}
-              {currentDivision.playoffs &&
-                currentDivision.playoffs.length > 0 && (
-                  <PlayoffsMatches
-                    currentDivision={currentDivision}
-                    teams={teams}
-                  />
-                )}
+
+              {currentDivision.playoffs && currentDivision.playoffs.length > 0 && (
+                <PlayoffsMatches currentDivision={currentDivision} teams={teams} />
+              )}
+
               <div className="group-container">
                 {currentDivision.groups.map((group) => (
                   <div key={group.name} className="">
                     <div className="matches-section">
-                      <GroupMatches
-                        currentDivision={currentDivision}
-                        group={group}
-                        teams={teams}
-                      />
+                      <GroupMatches currentDivision={currentDivision} group={group} teams={teams} />
                     </div>
                   </div>
                 ))}
@@ -531,14 +533,9 @@ export default function StatTeam({data, teams = []}) {
             </div>
           )}
 
-          {/* 승강전 */}
-          {currentDivision.promotion &&
-            currentDivision.promotion.length > 0 && (
-              <PromotionMatch
-                currentDivision={currentDivision}
-                teams={teams}
-              />
-            )}
+          {currentDivision.promotion && currentDivision.promotion.length > 0 && (
+            <PromotionMatch currentDivision={currentDivision} teams={teams} />
+          )}
         </div>
       )}
     </div>
