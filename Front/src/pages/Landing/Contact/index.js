@@ -72,7 +72,7 @@ const Contact = () => {
                     </div>
 
                     <form className="contactForm">
-                        <div className="formGroup">
+                        <div className="ContactformGroup">
                             <div className="inputRow">
                                 <div className="inputWrapper">
                                     <label htmlFor="fullName">Full Name</label>

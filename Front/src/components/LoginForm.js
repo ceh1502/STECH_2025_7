@@ -1,8 +1,10 @@
 // src/components/Auth/LoginForm.js
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { PiEye, PiEyeClosed } from 'react-icons/pi';
+import Kakao from '../assets/images/png/AuthPng/Kakao.png';
+import Google from '../assets/images/png/AuthPng/Google.png';
+import Eye from '../assets/images/png/AuthPng/Eye.png';
+import EyeActive from '../assets/images/png/AuthPng/EyeActive.png';
+
 
 const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true, redirectPath = '/service', className = '' }) => {
     const [formData, setFormData] = useState({
@@ -12,22 +14,8 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
     const [rememberMe, setRememberMe] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
 
-    const { login, loading, error, clearError, isAuthenticated } = useAuth();
-    const navigate = useNavigate();
-
-    // 로그인 성공시 리다이렉트 또는 콜백 실행
-    useEffect(() => {
-        if (isAuthenticated) {
-            if (onSuccess) {
-                onSuccess();
-            } else {
-                navigate(redirectPath);
-            }
-        }
-    }, [isAuthenticated, navigate, redirectPath, onSuccess]);
-
-    // 저장된 이메일 불러오기 (Remember Me 기능)
     useEffect(() => {
         const savedEmail = localStorage.getItem('rememberedEmail');
         if (savedEmail) {
@@ -42,9 +30,7 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
             ...prev,
             [name]: value,
         }));
-
-        // 입력시 에러 메시지 클리어
-        if (error) clearError();
+        if (error) setError(null);
     };
 
     const handleRememberMeChange = (e) => {
@@ -53,73 +39,64 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
 
     const validateForm = () => {
         if (!formData.email || !formData.password) {
-            alert('Please enter both your email and password.');
+            setError('아이디와 비밀번호 모두 입력해주세요.');
             return false;
         }
-
-        // 이메일 형식 검사
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
-            alert('Please enter a valid email address.');
+            setError('유효한 이메일을 입력해주세요.');
             return false;
         }
-
         return true;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!validateForm()) return;
-
         setIsSubmitting(true);
+        setError(null);
 
         try {
-            const result = await login({
-                email: formData.email,
-                password: formData.password,
-                rememberMe: rememberMe,
-            });
-
-            if (result.success) {
-                // Remember Me 기능
+            console.log('로그인 시도:', formData);
+            const success = true; // 실제 로그인 로직을 여기에 구현
+            if (success) {
                 if (rememberMe) {
                     localStorage.setItem('rememberedEmail', formData.email);
                 } else {
                     localStorage.removeItem('rememberedEmail');
                 }
-
-                console.log('Login Succesful!', result.user);
-
-                // 성공 콜백이 있으면 실행
+                console.log('Login Successful!');
                 if (onSuccess) {
-                    onSuccess(result);
+                    onSuccess();
                 }
+            } else {
+                setError('Login failed. Please check your credentials.');
             }
         } catch (err) {
             console.error('Login Error:', err);
+            setError('An unexpected error occurred. Please try again later.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const handleForgotPassword = () => {
-        navigate('/auth/find');
-    };
-
-    const isFormLoading = loading || isSubmitting;
+    const isFormLoading = isSubmitting;
 
     return (
         <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
+            <div className="tab-container">
+                <button type="button" className="loginTitle">로그인</button>
+            </div>
+
             <div className="formGroup">
-                <label className="formLabel">Email</label>
+                <label className="LoginformLabel ID" htmlFor="email">아이디</label>
                 <input
-                    type="email"
+                    type="text"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="formInput"
-                    placeholder="example@email.com"
+                    className="LoginformInput"
+                    placeholder=""
                     required
                     autoComplete="email"
                     disabled={isFormLoading}
@@ -127,54 +104,74 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
             </div>
 
             <div className="formGroup">
-                <label className="formLabel">Password</label>
+                <label className="LoginformLabel PW" htmlFor="password">
+                    비밀번호
+                    {showForgotPassword && (
+                        <a href="#" onClick={() => console.log('Forgot password clicked')} className="forgotPasswordLink">비밀번호 찾기</a>
+                    )}
+                </label>
                 <div className="passwordInputContainer">
                     <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="formInput"
-                        placeholder="Password"
+                        className="LoginformInput"
+                        placeholder=""
                         required
                         autoComplete="current-password"
                         disabled={isFormLoading}
                     />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="passwordToggleButton" tabIndex={-1} disabled={isFormLoading}>
-                        {showPassword ? <PiEye className="eye" /> : <PiEyeClosed className="eye" />}
+                    <button
+                        type="button"
+                        className="LoginpasswordToggleButton"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={isFormLoading}
+                    >
+                        {showPassword ? (
+                            <img src={EyeActive} alt="showPassword" className="showPassword" />
+                        ) : (
+                            <img src={Eye} alt="showPassword" className="showPasswordActive" />
+                        )}
                     </button>
                 </div>
             </div>
 
-            {/* Remember Me & Forgot Password */}
-            {(showRememberMe || showForgotPassword) && (
+            {showRememberMe && (
                 <div className="formOptions">
-                    {showRememberMe && (
-                        <label className="rememberMeLabel">
-                            <input type="checkbox" checked={rememberMe} onChange={handleRememberMeChange} className="rememberCheckbox" disabled={isFormLoading} />
-                            <span className="rememberText">Remember me</span>
-                        </label>
-                    )}
-
-                    {showForgotPassword && (
-                        <button type="button" onClick={handleForgotPassword} className="forgotPasswordButton" disabled={isFormLoading}>
-                            Forgot Password
-                        </button>
-                    )}
+                    <label className="LoginrememberMeLabel">
+                        <input type="checkbox" checked={rememberMe} onChange={handleRememberMeChange} className="LoginrememberCheckbox" disabled={isFormLoading} />
+                        <span className="rememberText">Remember me</span>
+                    </label>
                 </div>
             )}
 
-            {error && <div className="errorMessage">{error}</div>}
+            {error && <div className="errorMessage">⚠️ {error}</div>}
 
-            <div>
-                <Link to="/auth/signup" className="switchLink">
-                    Sign up
-                </Link>
+            <button
+                type="submit"
+                disabled={isFormLoading}
+                className={`LoginsubmitButton ${isFormLoading ? 'loading' : ''}`}
+            >
+                {isFormLoading ? 'Loading...' : '로그인'}
+            </button>
+
+            <div className="divider-container">
+                <div className="divider"></div>
+                <span className="divider-text">or</span>
+                <div className="divider"></div>
             </div>
 
-            <button type="submit" disabled={isFormLoading} className={`submitButton loginButton ${isFormLoading ? 'loading' : ''}`}>
-                {isFormLoading ? 'loading...' : 'Login'}
-            </button>
+            <div className="social-buttons-container">
+                <button type="button" className="socialButton google-button">
+                    <img src={Google} alt="google" className="socialicon" />
+                    구글로 로그인
+                </button>
+                <button type="button" className="socialButton kakao-button">
+                    <img src={Kakao} alt="kakao" className="socialicon" />
+                    카카오로 로그인
+                </button>
+            </div>
         </form>
     );
 };

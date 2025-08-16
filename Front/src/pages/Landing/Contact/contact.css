@@ -58,7 +58,7 @@
     margin: 0 auto;
 }
 
-.formGroup {
+.ContactformGroup {
     display: flex;
     flex-direction: column;
     gap: 20px;
