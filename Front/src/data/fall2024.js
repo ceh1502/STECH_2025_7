@@ -16,7 +16,8 @@ export const TEAMS = [
 ];
 
 export const FALL_2024_DATA = {
-  season: "2024",
+  year: "2024",
+  league: "서울",
   event: "추계",
   divisions: [
     {
