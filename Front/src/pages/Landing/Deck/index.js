@@ -8,6 +8,7 @@ import StechDeck from '../../../assets/images/png/DeckPng/StechDeck.png';
 const Deck = () => {
     return (
         <div className="deckContainer">
+            <Header style={{ zIndex: '2' }} />
             <div className="deckheader">
                 <div className="decklogoandtitle">
                     <img src={TeamLogo} alt="Stech Logo" className="deckheaderlogo" />
@@ -22,6 +23,8 @@ const Deck = () => {
                     context
                 </p>
             </div>
+
+            <Footer/>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import * as  LandingPages from '../pages/Landing';
+import * as LandingPages from '../pages/Landing';
 import * as ServicePages from '../pages/Service';
 import * as AuthPages from '../pages/Auth';
 import * as CommonPages from '../pages/Common';
@@ -12,6 +12,7 @@ export default function AppRouter() {
             <Route path="/" element={<LandingPages.LandingLayout />} />
             <Route index element={<LandingPages.LandingPage />} />
             <Route path="Team" element={<LandingPages.Team />} />
+            <Route path="Deck" element={<LandingPages.Deck />} />
 
             {/* Service Pages */}
             <Route path="/service" element={<ServicePages.ServiceLayout />}>
