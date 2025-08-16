@@ -49,6 +49,12 @@ const ServiceSidebar = () => {
             hasSubmenu: true,
             submenu: [
                 {
+                    path: '/service/guest/stat/league',
+                    label: '리그 순위',
+                    icon: <BiSolidBarChartAlt2 />,
+                    description: 'League rankings'
+                },
+                {
                     path: '/service/guest/stat/team',
                     label: '리그 팀 순위',
                     icon: <BiSolidBarChartAlt2 />,
@@ -85,6 +91,12 @@ const ServiceSidebar = () => {
             description: 'Performance analytics',
             hasSubmenu: true,
             submenu: [
+                {
+                    path:'/service/stat/league',
+                    label: '리그 순위',
+                    icon: <BiSolidBarChartAlt2 />,
+                    description: 'League rankings'
+                },
                 {
                     path: '/service/stat/team',
                     label: '리그 팀 순위',

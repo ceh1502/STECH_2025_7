@@ -394,7 +394,7 @@ function EmptyState({ message, onReset }) {
 /* ----------------------------------
  * 메인 StatTeam
  * ---------------------------------- */
-export default function StatTeam({ data, teams = [] }) {
+export default function StatLeague({ data, teams = [] }) {
   const yearOptions = [
     { value: "2024", label: "2024" },
     { value: "2025", label: "2025" },

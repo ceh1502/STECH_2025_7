@@ -20,7 +20,8 @@ export default function AppRouter() {
                     <Route path="clip" element={<ServicePages.ClipPage />} />
                 </Route>
                 <Route path="stat" element={<ServicePages.StatLayout />} >
-                    <Route index element={<ServicePages.LeagueTeamPage />} />
+                    <Route index element={<ServicePages.LeaguePage />} />
+                    <Route path="league" element={<ServicePages.LeaguePage />} />
                     <Route path="team" element={<ServicePages.LeagueTeamPage />} />
                     <Route path="position" element={<ServicePages.LeaguePositionPage />} />
                 </Route>
@@ -37,7 +38,8 @@ export default function AppRouter() {
                     <Route path="game" element={<ServicePages.GuestGamePage />} />
                     <Route path="clip" element={<ServicePages.GuestClipPage />} />
                     <Route path="stat" element={<ServicePages.GuestStatLayout />} >
-                        <Route index element={<ServicePages.GuestLeagueTeamPage />} />
+                        <Route index element={<ServicePages.GuestLeaguePage />} />
+                        <Route path='league' element={<ServicePages.GuestLeaguePage />} />
                         <Route path="team" element={<ServicePages.GuestLeagueTeamPage />} />
                         <Route path="position" element={<ServicePages.GuestLeaguePositionPage />} />
                     </Route>
