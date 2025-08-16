@@ -1,5 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown , FaChevronUp } from 'react-icons/fa';
+import './StatPosition.css'; 
+import {  RxTriangleDown, RxTriangleUp } from "react-icons/rx";
+
+
 
 const StatPosition = ({ data }) => {
   const [selectedDivision, setSelectedDivision] = useState("1부");
@@ -320,24 +324,27 @@ const StatPosition = ({ data }) => {
       <div className="table-wrapper">
         <table className="stat-table">
           <thead className="table-head">
-            <tr className="table-row">
+            <tr className="table-row">             
               <th className="table-header-cell rank-column">순위</th>
-              <th className="table-header-cell player-column">선수명</th>
-              <th className="table-header-cell team-column">팀</th>
+              <th className="table-header-cell player-column">선수 이름</th>
+              <th className='table-header-cell team-logo'></th>
+              <th className="table-header-cell team-column">소속팀</th>
+              <div className='sort-container' style={{'--cols':currentColumns.length}}>
               {currentColumns.map((column) => (
                 <th
                   key={column.key}
                   className="table-header-cell stat-column sortable"
                   onClick={() => handleSort(column.key)}
                 >
-                  <div className="sort-container">
+                  <div className="sort"                   >
                     <span className="column-label">{column.label}</span>
                     <div className="sort-arrows">
-                      <FaChevronDown
+                      
+                      <RxTriangleDown
                         size={10} 
                         className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'asc' ? 'active' : ''}`}
                       />
-                      <FaChevronDown 
+                      <RxTriangleUp
                         size={10} 
                         className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'desc' ? 'active' : ''}`}
                       />
@@ -345,20 +352,29 @@ const StatPosition = ({ data }) => {
                   </div>
                 </th>
               ))}
+              </div>
             </tr>
           </thead>
           <tbody className="table-body">
             {sortedPlayers.map((data, index) => (
               <tr 
                 key={data.id || data.name}
-                className={`table-row ${index % 2 === 0 ? 'even' : 'odd'}`}
+                className={`table-rows`}
               >
-                <td className="table-cell">{data.rank || index + 1}</td>
+                <td className="table-cell">{data.rank || index + 1}위</td>
                 <td 
                   className="table-cell player-name clickable"                >
                   {data.name}
                 </td>
+                <td className='table-cell team-logo'>
+                  <img 
+                    src={data.teamLogo || '/default-team-logo.png'}
+                    alt={`${data.team} 로고`}
+                    className="team-logo-image"  
+                    />
+                    </td>
                 <td className="table-cell team-name">{data.team}</td>
+                <div className="sort-container" style={{'--cols':currentColumns.length}}>
                 {currentColumns.map((column) => (
                   <td key={column.key} className="table-cell">
                     {typeof data[column.key] === 'number' && data[column.key] % 1 !== 0
@@ -367,6 +383,7 @@ const StatPosition = ({ data }) => {
                     }
                   </td>
                 ))}
+                  </div>
               </tr>
             ))}
           </tbody>
