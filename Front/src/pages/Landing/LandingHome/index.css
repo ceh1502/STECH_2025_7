@@ -10,7 +10,10 @@ body {
     font-family: -apple-system, Poppins, inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #ffffff !important;
+}
+
+.h1-header2 {
+    color: #ffffff;
 }
 
 :lang(ko) {

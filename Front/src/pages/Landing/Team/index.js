@@ -9,7 +9,7 @@ import T4 from '../../../assets/images/png/TeamPng/T4.png';
 import T5 from '../../../assets/images/png/TeamPng/T5.png';
 import T6 from '../../../assets/images/png/TeamPng/T6.png';
 import T7 from '../../../assets/images/png/TeamPng/T7.png';
-import './index.css';
+import './team.css';
 
 const Team = () => {
     return (
