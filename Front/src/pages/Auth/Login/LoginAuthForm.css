@@ -1,12 +1,6 @@
-/* src/components/Auth/AuthForm.css */
-
 /* ===== 폼 공통 스타일 ===== */
 .loginForm,
 .signupForm {
-    max-width: 400px;
-    width: 100%;
-    dispaly: block;
-    width: 100%;
     margin: 0 auto;
 }
 
@@ -75,6 +69,35 @@
 .passwordToggleButton:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+/* ===== 비밀번호 강도 표시 ===== */
+.passwordStrength {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.passwordStrengthBar {
+    flex: 1;
+    height: 4px;
+    background-color: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.passwordStrengthFill {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.passwordStrengthText {
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 60px;
+    text-align: right;
 }
 
 /* ===== 비밀번호 일치 표시 ===== */
@@ -189,9 +212,6 @@
     accent-color: #4f46e5;
 }
 
-.checkmark {
-    /* 커스텀 체크박스 스타일을 원한다면 사용 */
-}
 
 .agreementText {
     font-size: 14px;
@@ -261,16 +281,17 @@
 /* ===== 제출 버튼 ===== */
 .submitButton {
     display: block;
-    width: 100%;
-    max-width: 100%;
-    padding: 14px 20px;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 14px 0px;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
     overflow: hidden;
 }
 
@@ -361,8 +382,7 @@
 /* ===== 다크모드 지원 ===== */
 @media (prefers-color-scheme: dark) {
     .formLabel {
-        color: #6b7280;
-        /* color: #d1d5db; */
+        color: #d1d5db;
     }
 
     .formInput {
@@ -398,250 +418,6 @@
     .viewTermsButton:hover {
         background-color: #6b7280;
         color: #f9fafb;
-    }
-}
-
-.passwordRules {
-    margin-top: 12px;
-    padding: 16px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-    transition: all 0.3s ease;
-}
-
-.passwordRules.allValid {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-
-.passwordRule {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    transition: all 0.2s ease;
-}
-
-.passwordRule:last-child {
-    margin-bottom: 0;
-}
-
-.passwordRule.valid {
-    color: #155724;
-}
-
-.passwordRule.invalid {
-    color: #721c24;
-}
-
-.ruleIcon {
-    font-size: 14px;
-    min-width: 16px;
-    text-align: center;
-}
-
-.ruleText {
-    font-weight: 500;
-}
-
-/* ===== 비밀번호 일치 표시 개선 ===== */
-.passwordMatch {
-    margin-top: 8px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.3s ease;
-}
-
-.passwordMatch.match {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.passwordMatch.mismatch {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* ===== 약관 동의 섹션 개선 ===== */
-.agreementSection {
-    margin: 24px 0;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
-}
-
-.agreementTitle {
-    font-size: 16px;
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 16px;
-    text-align: center;
-}
-
-.agreementItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.agreementItem:last-child {
-    border-bottom: none;
-}
-
-.allAgreement {
-    background-color: #ffffff;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    border: 2px solid #007bff;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
-}
-
-.agreementLabel {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    flex: 1;
-    user-select: none;
-}
-
-.agreementCheckbox {
-    width: 18px;
-    height: 18px;
-    accent-color: #007bff;
-    cursor: pointer;
-}
-
-.agreementCheckbox:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.checkmark {
-    /* 커스텀 체크박스 스타일을 원한다면 사용 */
-    position: relative;
-}
-
-.agreementText {
-    font-size: 14px;
-    color: #495057;
-    line-height: 1.4;
-}
-
-.required {
-    color: #dc3545;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.optional {
-    color: #6c757d;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.viewTermsButton {
-    background: none;
-    border: 1px solid #6c757d;
-    color: #6c757d;
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.viewTermsButton:hover:not(:disabled) {
-    background-color: #6c757d;
-    color: white;
-    transform: translateY(-1px);
-}
-
-.viewTermsButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.agreementDivider {
-    height: 1px;
-    background-color: #dee2e6;
-    margin: 12px 0;
-}
-
-/* ===== 제출 버튼 개선 ===== */
-.submitButton.signupButton {
-    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.submitButton.signupButton:hover:not(:disabled) {
-    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px #4f46e5;
-}
-
-.submitButton.signupButton:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.submitButton.signupButton.disabled,
-.submitButton.signupButton:disabled {
-    background: #6c757d;
-    color: #adb5bd;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.submitButton.loading {
-    cursor: not-allowed;
-    background: #6c757d;
-}
-
-.submitButton.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid transparent;
-    border-top-color: #ffffff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-@keyframes spin {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
     }
 }
 

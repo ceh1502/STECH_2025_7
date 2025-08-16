@@ -1,7 +1,7 @@
 // src/pages/Auth/Login/index.js
 import LoginForm from '../../../components/LoginForm';
-import './AuthForm.css';
-import './index.css';
+import './LoginAuthForm.css';
+import './login.css';
 
 const LoginPage = () => {
     return (
