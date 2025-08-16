@@ -7,9 +7,9 @@ import StechDeck from '../../../assets/images/png/DeckPng/StechDeck.png';
 
 const Deck = () => {
     return (
-        <div>
-            <div className="deckContainer">
-                <div className="deckheader">
+        <div className="deckContainer">
+            <div className="deckheader">
+                <div className="decklogoandtitle">
                     <img src={TeamLogo} alt="Stech Logo" className="deckheaderlogo" />
                     <h1 className="decktitle">IR Deck</h1>
                 </div>
