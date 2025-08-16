@@ -35,7 +35,7 @@ const Footer = () => {
             Deck
           </NavLink>
         </div>
-        <div className="contactButto2">
+        <div className="contactButton2">
           <NavLink to="/Contact" className={({ isActive }) => (isActive ? 'contactActive2' : 'contact2')}>
             Contact
           </NavLink>

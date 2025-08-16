@@ -5,13 +5,12 @@
 .signupForm {
     max-width: 400px;
     width: 100%;
-    dispaly: block;
+    display: block;
     width: 100%;
     margin: 0 auto;
 }
 
 .formGroup {
-    margin-bottom: 20px;
 }
 
 .formLabel {
@@ -272,16 +271,6 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-}
-
-.loginButton {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    background: linear-gradient(135deg, #f77705 0%, #f79c05 100%);
-    color: white;
-    display: flex;
-    justify-content: center;
 }
 
 .signupButton {
