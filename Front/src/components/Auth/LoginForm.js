@@ -1,9 +1,9 @@
 // src/components/Auth/LoginForm.js
 import React, { useState, useEffect } from 'react';
-import Kakao from '../assets/images/png/AuthPng/Kakao.png';
-import Google from '../assets/images/png/AuthPng/Google.png';
-import Eye from '../assets/images/png/AuthPng/Eye.png';
-import EyeActive from '../assets/images/png/AuthPng/EyeActive.png';
+import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
+import Google from '../../assets/images/png/AuthPng/Google.png';
+import Eye from '../../assets/images/png/AuthPng/Eye.png';
+import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
 
 const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true, redirectPath = '/service', className = '' }) => {
@@ -58,7 +58,7 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
 
         try {
             console.log('로그인 시도:', formData);
-            const success = true; // 실제 로그인 로직을 여기에 구현
+            const success = true;
             if (success) {
                 if (rememberMe) {
                     localStorage.setItem('rememberedEmail', formData.email);
@@ -86,6 +86,7 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
         <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
             <div className="tab-container">
                 <button type="button" className="loginTitle">로그인</button>
+                <a href="auth/signup" type="button" className="loginTitleTosignup">회원가입</a>
             </div>
 
             <div className="formGroup">
@@ -107,7 +108,7 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
                 <label className="LoginformLabel PW" htmlFor="password">
                     비밀번호
                     {showForgotPassword && (
-                        <a href="#" onClick={() => console.log('Forgot password clicked')} className="forgotPasswordLink">비밀번호 찾기</a>
+                        <a href="auth/find" onClick={() => console.log('Forgot password clicked')} className="forgotPasswordLink">비밀번호 찾기</a>
                     )}
                 </label>
                 <div className="passwordInputContainer">

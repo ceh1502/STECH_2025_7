@@ -1,8 +1,8 @@
 // src/components/Auth/SignupForm.js
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import TermsModal from './Auth/TermsModal';
+import TermsModal from './TermsModal';
 import { PiEye, PiEyeClosed } from 'react-icons/pi';
 
 const SignupForm = ({ onSuccess, showAgreements = true, autoLoginAfterSignup = true, redirectPath = '/service', className = '' }) => {

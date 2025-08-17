@@ -23,6 +23,7 @@
     background-color: #444444;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ffffff;
 }
 
 .tab-container {
@@ -40,6 +41,19 @@
     font-size: 20px;
     font-weight: 600;
     color: #f77705;
+}
+
+.loginTitleTosignup {
+    flex: 1;
+    padding: 5px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
 }
 
 .formGroup {
@@ -190,7 +204,6 @@
     font-size: 15px;
 }
 
-/* 소셜 로그인 버튼 */
 .social-buttons-container {
     width: 100%;
     display: flex;

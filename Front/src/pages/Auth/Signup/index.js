@@ -1,6 +1,6 @@
 // src/pages/Auth/Signup/index.js
 import { Link } from 'react-router-dom';
-import SignupForm from '../../../components/SignupForm';
+import SignupForm from '../../../components/Auth/SignupForm';
 import './SignupAuthForm.css';
 import './signup.css';
 
