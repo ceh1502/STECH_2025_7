@@ -1,7 +1,7 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useMemo} from "react";
 import {FaChevronDown} from "react-icons/fa";
 import "./StatTeam.css";
-import PlayerImg from "../../assets/images/png/Player";
+import NoGroupImg from "../../assets/images/png/NoGroup";
 
 const Dropdown = ({
   options = [],
@@ -437,79 +437,92 @@ function EmptyState({message, onReset}) {
 }
 
 export default function StatLeague({data, teams = []}) {
-  const yearOptions = [
-    {value: "2024", label: "2024"},
-    {value: "2025", label: "2025"},
-  ];
-  const leagueOptions = [
-    {value: "서울", label: "서울"},
-    {value: "경기강원", label: "경기강원"},
-    {value: "대구경북", label: "대구경북"},
-    {value: "부산경남", label: "부산경남"},
-    {value: "사회인", label: "사회인"},
-    {value: "타이거볼", label: "타이거볼"},
-    {value: "챌린지볼", label: "챌린지볼"},
-  ];
-  const divisionOptions = [
-    {value: "1부", label: "1부"},
-    {value: "2부", label: "2부"},
-  ];
+  
+   const yearOptions = useMemo(() => {
+    const years = Object.keys(data ?? {});
+    return years.map((y) => ({ value: y, label: y }));
+  }, [data]);
 
-  // 초기 placeholder
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedLeague, setSelectedLeague] = useState("");
+    const [selectedYear, setSelectedYear] = useState("");
+      const [selectedLeague, setSelectedLeague] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("1부");
 
-  // 리그별 부 유무
-  const leaguesWithDivisions = ["서울", "경기강원", "대구경북", "부산경남"];
-  const hasDivisions = selectedLeague
-    ? leaguesWithDivisions.includes(selectedLeague)
-    : false;
 
-  useEffect(() => {
-    if (!hasDivisions) {
-      if (selectedDivision !== "") setSelectedDivision("");
-    } else {
-      if (!["1부", "2부"].includes(selectedDivision))
-        setSelectedDivision("1부");
+
+  const leagueOptions = useMemo(() => {
+    if (!selectedYear || !data?.[selectedYear]) return [];
+    return Object.keys(data[selectedYear]).map((lg) => ({
+      value: lg,
+      label: lg,
+    }));
+  }, [data, selectedYear]);
+
+    const leagueNode = useMemo(() => {
+    if (!selectedYear || !selectedLeague) return null;
+    return data?.[selectedYear]?.[selectedLeague] ?? null;
+  }, [data, selectedYear, selectedLeague]);
+
+ const divisionList = useMemo(() => {
+    return Array.isArray(leagueNode?.divisions) ? leagueNode.divisions : [];
+  }, [leagueNode]);
+
+   const hasDivisions = useMemo(
+    () => divisionList.some((d) => d.name === "2부"),
+    [divisionList]
+  );
+
+ const divisionOptions = useMemo(
+    () => divisionList.map((d) => ({ value: d.name, label: d.name })),
+    [divisionList]
+  );
+
+    useEffect(() => {
+    // 연도 바뀌면 리그/부 초기화
+    setSelectedLeague("");
+    setSelectedDivision("1부");
+  }, [selectedYear]);
+
+   useEffect(() => {
+    // 리그가 바뀌면 부 초기화(데이터에 따라 보정)
+    if (!divisionList.length) {
+      setSelectedDivision("");
+      return;
     }
-  }, [hasDivisions, selectedDivision]);
+    if (hasDivisions) {
+      // 2부 체계가 있으면 1부 우선, 없으면 목록 첫 번째
+      const valid = divisionList.some((d) => d.name === selectedDivision);
+      if (!valid) {
+        const fallback =
+          divisionList.find((d) => d.name === "1부")?.name ||
+          divisionList[0].name;
+        setSelectedDivision(fallback);
+      }
+    } else {
+      // 2부가 없으면 값 비워서 드롭다운 숨김 상태와 일치시킴
+      setSelectedDivision("");
+    }
+  }, [selectedLeague, divisionList, hasDivisions, selectedDivision]);
 
-  /* ✅ 선택 조합에 맞는 데이터 탐색 (두 가지 구조 모두 지원)
-     1) 중첩형: data[year][league].divisions
-     2) 단일형: data.divisions (이미 해당 조합의 데이터만 들어온 경우)
-  */
-  const datasetRoot = data ?? {};
-  const byYear =
-    selectedYear && datasetRoot[selectedYear]
-      ? datasetRoot[selectedYear]
-      : datasetRoot;
-  const byYearLeague =
-    selectedLeague && byYear[selectedLeague] ? byYear[selectedLeague] : byYear;
+    const currentDivision = useMemo(() => {
+    if (!divisionList.length) return null;
+    if (!hasDivisions) return divisionList[0];
+    return (
+      divisionList.find((d) => d.name === selectedDivision) ||
+      divisionList.find((d) => d.name === "1부") ||
+      divisionList[0]
+    );
+  }, [divisionList, selectedDivision, hasDivisions]);
 
-  const divisions = Array.isArray(byYearLeague?.divisions)
-    ? byYearLeague.divisions
-    : Array.isArray(datasetRoot?.divisions)
-    ? datasetRoot.divisions
-    : [];
+  const hasGroups = currentDivision?.groups?.length > 0;
+  const hasMultipleGroups = currentDivision?.groups?.length > 1; 
 
-  const currentDivision = hasDivisions
-    ? divisions.find((div) => div.name === selectedDivision) ?? null
-    : divisions[0] ?? null;
-
-  const hasGroups =
-    currentDivision?.groups && currentDivision.groups.length > 0;
-  const hasMultipleGroups = hasGroups && currentDivision.groups.length > 1;
-
-  // 선택이 완료됐는지
   const selectionReady = Boolean(
     selectedYear && selectedLeague && (hasDivisions ? selectedDivision : true)
   );
 
-  // ▶ 빈 상태 판정(너무 빡세지 않게: 그룹만 있어도 OK)
-  const hasAnyContent = (div) => {
+   const hasAnyContent = (div) => {
     if (!div) return false;
-    const groupsOK = Array.isArray(div.groups) && div.groups.length > 0; // 그룹만 있어도 통과
+    const groupsOK = Array.isArray(div.groups) && div.groups.length > 0;
     const finalsOK = Array.isArray(div.final) && div.final.length > 0;
     const playoffsOK = Array.isArray(div.playoffs) && div.playoffs.length > 0;
     const promoOK = Array.isArray(div.promotion) && div.promotion.length > 0;
@@ -518,17 +531,15 @@ export default function StatLeague({data, teams = []}) {
   const noDataForSelection =
     selectionReady && (!currentDivision || !hasAnyContent(currentDivision));
 
-  // 데이터 자체가 전혀 없을 때
-  if (!data) {
+     if (!data) {
     return <div className="tournament-status">데이터가 없습니다</div>;
   }
-
-  const resetFilters = () => {
+   const resetFilters = () => {
     setSelectedYear("");
     setSelectedLeague("");
     setSelectedDivision("1부");
   };
-
+  
   return (
     <div className="statTeamContainer">
       <div className="tournament-header">
@@ -610,7 +621,7 @@ export default function StatLeague({data, teams = []}) {
                     ))}
                     <div className="group-section">
                       <img
-                        src={PlayerImg}
+                        src={NoGroupImg}
                         alt={"no-group-section"}
                         className="no-group-img"
                       />
