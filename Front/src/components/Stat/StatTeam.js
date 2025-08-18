@@ -256,7 +256,7 @@ export function GroupStandings({currentDivision, group, teams = []}) {
 /* ----------------------------------
  * 경기/섹션
  * ---------------------------------- */
-function MatchRow({currentDivision, group, index, match, teams = []}) {
+function MatchRow({currentDivision, group, index, match, teams = [],hasMultipleGroups}) {
   const homeTeam = teams.find((t) => t.name === match.home) || {
     name: match.home,
     logo: "",
@@ -278,7 +278,8 @@ function MatchRow({currentDivision, group, index, match, teams = []}) {
     >
       {group ? (
         <div className="match-round">
-          {group} {index + 1} 경기
+          {hasMultipleGroups? `${group} `: ''}
+          {index + 1} 경기
         </div>
       ) : (
         <div className="match-round">
@@ -317,7 +318,7 @@ function MatchRow({currentDivision, group, index, match, teams = []}) {
   );
 }
 
-function MatchList({currentDivision, group, matches = [], teams = []}) {
+function MatchList({currentDivision, group, matches = [], teams = [], hasMultipleGroups}) {
   return (
     <div className="match-section">
       <div className="match-list">
@@ -335,6 +336,7 @@ function MatchList({currentDivision, group, matches = [], teams = []}) {
             index={index}
             match={match}
             teams={teams}
+            hasMultipleGroups={hasMultipleGroups}
           />
         ))}
       </div>
@@ -387,12 +389,12 @@ function PromotionMatch({currentDivision, teams = []}) {
   );
 }
 
-function GroupMatches({currentDivision, group, teams = []}) {
+function GroupMatches({currentDivision, group, teams = [], hasMultipleGroups}) {
   return (
     <div className="matches-container">
       <div className="group-header">
         <div className="group-title">
-          {currentDivision.name} 리그 - {group.name}
+          {currentDivision.name} 리그 {hasMultipleGroups? (`- ${group.name}`): ''}
         </div>
       </div>
       <MatchList
@@ -400,6 +402,7 @@ function GroupMatches({currentDivision, group, teams = []}) {
         group={group.name}
         matches={group.matches}
         teams={teams}
+        hasMultipleGroups={hasMultipleGroups}
       />
     </div>
   );
@@ -691,6 +694,7 @@ export default function StatLeague({data, teams = []}) {
                         currentDivision={currentDivision}
                         group={group}
                         teams={teams}
+                        hasMultipleGroups={hasMultipleGroups}
                       />
                     </div>
                   </div>
