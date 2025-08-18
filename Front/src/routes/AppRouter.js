@@ -11,6 +11,9 @@ export default function AppRouter() {
             {/* Landing Pages */}
             <Route path="/" element={<LandingPages.LandingLayout />} />
             <Route index element={<LandingPages.LandingPage />} />
+            <Route path="Team" element={<LandingPages.Team />} />
+            <Route path="Deck" element={<LandingPages.Deck />} />
+            <Route path="Contact" element={<LandingPages.Contact />} />
 
             {/* Service Pages */}
             <Route path="/service" element={<ServicePages.ServiceLayout />}>
@@ -51,6 +54,7 @@ export default function AppRouter() {
                 <Route index element={<AuthPages.LoginPage />} />
                 <Route path="signup" element={<AuthPages.SignupPage />} />
                 <Route path="find" element={<AuthPages.FindPage />} />
+                <Route path="findcode" element={<AuthPages.FindCodePage />} />
                 <Route path="verify-email" element={<AuthPages.VerifyEmailPage />} />
             </Route>
             {/* 404 Not Found */}

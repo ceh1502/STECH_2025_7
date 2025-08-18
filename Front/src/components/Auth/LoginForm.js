@@ -1,0 +1,180 @@
+// src/components/Auth/LoginForm.js
+import React, { useState, useEffect } from 'react';
+import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
+import Google from '../../assets/images/png/AuthPng/Google.png';
+import Eye from '../../assets/images/png/AuthPng/Eye.png';
+import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
+
+
+const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true, redirectPath = '/service', className = '' }) => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [rememberMe, setRememberMe] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('rememberedEmail');
+        if (savedEmail) {
+            setFormData((prev) => ({ ...prev, email: savedEmail }));
+            setRememberMe(true);
+        }
+    }, []);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+        if (error) setError(null);
+    };
+
+    const handleRememberMeChange = (e) => {
+        setRememberMe(e.target.checked);
+    };
+
+    const validateForm = () => {
+        if (!formData.email || !formData.password) {
+            setError('아이디와 비밀번호 모두 입력해주세요.');
+            return false;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setError('유효한 이메일을 입력해주세요.');
+            return false;
+        }
+        return true;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+        setIsSubmitting(true);
+        setError(null);
+
+        try {
+            console.log('로그인 시도:', formData);
+            const success = true;
+            if (success) {
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', formData.email);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                }
+                console.log('Login Successful!');
+                if (onSuccess) {
+                    onSuccess();
+                }
+            } else {
+                setError('Login failed. Please check your credentials.');
+            }
+        } catch (err) {
+            console.error('Login Error:', err);
+            setError('An unexpected error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const isFormLoading = isSubmitting;
+
+    return (
+        <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
+            <div className="tab-container">
+                <button type="button" className="loginTitle">로그인</button>
+                <a href="auth/signup" type="button" className="loginTitleTosignup">회원가입</a>
+            </div>
+
+            <div className="formGroup">
+                <label className="LoginformLabel ID" htmlFor="email">아이디</label>
+                <input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="LoginformInput"
+                    placeholder=""
+                    required
+                    autoComplete="email"
+                    disabled={isFormLoading}
+                />
+            </div>
+
+            <div className="formGroup">
+                <label className="LoginformLabel PW" htmlFor="password">
+                    비밀번호
+                    {showForgotPassword && (
+                        <a href="auth/find" onClick={() => console.log('Forgot password clicked')} className="forgotPasswordLink">비밀번호 찾기</a>
+                    )}
+                </label>
+                <div className="passwordInputContainer">
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="LoginformInput"
+                        placeholder=""
+                        required
+                        autoComplete="current-password"
+                        disabled={isFormLoading}
+                    />
+                    <button
+                        type="button"
+                        className="LoginpasswordToggleButton"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={isFormLoading}
+                    >
+                        {showPassword ? (
+                            <img src={EyeActive} alt="showPassword" className="showPassword" />
+                        ) : (
+                            <img src={Eye} alt="showPassword" className="showPasswordActive" />
+                        )}
+                    </button>
+                </div>
+            </div>
+
+            {showRememberMe && (
+                <div className="formOptions">
+                    <label className="LoginrememberMeLabel">
+                        <input type="checkbox" checked={rememberMe} onChange={handleRememberMeChange} className="LoginrememberCheckbox" disabled={isFormLoading} />
+                        <span className="rememberText">Remember me</span>
+                    </label>
+                </div>
+            )}
+
+            {error && <div className="errorMessage">⚠️ {error}</div>}
+
+            <button
+                type="submit"
+                disabled={isFormLoading}
+                className={`LoginsubmitButton ${isFormLoading ? 'loading' : ''}`}
+            >
+                {isFormLoading ? 'Loading...' : '로그인'}
+            </button>
+
+            <div className="divider-container">
+                <div className="divider"></div>
+                <span className="divider-text">or</span>
+                <div className="divider"></div>
+            </div>
+
+            <div className="social-buttons-container">
+                <button type="button" className="socialButton google-button">
+                    <img src={Google} alt="google" className="socialicon" />
+                    구글로 로그인
+                </button>
+                <button type="button" className="socialButton kakao-button">
+                    <img src={Kakao} alt="kakao" className="socialicon" />
+                    카카오로 로그인
+                </button>
+            </div>
+        </form>
+    );
+};
+
+export default LoginForm;

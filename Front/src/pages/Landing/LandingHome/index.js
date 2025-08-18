@@ -25,6 +25,7 @@ import Detail from './images/detail.png';
 import Screen from './images/screen.png';
 import MobileScreen from './images/mobilescreen.png';
 import Gameimage from './images/Gameimage.png';
+
 const LandingPage = () => {
     usePageTitle('Stech');
     return (
@@ -36,7 +37,7 @@ const LandingPage = () => {
                     <div className="hero-content">
                         <div className="hero-text">
                             <div className="h1-header">데이터와 경기가</div>
-                            <div>하나가 되는 순간</div>
+                            <div className="h1-header2">하나가 되는 순간</div>
                         </div>
                         <p>
                             코치와 분석가들은 더 이상 수작업에 의존하지 않아도 됩니다.<br />
