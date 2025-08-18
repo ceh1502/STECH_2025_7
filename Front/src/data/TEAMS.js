@@ -1,0 +1,16 @@
+export const TEAMS = [
+  { name: "연세대학교 이글스", logo: "/assets/images/svg/teams/Yonsei Eagles.svg" },
+  { name: "서울대학교 그린테러스", logo: "/assets/images/svg/teams/SNU Green Terrors.svg" },
+  { name: "한양대학교 라이온스", logo: "/assets/images/svg/teams/Hanyang Lions.svg" },
+  { name: "국민대학교 레이저백스", logo: "/assets/images/svg/teams/Kookmin Razorbacks.svg" },
+  { name: "서울시립대학교 시티혹스", logo: "/assets/images/svg/teams/UOS City Hawks.svg" },
+  { name: "한국외국어대학교 블랙나이츠", logo: "/assets/images/svg/teams/HUFS Black Knights.svg" },
+  { name: "건국대학교 레이징불스", logo: "/assets/images/svg/teams/Konkuk Raging Bulls.svg" },
+  { name: "홍익대학교 카우보이스", logo: "/assets/images/svg/teams/Hongik Cowboys.svg" },
+  { name: "동국대학교 터스커스", logo: "/assets/images/svg/teams/Dongguk Tuskers.svg" },
+  { name: "고려대학교 타이거스", logo: "/assets/images/svg/teams/Korea University Tigers.svg" },
+  { name: "중앙대학교 블루드래곤스", logo: "/assets/images/svg/teams/ChungAng Blue Dragons.svg" },
+  { name: "숭실대학교 크루세이더스", logo: "/assets/images/svg/teams/Soongsil Crusaders.svg" },
+  { name: "서강대학교 알바트로스", logo: "/assets/images/svg/teams/Sogang Albatross.svg" },
+  { name: "경희대학교 커맨더스", logo: "/assets/images/svg/teams/Kyunghee Commanders.svg" },
+];

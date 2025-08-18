@@ -33,23 +33,24 @@
     background: rgba(79, 70, 229, 0.05);
 }
 
-.logo {
+.stech-logo-box {
     display: flex;
     align-items: center;
     justify-content: center;
     padding-bottom: 20px;
     cursor: pointer;
     width: 180px;
+    overflow:hidden;
 }
 
-.stechLogo {
-    width: auto;
+.stech-logo {
+    width: 100%;
     filter: brightness(1.1);
     transition: all 0.3s ease;
     flex-shrink: 0;
 }
 
-.stechLogo:hover {
+.stech-logo:hover {
     filter: brightness(1.3) drop-shadow(0 0 10px rgba(79, 70, 229, 0.3));
     transform: scale(1.05);
 }

@@ -46,7 +46,7 @@ const ServiceSidebar = () => {
       description: "Performance analytics",
     },
     {
-      path: "/service/guest/stat/laegue",
+      path: "/service/guest/stat/league",
       label: "스탯",
       icon: <BiSolidBarChartAlt2 />,
       description: "AI recommendations",
@@ -223,6 +223,9 @@ const ServiceSidebar = () => {
       const isExpanded = expandedMenus[item.path];
       const isActive = location.pathname === item.path || isSubmenuActive(item);
 
+
+
+
       return (
         <li key={item.path} className="navItem">
           {/* 상위 메뉴 */}
@@ -312,9 +315,9 @@ const ServiceSidebar = () => {
     <aside className="sidebar">
       {/* Sidebar Header */}
       <div className="sidebarHeader">
-        <div className="logo">
+        <div className="stech-logo-box">
           <img
-            className="stechLogo"
+            className="stech-logo"
             src={Logo}
             alt="STECH Logo"
             onClick={() => navigate("/service")}
@@ -350,7 +353,7 @@ const ServiceSidebar = () => {
       <nav className="sidebarNav">
         <div className="menuSection">
           <div className="sectionTitle">Main Menu</div>
-          {isAuthenticated ? (
+          {!isAuthenticated ? (
             <ul className="navMenu">
               {memberMenuItems.map((item) => renderMenuItem(item))}
             </ul>
