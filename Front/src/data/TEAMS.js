@@ -15,7 +15,7 @@ export const TEAMS = [
   { name: "경희대학교 커맨더스", logo: "/assets/images/svg/teams/Kyunghee.svg" },
   { name: "강원대학교 "},
   { name: "단국대학교"},
-    { name: "성균관대학교"},
+  { name: "성균관대학교"},
   { name: "용인대학교"},
   { name: "인하대학교"},
   { name: "한림대학교"},
@@ -47,5 +47,4 @@ export const TEAMS = [
   { name: "서울 디펜더스"},
   { name: "서울 바이킹스"},
   { name: "인천 라이노스"},
-  { name: ""},
 ];

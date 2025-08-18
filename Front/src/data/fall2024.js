@@ -351,7 +351,7 @@ export const FALL_2024_DATA = {
             { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
             { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
             { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
-              { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
             { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
             { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
             { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
