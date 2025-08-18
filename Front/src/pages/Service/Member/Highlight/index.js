@@ -1,8 +1,11 @@
+import HighlightModal from '../../../../components/HighlightModal';
+import { useNavigate }  from 'react-router-dom';
+
 const HighlightPage = () => {
+    const navigate = useNavigate();
     return (
         <div>
-            <h1>Highlight Page</h1>
-            <p>This is the Highlight page content.</p>
+            <HighlightModal onClose={() => navigate(-1)} />
         </div>
     );
 }

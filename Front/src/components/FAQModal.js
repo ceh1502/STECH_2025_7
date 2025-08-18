@@ -1,34 +1,28 @@
-import { createPortal } from 'react-dom';
-import { useEffect } from 'react';
+import {createPortal} from "react-dom";
+import {useEffect} from "react";
 import Logo from "../assets/images/logos/stech2.png";
 import {IoCloseCircleOutline} from "react-icons/io5";
+import './FAQModal.css';
 
 /** Customer Support 모달 */
-export default function SupportModal({ onClose }) {
-    // ESC 키로 닫기
-    useEffect(() => {
-        const handler = (e) => e.key === 'Escape' && onClose();
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, [onClose]);
+export default function FAQModal({onClose}) {
+  // ESC 키로 닫기
+  useEffect(() => {
+    const handler = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
 
-    /* ── 여기: open 같은 prop 검사는 없습니다! ── */
+  /* ── 여기: open 같은 prop 검사는 없습니다! ── */
 
   return createPortal(
     <div /* 검은 반투명 오버레이 */
       onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "rgba(0,0,0,0.5)",
-        zIndex: 9999,
-      }}
+      className='faq-modal-overlay'
     >
       <div /* 흰색 모달 박스 */
         onClick={(e) => e.stopPropagation()}
+        className='faq-modal-content'
         style={{
           width: "56.25rem",
           height: "31.25rem",
@@ -60,14 +54,11 @@ export default function SupportModal({ onClose }) {
           />
         </div>
         <div style={{paddingTop: '6rem'}}>
-          <p style={{color: '#fff', fontSize: '1.875rem', fontFamily:'Inter', lineHeight: 'normal',fontWeight:'600', marginBottom: 24, textAlign: "center"}}>
-            불편하시거나 문제가 있으시면 아래 연락처로 문의해주세요.
+          <p style={{color: '#fff', fontSize: '1.875rem', fontFamily:'Inter', fontWeight:'600', marginBottom: 24, textAlign: "center"}}>
+            저희는 여러분이 가장 찬란하게 빛나는 순간을
             <br /> 
-            최대한 빨리 답변해 드리겠습니다.
             <br/>
-            <br/>
-            이메일 : stechpro.ai@gmail.com
-            <br/>
+            담은 영상을 기다리고 있습니다.
           </p>
         </div>
       </div>
