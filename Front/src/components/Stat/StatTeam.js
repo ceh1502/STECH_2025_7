@@ -448,6 +448,11 @@ function EmptyState({message, onReset}) {
 }
 
 export default function StatLeague({data, teams = []}) {
+
+  const exceptionLeague = ['타이거볼', '챌린지볼'];
+const [isExcepted, setIsExcepted] = useState(false);
+
+
   const yearOptions = useMemo(
     () => Object.keys(data ?? {}).map((y) => ({value: y, label: y})),
     [data]
@@ -541,6 +546,11 @@ export default function StatLeague({data, teams = []}) {
     }
   }, [selectedLeague, divisionList, hasDivisions, selectedDivision]);
 
+
+  useEffect(() => {
+  setIsExcepted(exceptionLeague.includes(selectedLeague));
+}, [selectedLeague]);
+
   const currentDivision = useMemo(() => {
     if (!divisionList.length) return null;
     if (!hasDivisions) return divisionList[0];
@@ -579,6 +589,8 @@ export default function StatLeague({data, teams = []}) {
     setShowDivisionFilter(false);
   };
 
+
+  
   return (
     <div className="statTeamContainer">
       <div className="tournament-header">
@@ -632,7 +644,8 @@ export default function StatLeague({data, teams = []}) {
         <div className="division-content">
           {currentDivision.groups && currentDivision.groups.length > 0 && (
             <div className="tournament-section">
-              <div className="groups-container">
+              {!isExcepted? (
+                  <div className="groups-container">
                 {hasMultipleGroups ? (
                   currentDivision.groups.map((group) => (
                     <div key={group.name} className="group-section">
@@ -674,6 +687,12 @@ export default function StatLeague({data, teams = []}) {
                   </>
                 )}
               </div>
+              ): (
+                <div className='excepted-league-containers'>
+                  
+                </div>
+              )}
+            
 
               {currentDivision.final && currentDivision.final.length > 0 && (
                 <FinalMatch currentDivision={currentDivision} teams={teams} />

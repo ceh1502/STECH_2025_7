@@ -295,8 +295,113 @@ export const FALL_2024_DATA = {
   ],
 },
 '사회인':{
-  
-}
+  event:'추계',
+  divisions: [
+    {
+      name: "1부",
+      groups: [
+        {
+          name: "1조",
+          teams: [
+            "연세대학교 이글스",
+            "한양대학교 라이온스",
+            "한국외국어대학교 블랙나이츠",
+            "고려대학교 타이거스",
+          ],
+          matches: [
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
+              { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
+          ],
+        },
+      ],
+      final:[
+        { stage: "결승전", date: "", location: "", home: "서울대학교 그린테러스", away: "연세대학교 이글스", homeScore: 7, awayScore: 19, winner: "연세대학교 이글스" },
+      ],
+    },
+  ],
+},
+'타이거볼':{
+  event:'추계',
+  divisions: [
+    {
+      name: "1부",
+      groups: [
+        {
+          name: "1조",
+          teams: [
+            "연세대학교 이글스",
+            "한양대학교 라이온스",
+            "한국외국어대학교 블랙나이츠",
+            "고려대학교 타이거스",
+          ],
+          matches: [
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
+              { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
+          ],
+        },
+      ],
+      final:[
+        { stage: "결승전", date: "", location: "", home: "서울대학교 그린테러스", away: "연세대학교 이글스", homeScore: 7, awayScore: 19, winner: "연세대학교 이글스" },
+      ],
+    },
+  ],
+},
+'챌린저볼':{
+  event:'추계',
+  divisions: [
+    {
+      name: "1부",
+      groups: [
+        {
+          name: "1조",
+          teams: [
+            "연세대학교 이글스",
+            "한양대학교 라이온스",
+            "한국외국어대학교 블랙나이츠",
+            "고려대학교 타이거스",
+          ],
+          matches: [
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
+              { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "고려대학교 타이거스", homeScore: 36, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한국외국어대학교 블랙나이츠", homeScore: 41, awayScore: 0, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "연세대학교 이글스", away: "한양대학교 라이온스", homeScore: 14, awayScore: 12, winner: "연세대학교 이글스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "한국외국어대학교 블랙나이츠", homeScore: 27, awayScore: 6, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한양대학교 라이온스", away: "고려대학교 타이거스", homeScore: 13, awayScore: 9, winner: "한양대학교 라이온스" },
+            { stage: "조별", date: "", location: "", home: "한국외국어대학교 블랙나이츠", away: "고려대학교 타이거스", homeScore: 13, awayScore: 12, winner: "한국외국어대학교 블랙나이츠" },
+          ],
+        },
+      ],
+      final:[
+        { stage: "결승전", date: "", location: "", home: "서울대학교 그린테러스", away: "연세대학교 이글스", homeScore: 7, awayScore: 19, winner: "연세대학교 이글스" },
+      ],
+    },
+  ],
+},
 
 },
 '2025':{
@@ -307,5 +412,5 @@ export const FALL_2024_DATA = {
   '사회인':{},
   '타이거볼':{},
   '챌린지볼':{},
+},
 }
-};
