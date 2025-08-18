@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import React, {useState, useRef, useEffect} from "react";
+import {FaChevronDown} from "react-icons/fa";
 import "./StatTeam.css";
-
+import PlayerImg from "../../assets/images/png/Player";
 
 const Dropdown = ({
   options = [],
@@ -39,13 +39,18 @@ const Dropdown = ({
   return (
     <div className={`dropdown-container ${className}`} ref={dropdownRef}>
       <button
-        className={`dropdown-trigger ${isOpen ? "open" : ""} ${disabled ? "disabled" : ""}`}
+        className={`dropdown-trigger ${isOpen ? "open" : ""} ${
+          disabled ? "disabled" : ""
+        }`}
         onClick={handleToggle}
         disabled={disabled}
         type="button"
       >
         <span className="dropdown-text">{displayText}</span>
-        <FaChevronDown size={16} className={`dropdown-arrow ${isOpen ? "rotated" : ""}`} />
+        <FaChevronDown
+          size={16}
+          className={`dropdown-arrow ${isOpen ? "rotated" : ""}`}
+        />
       </button>
 
       {isOpen && (
@@ -54,7 +59,9 @@ const Dropdown = ({
             {options.map((option) => (
               <li key={option.value} className="dropdown-item">
                 <button
-                  className={`dropdown-option ${value === option.value ? "selected" : ""}`}
+                  className={`dropdown-option ${
+                    value === option.value ? "selected" : ""
+                  }`}
                   onClick={() => handleSelect(option)}
                   type="button"
                 >
@@ -68,7 +75,6 @@ const Dropdown = ({
     </div>
   );
 };
-
 
 function calculateGroupStandings(group) {
   const standings = {};
@@ -114,8 +120,8 @@ function calculateGroupStandings(group) {
 
   function getHeadToHeadRecord(teamA, teamB) {
     const h2h = {
-      [teamA]: { points: 0, pointsFor: 0, pointsAgainst: 0 },
-      [teamB]: { points: 0, pointsFor: 0, pointsAgainst: 0 },
+      [teamA]: {points: 0, pointsFor: 0, pointsAgainst: 0},
+      [teamB]: {points: 0, pointsFor: 0, pointsAgainst: 0},
     };
 
     group.matches.forEach((match) => {
@@ -130,7 +136,8 @@ function calculateGroupStandings(group) {
           h2h[match.away].pointsAgainst += match.homeScore;
 
           if (match.homeScore > match.awayScore) h2h[match.home].points += 3;
-          else if (match.homeScore < match.awayScore) h2h[match.away].points += 3;
+          else if (match.homeScore < match.awayScore)
+            h2h[match.away].points += 3;
           else {
             h2h[match.home].points += 1;
             h2h[match.away].points += 1;
@@ -168,8 +175,7 @@ function calculateGroupStandings(group) {
   return sortedStandings;
 }
 
-
-export function GroupStandings({ currentDivision, group, teams = [] }) {
+export function GroupStandings({currentDivision, group, teams = []}) {
   const standings = calculateGroupStandings(group);
 
   const getRankClass = (index) => {
@@ -206,13 +212,19 @@ export function GroupStandings({ currentDivision, group, teams = [] }) {
           return (
             <div
               key={team.name}
-              className={`standings-row ${currentDivision.name === "2부" ? "minor" : ""} ${getRankClass(index)}`}
+              className={`standings-row ${
+                currentDivision.name === "2부" ? "minor" : ""
+              } ${getRankClass(index)}`}
             >
               <div className="standings-cell rank-cell">{index + 1}</div>
               <div className="standings-cell logo-cell">
                 {teamInfo?.logo && (
                   <div className="team-logo">
-                    <img src={teamInfo.logo} alt={`${team.name} 로고`} className="team-logo-img" />
+                    <img
+                      src={teamInfo.logo}
+                      alt={`${team.name} 로고`}
+                      className="team-logo-img"
+                    />
                   </div>
                 )}
               </div>
@@ -222,7 +234,9 @@ export function GroupStandings({ currentDivision, group, teams = [] }) {
               <div className="standings-cell stat-cell">{team.losses}</div>
               <div className="standings-cell stat-cell">{team.winRate}%</div>
               <div className="standings-cell stat-cell">{team.pointsFor}</div>
-              <div className="standings-cell stat-cell">{team.pointsAgainst}</div>
+              <div className="standings-cell stat-cell">
+                {team.pointsAgainst}
+              </div>
             </div>
           );
         })}
@@ -234,17 +248,26 @@ export function GroupStandings({ currentDivision, group, teams = [] }) {
 /* ----------------------------------
  * 경기/섹션
  * ---------------------------------- */
-function MatchRow({ currentDivision, group, index, match, teams = [] }) {
-  const homeTeam = teams.find((t) => t.name === match.home) || { name: match.home, logo: "" };
-  const awayTeam = teams.find((t) => t.name === match.away) || { name: match.away, logo: "" };
+function MatchRow({currentDivision, group, index, match, teams = []}) {
+  const homeTeam = teams.find((t) => t.name === match.home) || {
+    name: match.home,
+    logo: "",
+  };
+  const awayTeam = teams.find((t) => t.name === match.away) || {
+    name: match.away,
+    logo: "",
+  };
 
   const getScore = () => {
-    if (match.homeScore == null || match.awayScore == null) return match.status || "-";
+    if (match.homeScore == null || match.awayScore == null)
+      return match.status || "-";
     return `${match.homeScore} : ${match.awayScore}`;
   };
 
   return (
-    <div className={`match-row ${currentDivision.name === "2부" ? "minor" : ""}`}>
+    <div
+      className={`match-row ${currentDivision.name === "2부" ? "minor" : ""}`}
+    >
       {group ? (
         <div className="match-round">
           {group} {index + 1} 경기
@@ -259,14 +282,22 @@ function MatchRow({ currentDivision, group, index, match, teams = [] }) {
         <div className="team-vs">
           <div className="home-team">
             <div className="team-logo">
-              <img src={homeTeam.logo} alt={`${homeTeam.name} 로고`} className="team-logo-img" />
+              <img
+                src={homeTeam.logo}
+                alt={`${homeTeam.name} 로고`}
+                className="team-logo-img"
+              />
             </div>
             <div className="team-name">{homeTeam.name}</div>
           </div>
           <div className="match-score">{getScore()}</div>
           <div className="away-team">
             <div className="team-logo">
-              <img src={awayTeam.logo} alt={`${awayTeam.name} 로고`} className="team-logo-img" />
+              <img
+                src={awayTeam.logo}
+                alt={`${awayTeam.name} 로고`}
+                className="team-logo-img"
+              />
             </div>
             <div className="team-name">{awayTeam.name}</div>
           </div>
@@ -278,7 +309,7 @@ function MatchRow({ currentDivision, group, index, match, teams = [] }) {
   );
 }
 
-function MatchList({ currentDivision, group, matches = [], teams = [] }) {
+function MatchList({currentDivision, group, matches = [], teams = []}) {
   return (
     <div className="match-section">
       <div className="match-list">
@@ -303,40 +334,52 @@ function MatchList({ currentDivision, group, matches = [], teams = [] }) {
   );
 }
 
-function FinalMatch({ currentDivision, teams = [] }) {
+function FinalMatch({currentDivision, teams = []}) {
   return (
     <div className="matches-container">
       <div className="final-header">
         <div className="final-title">결승전</div>
       </div>
-      <MatchList currentDivision={currentDivision} matches={currentDivision.final} teams={teams} />
+      <MatchList
+        currentDivision={currentDivision}
+        matches={currentDivision.final}
+        teams={teams}
+      />
     </div>
   );
 }
 
-function PlayoffsMatches({ currentDivision, teams = [] }) {
+function PlayoffsMatches({currentDivision, teams = []}) {
   return (
     <div className="matches-container">
       <div className="playoffs-header">
         <div className="playoffs-title">순위결정전</div>
       </div>
-      <MatchList currentDivision={currentDivision} matches={currentDivision.playoffs} teams={teams} />
+      <MatchList
+        currentDivision={currentDivision}
+        matches={currentDivision.playoffs}
+        teams={teams}
+      />
     </div>
   );
 }
 
-function PromotionMatch({ currentDivision, teams = [] }) {
+function PromotionMatch({currentDivision, teams = []}) {
   return (
     <div className="promotion-matches-container">
       <div className="promotion-header">
         <div className="promotion-title">승강전</div>
       </div>
-      <MatchList currentDivision={currentDivision} matches={currentDivision.promotion} teams={teams} />
+      <MatchList
+        currentDivision={currentDivision}
+        matches={currentDivision.promotion}
+        teams={teams}
+      />
     </div>
   );
 }
 
-function GroupMatches({ currentDivision, group, teams = [] }) {
+function GroupMatches({currentDivision, group, teams = []}) {
   return (
     <div className="matches-container">
       <div className="group-header">
@@ -357,7 +400,7 @@ function GroupMatches({ currentDivision, group, teams = [] }) {
 /* ----------------------------------
  * Empty(예외) 페이지
  * ---------------------------------- */
-function EmptyState({ message, onReset }) {
+function EmptyState({message, onReset}) {
   return (
     <div
       style={{
@@ -370,8 +413,10 @@ function EmptyState({ message, onReset }) {
         marginTop: 16,
       }}
     >
-      <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>데이터가 없습니다</div>
-      <div style={{ opacity: 0.8, marginBottom: 16 }}>{message}</div>
+      <div style={{fontSize: 18, fontWeight: 800, marginBottom: 8}}>
+        데이터가 없습니다
+      </div>
+      <div style={{opacity: 0.8, marginBottom: 16}}>{message}</div>
       <button
         type="button"
         onClick={onReset}
@@ -391,26 +436,23 @@ function EmptyState({ message, onReset }) {
   );
 }
 
-/* ----------------------------------
- * 메인 StatTeam
- * ---------------------------------- */
-export default function StatLeague({ data, teams = [] }) {
+export default function StatLeague({data, teams = []}) {
   const yearOptions = [
-    { value: "2024", label: "2024" },
-    { value: "2025", label: "2025" },
+    {value: "2024", label: "2024"},
+    {value: "2025", label: "2025"},
   ];
   const leagueOptions = [
-    { value: "서울", label: "서울" },
-    { value: "경기강원", label: "경기강원" },
-    { value: "대구경북", label: "대구경북" },
-    { value: "부산경남", label: "부산경남" },
-    { value: "사회인", label: "사회인" },
-    { value: "타이거볼", label: "타이거볼" },
-    { value: "챌린지볼", label: "챌린지볼" },
+    {value: "서울", label: "서울"},
+    {value: "경기강원", label: "경기강원"},
+    {value: "대구경북", label: "대구경북"},
+    {value: "부산경남", label: "부산경남"},
+    {value: "사회인", label: "사회인"},
+    {value: "타이거볼", label: "타이거볼"},
+    {value: "챌린지볼", label: "챌린지볼"},
   ];
   const divisionOptions = [
-    { value: "1부", label: "1부" },
-    { value: "2부", label: "2부" },
+    {value: "1부", label: "1부"},
+    {value: "2부", label: "2부"},
   ];
 
   // 초기 placeholder
@@ -420,13 +462,16 @@ export default function StatLeague({ data, teams = [] }) {
 
   // 리그별 부 유무
   const leaguesWithDivisions = ["서울", "경기강원", "대구경북", "부산경남"];
-  const hasDivisions = selectedLeague ? leaguesWithDivisions.includes(selectedLeague) : false;
+  const hasDivisions = selectedLeague
+    ? leaguesWithDivisions.includes(selectedLeague)
+    : false;
 
   useEffect(() => {
     if (!hasDivisions) {
       if (selectedDivision !== "") setSelectedDivision("");
     } else {
-      if (!["1부", "2부"].includes(selectedDivision)) setSelectedDivision("1부");
+      if (!["1부", "2부"].includes(selectedDivision))
+        setSelectedDivision("1부");
     }
   }, [hasDivisions, selectedDivision]);
 
@@ -435,23 +480,31 @@ export default function StatLeague({ data, teams = [] }) {
      2) 단일형: data.divisions (이미 해당 조합의 데이터만 들어온 경우)
   */
   const datasetRoot = data ?? {};
-  const byYear = selectedYear && datasetRoot[selectedYear] ? datasetRoot[selectedYear] : datasetRoot;
+  const byYear =
+    selectedYear && datasetRoot[selectedYear]
+      ? datasetRoot[selectedYear]
+      : datasetRoot;
   const byYearLeague =
     selectedLeague && byYear[selectedLeague] ? byYear[selectedLeague] : byYear;
 
-  const divisions =
-    Array.isArray(byYearLeague?.divisions)
-      ? byYearLeague.divisions
-      : Array.isArray(datasetRoot?.divisions)
-      ? datasetRoot.divisions
-      : [];
+  const divisions = Array.isArray(byYearLeague?.divisions)
+    ? byYearLeague.divisions
+    : Array.isArray(datasetRoot?.divisions)
+    ? datasetRoot.divisions
+    : [];
 
   const currentDivision = hasDivisions
     ? divisions.find((div) => div.name === selectedDivision) ?? null
     : divisions[0] ?? null;
 
+  const hasGroups =
+    currentDivision?.groups && currentDivision.groups.length > 0;
+  const hasMultipleGroups = hasGroups && currentDivision.groups.length > 1;
+
   // 선택이 완료됐는지
-  const selectionReady = Boolean(selectedYear && selectedLeague && (hasDivisions ? selectedDivision : true));
+  const selectionReady = Boolean(
+    selectedYear && selectedLeague && (hasDivisions ? selectedDivision : true)
+  );
 
   // ▶ 빈 상태 판정(너무 빡세지 않게: 그룹만 있어도 OK)
   const hasAnyContent = (div) => {
@@ -462,7 +515,8 @@ export default function StatLeague({ data, teams = [] }) {
     const promoOK = Array.isArray(div.promotion) && div.promotion.length > 0;
     return groupsOK || finalsOK || playoffsOK || promoOK;
   };
-  const noDataForSelection = selectionReady && (!currentDivision || !hasAnyContent(currentDivision));
+  const noDataForSelection =
+    selectionReady && (!currentDivision || !hasAnyContent(currentDivision));
 
   // 데이터 자체가 전혀 없을 때
   if (!data) {
@@ -523,30 +577,68 @@ export default function StatLeague({ data, teams = [] }) {
           {currentDivision.groups && currentDivision.groups.length > 0 && (
             <div className="tournament-section">
               <div className="groups-container">
-                {currentDivision.groups.map((group) => (
-                  <div key={group.name} className="group-section">
-                    <div className="group-header">
-                      {currentDivision.name} {group.name} 순위
+                {hasMultipleGroups ? (
+                  currentDivision.groups.map((group) => (
+                    <div key={group.name} className="group-section">
+                      <div className="group-header">
+                        {currentDivision.name} {group.name} 순위
+                      </div>
+                      <div className="standings-section">
+                        <GroupStandings
+                          currentDivision={currentDivision}
+                          group={group}
+                          teams={teams}
+                        />
+                      </div>
                     </div>
-                    <div className="standings-section">
-                      <GroupStandings currentDivision={currentDivision} group={group} teams={teams} />
+                  ))
+                ) : (
+                  <>
+                    {currentDivision.groups.map((group) => (
+                      <div key={group.name} className="group-section">
+                        <div className="group-header">
+                          {currentDivision.name} 순위
+                        </div>
+                        <div className="standings-section">
+                          <GroupStandings
+                            currentDivision={currentDivision}
+                            group={group}
+                            teams={teams}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                    <div className="group-section">
+                      <img
+                        src={PlayerImg}
+                        alt={"no-group-section"}
+                        className="no-group-img"
+                      />
                     </div>
-                  </div>
-                ))}
+                  </>
+                )}
               </div>
 
               {currentDivision.final && currentDivision.final.length > 0 && (
                 <FinalMatch currentDivision={currentDivision} teams={teams} />
               )}
-              {currentDivision.playoffs && currentDivision.playoffs.length > 0 && (
-                <PlayoffsMatches currentDivision={currentDivision} teams={teams} />
-              )}
+              {currentDivision.playoffs &&
+                currentDivision.playoffs.length > 0 && (
+                  <PlayoffsMatches
+                    currentDivision={currentDivision}
+                    teams={teams}
+                  />
+                )}
 
               <div className="group-container">
                 {currentDivision.groups.map((group) => (
                   <div key={group.name} className="">
                     <div className="matches-section">
-                      <GroupMatches currentDivision={currentDivision} group={group} teams={teams} />
+                      <GroupMatches
+                        currentDivision={currentDivision}
+                        group={group}
+                        teams={teams}
+                      />
                     </div>
                   </div>
                 ))}
@@ -554,9 +646,10 @@ export default function StatLeague({ data, teams = [] }) {
             </div>
           )}
 
-          {currentDivision.promotion && currentDivision.promotion.length > 0 && (
-            <PromotionMatch currentDivision={currentDivision} teams={teams} />
-          )}
+          {currentDivision.promotion &&
+            currentDivision.promotion.length > 0 && (
+              <PromotionMatch currentDivision={currentDivision} teams={teams} />
+            )}
         </div>
       )}
     </div>
