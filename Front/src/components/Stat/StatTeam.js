@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect, useMemo} from "react";
 import {FaChevronDown} from "react-icons/fa";
 import "./StatTeam.css";
 import NoGroupImg from "../../assets/images/png/NoGroup.png";
+import Trophy from '../../assets/images/png/trophy.png'
 
 const Dropdown = ({
   options = [],
@@ -256,7 +257,14 @@ export function GroupStandings({currentDivision, group, teams = []}) {
 /* ----------------------------------
  * 경기/섹션
  * ---------------------------------- */
-function MatchRow({currentDivision, group, index, match, teams = [],hasMultipleGroups}) {
+function MatchRow({
+  currentDivision,
+  group,
+  index,
+  match,
+  teams = [],
+  hasMultipleGroups,
+}) {
   const homeTeam = teams.find((t) => t.name === match.home) || {
     name: match.home,
     logo: "",
@@ -278,7 +286,7 @@ function MatchRow({currentDivision, group, index, match, teams = [],hasMultipleG
     >
       {group ? (
         <div className="match-round">
-          {hasMultipleGroups? `${group} `: ''}
+          {hasMultipleGroups ? `${group} ` : ""}
           {index + 1} 경기
         </div>
       ) : (
@@ -318,7 +326,13 @@ function MatchRow({currentDivision, group, index, match, teams = [],hasMultipleG
   );
 }
 
-function MatchList({currentDivision, group, matches = [], teams = [], hasMultipleGroups}) {
+function MatchList({
+  currentDivision,
+  group,
+  matches = [],
+  teams = [],
+  hasMultipleGroups,
+}) {
   return (
     <div className="match-section">
       <div className="match-list">
@@ -359,6 +373,35 @@ function FinalMatch({currentDivision, teams = []}) {
   );
 }
 
+function SemiFinalMatches({currentDivision, teams = []}) {
+  return (
+    <div className="matches-container">
+      <div className="final-header">
+        <div className="final-title">4강전</div>
+      </div>
+      <MatchList
+        currentDivision={currentDivision}
+        matches={currentDivision.semiFinals}
+        teams={teams}
+      />
+    </div>
+  );
+}
+
+function QuarterFinalMatches({currentDivision, teams = []}) {
+  return (
+    <div className="matches-container">
+      <div className="final-header">
+        <div className="final-title">8강전</div>
+      </div>
+      <MatchList
+        currentDivision={currentDivision}
+        matches={currentDivision.quarterFinals}
+        teams={teams}
+      />
+    </div>
+  );
+}
 function PlayoffsMatches({currentDivision, teams = []}) {
   return (
     <div className="matches-container">
@@ -394,7 +437,8 @@ function GroupMatches({currentDivision, group, teams = [], hasMultipleGroups}) {
     <div className="matches-container">
       <div className="group-header">
         <div className="group-title">
-          {currentDivision.name} 리그 {hasMultipleGroups? (`- ${group.name}`): ''}
+          {currentDivision.name} 리그{" "}
+          {hasMultipleGroups ? `- ${group.name}` : ""}
         </div>
       </div>
       <MatchList
@@ -404,6 +448,112 @@ function GroupMatches({currentDivision, group, teams = [], hasMultipleGroups}) {
         teams={teams}
         hasMultipleGroups={hasMultipleGroups}
       />
+    </div>
+  );
+}
+
+const KnockoutCard = ({match, teams = [], index = 0, className=''}) => {
+  if (!match) return null;
+  const home = teams.find((t) => t.name === match.home) || {
+    name: match.home,
+    logo: "",
+  };
+  const away = teams.find((t) => t.name == match.away) || {
+    name: match.away,
+    logo: "",
+  };
+
+  return (
+    <div className={`knockout-team-container ${className}`}>
+      <div className="knockout-team-header">
+        {match.stage} {!index == 0 && `${index}경기`} {match.date}
+      </div>
+      <div className="knockout-team">
+        <div className="knockout-team-name-section">
+          {home.logo && (
+            <div className="team-logo">
+              <img src={home.logo} alt="로고" className="team-logo-img" />
+            </div>
+          )}
+          <div className="team-name">{home.name}</div>
+        </div>
+        <div className="knockout-team-score">{match.homeScore}</div>
+      </div>
+      <div className="knockout-team">
+        <div className="knockout-team-name-section">
+          {away?.logo && (
+            <div className="team-logo">
+              <img src={away.logo} alt="로고" className="team-logo-img" />
+            </div>
+          )}
+          <div className="team-name">{away.name}</div>
+        </div>
+        <div className="knockout-team-score">{match.awayScore}</div>
+      </div>
+    </div>
+  );
+};
+function KnockoutBracket({currentDivision, teams = []}) {
+  const qf = currentDivision?.quarterFinals || [];
+  const sf = currentDivision?.semiFinals || [];
+  const fin = (currentDivision?.final || [])[0];
+  const plfs = (currentDivision?.playoffs || [])[0];
+
+  return (
+    <div className="bracket-container">
+      <div className="QF-container">
+        <KnockoutCard match={qf[0]} teams={teams} index={1} />
+        <div className="line">
+          <div className="padding-section"></div>
+          <div className="right-section">
+            <div className="up-section"></div>
+            <div className="down-section"></div>
+          </div>
+        </div>
+        <KnockoutCard match={qf[1]} teams={teams} index={2} />
+      </div>
+      <div className="SF-container">
+        <KnockoutCard match={sf[0]} teams={teams} index={1}/>
+      </div>
+      <div className="line-container">
+        <div className="up-section"></div>
+        <div className="down-section"></div>
+      </div>
+      <div className="F-container">
+        <div className='trophy-img-box'>
+          <img
+          src={Trophy}
+          alt='trophy Img'
+          className='trophyImg'
+          />
+        </div>
+
+                <div className='final-row'>
+
+                        <KnockoutCard match={fin} teams={teams}  />
+
+        <KnockoutCard match={plfs} teams={teams} className='plfs'/>
+      </div>
+              </div>
+
+      <div className="line-container">
+        <div className="up-section"></div>
+        <div className="down-section"></div>
+      </div>
+      <div className="SF-container">
+        <KnockoutCard match={sf[1]} teams={teams} index={2} />
+      </div>
+      <div className="QF-container">
+        <KnockoutCard match={qf[2]} teams={teams} index={3} />
+        <div className="line">
+          <div className="left-section">
+            <div className="up-section"></div>
+            <div className="down-section"></div>
+          </div>
+          <div className="padding-section"></div>
+        </div>
+        <KnockoutCard match={qf[3]} teams={teams} index={4} />
+      </div>
     </div>
   );
 }
@@ -448,10 +598,8 @@ function EmptyState({message, onReset}) {
 }
 
 export default function StatLeague({data, teams = []}) {
-
-  const exceptionLeague = ['타이거볼', '챌린지볼'];
-const [isExcepted, setIsExcepted] = useState(false);
-
+  const exceptionLeague = ["타이거볼", "챌린지볼"];
+  const [isExcepted, setIsExcepted] = useState(false);
 
   const yearOptions = useMemo(
     () => Object.keys(data ?? {}).map((y) => ({value: y, label: y})),
@@ -516,6 +664,8 @@ const [isExcepted, setIsExcepted] = useState(false);
     return Array.isArray(leagueNode?.divisions) ? leagueNode.divisions : [];
   }, [leagueNode]);
 
+  const bracket = leagueNode?.bracket;
+
   const hasDivisions = useMemo(
     () => divisionList.length > 1, // 1부/2부 등 2개 이상이면 부 개념 있음
     [divisionList]
@@ -525,8 +675,6 @@ const [isExcepted, setIsExcepted] = useState(false);
     () => divisionList.map((d) => ({value: d.name, label: d.name})),
     [divisionList]
   );
-
- 
 
   useEffect(() => {
     if (!divisionList.length) {
@@ -546,10 +694,9 @@ const [isExcepted, setIsExcepted] = useState(false);
     }
   }, [selectedLeague, divisionList, hasDivisions, selectedDivision]);
 
-
   useEffect(() => {
-  setIsExcepted(exceptionLeague.includes(selectedLeague));
-}, [selectedLeague]);
+    setIsExcepted(exceptionLeague.includes(selectedLeague));
+  }, [selectedLeague]);
 
   const currentDivision = useMemo(() => {
     if (!divisionList.length) return null;
@@ -589,8 +736,6 @@ const [isExcepted, setIsExcepted] = useState(false);
     setShowDivisionFilter(false);
   };
 
-
-  
   return (
     <div className="statTeamContainer">
       <div className="tournament-header">
@@ -642,10 +787,18 @@ const [isExcepted, setIsExcepted] = useState(false);
       {/* 정상 렌더 */}
       {!noDataForSelection && currentDivision && (
         <div className="division-content">
-          {currentDivision.groups && currentDivision.groups.length > 0 && (
-            <div className="tournament-section">
-              {!isExcepted? (
-                  <div className="groups-container">
+          <div className="tournament-section">
+            {isExcepted && (
+              <div className="excepted-league-containers">
+                <KnockoutBracket
+                  currentDivision={currentDivision}
+                  teams={teams}
+                />
+              </div>
+            )}
+
+            {!isExcepted && currentDivision?.groups?.length > 0 && (
+              <div className="groups-container">
                 {hasMultipleGroups ? (
                   currentDivision.groups.map((group) => (
                     <div key={group.name} className="group-section">
@@ -687,41 +840,45 @@ const [isExcepted, setIsExcepted] = useState(false);
                   </>
                 )}
               </div>
-              ): (
-                <div className='excepted-league-containers'>
-                  
-                </div>
-              )}
-            
+            )}
+          </div>
 
-              {currentDivision.final && currentDivision.final.length > 0 && (
-                <FinalMatch currentDivision={currentDivision} teams={teams} />
-              )}
-              {currentDivision.playoffs &&
-                currentDivision.playoffs.length > 0 && (
-                  <PlayoffsMatches
-                    currentDivision={currentDivision}
-                    teams={teams}
-                  />
-                )}
-
-              <div className="group-container">
-                {currentDivision.groups.map((group) => (
-                  <div key={group.name} className="">
-                    <div className="matches-section">
-                      <GroupMatches
-                        currentDivision={currentDivision}
-                        group={group}
-                        teams={teams}
-                        hasMultipleGroups={hasMultipleGroups}
-                      />
-                    </div>
+          {currentDivision.final && currentDivision.final.length > 0 && (
+            <FinalMatch currentDivision={currentDivision} teams={teams} />
+          )}
+          {currentDivision.playoffs && currentDivision.playoffs.length > 0 && (
+            <PlayoffsMatches currentDivision={currentDivision} teams={teams} />
+          )}
+          {currentDivision.semiFinals &&
+            currentDivision.semiFinals.length > 0 && (
+              <SemiFinalMatches
+                currentDivision={currentDivision}
+                teams={teams}
+              />
+            )}
+          {currentDivision.quarterFinals &&
+            currentDivision.quarterFinals.length > 0 && (
+              <QuarterFinalMatches
+                currentDivision={currentDivision}
+                teams={teams}
+              />
+            )}
+          {currentDivision.groups && currentDivision.groups.length > 0 && (
+            <div className="group-container">
+              {currentDivision.groups.map((group) => (
+                <div key={group.name} className="">
+                  <div className="matches-section">
+                    <GroupMatches
+                      currentDivision={currentDivision}
+                      group={group}
+                      teams={teams}
+                      hasMultipleGroups={hasMultipleGroups}
+                    />
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           )}
-
           {currentDivision.promotion &&
             currentDivision.promotion.length > 0 && (
               <PromotionMatch currentDivision={currentDivision} teams={teams} />
