@@ -5,7 +5,7 @@ import {  RxTriangleDown, RxTriangleUp } from "react-icons/rx";
 
 
 
-const StatPosition = ({ data }) => {
+const StatPosition = ({ data, teams=[] }) => {
   const [selectedDivision, setSelectedDivision] = useState("1부");
   const [selectedPosition, setSelectedPosition] = useState('QB');
   const [selectedStatType, setSelectedStatType] = useState('pass');
@@ -356,7 +356,9 @@ const StatPosition = ({ data }) => {
             </tr>
           </thead>
           <tbody className="table-body">
-            {sortedPlayers.map((data, index) => (
+            {sortedPlayers.map((data, index) => {
+              const teamInfo = teams.find((t) => t.name === data.team);
+            return(
               <tr 
                 key={data.id || data.name}
                 className={`table-rows`}
@@ -366,13 +368,17 @@ const StatPosition = ({ data }) => {
                   className="table-cell player-name clickable"                >
                   {data.name}
                 </td>
-                <td className='table-cell team-logo'>
-                  <img 
-                    src={data.teamLogo || '/default-team-logo.png'}
-                    alt={`${data.team} 로고`}
-                    className="team-logo-image"  
-                    />
-                    </td>
+              <td className="table-cell team-logo-cell">
+        {teamInfo?.logo && (
+          <div className="team-logo">
+            <img 
+              src={teamInfo.logo} 
+              alt={`${data.team} 로고`} 
+              className="team-logo-img" 
+            />
+          </div>
+        )}
+      </td>
                 <td className="table-cell team-name">{data.team}</td>
                 <div className="sort-container" style={{'--cols':currentColumns.length}}>
                 {currentColumns.map((column) => (
@@ -385,7 +391,7 @@ const StatPosition = ({ data }) => {
                 ))}
                   </div>
               </tr>
-            ))}
+            )})}
           </tbody>
         </table>
       </div>
