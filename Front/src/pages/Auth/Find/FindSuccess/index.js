@@ -1,10 +1,10 @@
 import FindSuccess from '../../../../components/Auth/FindSuccess';
-import './FindSuccessAuthForm.css';
-import './findsuccess.css';
+import '../FindAuthForm.css';
+import '../find.css';
 
 const FindSuccessPage = () => {
     return (
-        <div className="findsuccessPage">
+        <div className="findPage">
             <FindSuccess />
         </div>
     );

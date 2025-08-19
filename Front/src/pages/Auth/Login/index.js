@@ -1,4 +1,3 @@
-// src/pages/Auth/Login/index.js
 import LoginForm from '../../../components/Auth/LoginForm';
 import './LoginAuthForm.css';
 import './login.css';

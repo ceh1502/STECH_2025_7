@@ -1,10 +1,10 @@
 import ChangePassword from '../../../../components/Auth/ChangePassword';
-import './ChangeAuthForm.css';
-import './changepassword.css';
+import '../FindAuthForm.css';
+import '../find.css';
 
 const ChangePasswordPage = () => {
     return (
-        <div className="changepasswordpage">
+        <div className="findPage">
             <ChangePassword />
         </div>
     );

@@ -45,12 +45,12 @@ const PasswordFindCode = () => {
     };
 
     return (
-        <div className="findcode-page-container">
-            <div className="findcode-page-card">
-                <h2 className="findcode-title">연락처의 문자를 확인해보세요</h2>
-                <p className="findcode-description">연락처에서 받은 인증번호를 입력해주세요</p>
+        <div className="find-page-container">
+            <div className="find-page-card">
+                <h2 className="find-title">연락처의 문자를 확인해보세요</h2>
+                <p className="find-description">연락처에서 받은 인증번호를 입력해주세요</p>
 
-                <div className="findcode-input-group">
+                <div className="find-input-group">
                     <label htmlFor="code">인증번호</label>
                     <input
                         type="text"
@@ -59,12 +59,12 @@ const PasswordFindCode = () => {
                         onChange={handleChange}
                         maxLength="6"
                     />
-                    <a href="#" className="findcode-link">다시 보내기</a>
+                    <a href="#" className="resend-link">다시 보내기</a>
                     {errors.code && <p className="errorMessage">⚠️ {errors.code}</p>}
                 </div>
 
                 <button
-                    className="findcode-code-button"
+                    className="find-code-button"
                     onClick={handleVerification}
                 >
                     인증 확인 →

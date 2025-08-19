@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Eye from '../../assets/images/png/AuthPng/Eye.png';
+import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
 const ChangePassword = () => {
     const navigate = useNavigate();
@@ -9,6 +11,8 @@ const ChangePassword = () => {
         passwordConfirm: '',
     });
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
@@ -61,25 +65,49 @@ const ChangePassword = () => {
                 <div className="find-input-group">
                     <label htmlFor="password">비밀번호</label>
                     <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         id="password"
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="최소 8자"
                     />
                     {errors.password && <p className="errorMessage">⚠️ {errors.password}</p>}
+
+                    <button
+                        type="button"
+                        className="password-toggle-button"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? (
+                            <img src={EyeActive} alt="showPassword" className="showPassword" />
+                        ) : (
+                            <img src={Eye} alt="showPassword" className="showPasswordActive" />
+                        )}
+                    </button> 
                 </div>
 
                 <div className="find-input-group">
                     <label htmlFor="passwordConfirm">비밀번호 확인</label>
                     <input
-                        type="password"
+                        type={showPasswordConfirm ? "text" : "password"}
                         id="passwordConfirm"
                         value={formData.passwordConfirm}
                         onChange={handleChange}
                         placeholder="비밀번호 다시 입력"
                     />
                     {errors.passwordConfirm && <p className="errorMessage">⚠️ {errors.passwordConfirm}</p>}
+
+                    <button
+                        type="button"
+                        className="password-toggle-button"
+                        onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                    >
+                        {showPasswordConfirm ? (
+                            <img src={EyeActive} alt="showPassword" className="showPassword" />
+                        ) : (
+                            <img src={Eye} alt="showPassword" className="showPasswordActive" />
+                        )}
+                    </button>
                 </div>
 
                 <button
@@ -88,17 +116,6 @@ const ChangePassword = () => {
                 >
                     비밀번호 변경 →
                 </button>
-
-                <div className="find-links-group">
-                    <p>이미 계정이 있습니다. <a href="#" className="find-link">로그인하기</a></p>
-                    <p>계정이 없다면? <a href="#" className="find-link">회원가입</a></p>
-                </div>
-
-                <hr className="find-divider" />
-
-                <div className="find-help-section">
-                    <p>문의사항이 있다면, <a href="#" className="link">고객 서비스</a>에 문의하여<br />도움을 받으세요.</p>
-                </div>
             </div>
         </div>
     );

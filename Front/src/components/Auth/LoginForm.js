@@ -1,4 +1,3 @@
-// src/components/Auth/LoginForm.js
 import React, { useState, useEffect } from 'react';
 import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
 import Google from '../../assets/images/png/AuthPng/Google.png';
