@@ -139,11 +139,17 @@
   align-items: center;
   justify-content: center;
 }
-.team-logo-img {
+.team-logo-img.svg-logo{
   width: 4rem;
   height: 4rem;             
   object-fit: cover;       
   object-position: center;   
+}
+.team-logo-img.png-logo{
+width:100%;
+height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 /* 팀명 셀 */
 .team-cell {
@@ -552,4 +558,79 @@
   gap: 4.25rem;
   align-items: flex-end;
   justify-content: flex-end;
+}
+
+.bracket-container2{
+  padding-top: 3.75rem;
+  padding-left:18.75rem;
+  padding-right: 18.75rem;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  align-content:flex-end;
+  height: 31rem;
+  width:100%;
+}
+
+.row1{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.row2{
+  display:flex;
+  justify-content: flex-end;
+}
+.row3{
+  display:flex;
+  justify-content: flex-start;
+}
+
+.line-container{
+  width:  18.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 3.438rem;
+  padding-right: 3.438rem;
+
+}
+.empty-space{
+  width:9.375rem;
+}
+.trophy-img-box2{
+  justify-self: baseline;
+  height:11.25rem;
+  width: 11.25rem;
+}
+
+.upper{
+  height: 3.125rem;
+  display:flex;
+}
+.upper-left{
+  width:9.375rem;
+  height: 100%;
+  border-right:0.5px solid #fff;
+}
+.upper-right{
+  width:9.375rem;
+  height:100%;
+  border-left:0.5px solid #fff;
+}
+.down{
+  height: 3.125rem;
+  width:100%;
+  border-top: 2px solid #fff;
+} 
+
+.knockout-team-name-section.s1st {
+  border: 2px solid #D5A11E;
+}
+
+.knockout-team-name-section.s2nd {
+  border: 2px solid #FFF;
+}
+
+.knockout-team-name-section.s3rd {
+  border: 2px solid #CD7F32;
 }

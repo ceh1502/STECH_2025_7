@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect, useMemo} from "react";
 import {FaChevronDown} from "react-icons/fa";
 import "./StatTeam.css";
 import NoGroupImg from "../../assets/images/png/NoGroup.png";
-import Trophy from '../../assets/images/png/trophy.png'
+import Trophy from "../../assets/images/png/trophy.png";
 
 const Dropdown = ({
   options = [],
@@ -232,7 +232,9 @@ export function GroupStandings({currentDivision, group, teams = []}) {
                     <img
                       src={teamInfo.logo}
                       alt={`${team.name} 로고`}
-                      className="team-logo-img"
+                      className={`team-logo-img ${
+                        teamInfo.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                      }`}
                     />
                   </div>
                 )}
@@ -302,18 +304,22 @@ function MatchRow({
               <img
                 src={homeTeam.logo}
                 alt={`${homeTeam.name} 로고`}
-                className="team-logo-img"
+                className={`team-logo-img ${
+                  homeTeam.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                }`}
               />
             </div>
             <div className="team-name">{homeTeam.name}</div>
           </div>
           <div className="match-score">{getScore()}</div>
-          <div className="away-team">
+          <div className="away-team"> 
             <div className="team-logo">
               <img
                 src={awayTeam.logo}
                 alt={`${awayTeam.name} 로고`}
-                className="team-logo-img"
+                className={`team-logo-img ${
+                  awayTeam.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                }`}
               />
             </div>
             <div className="team-name">{awayTeam.name}</div>
@@ -452,7 +458,7 @@ function GroupMatches({currentDivision, group, teams = [], hasMultipleGroups}) {
   );
 }
 
-const KnockoutCard = ({match, teams = [], index = 0, className=''}) => {
+const KnockoutCard = ({match, teams = [], index = 0, className = "", isFinal=false, isPlfs=false}) => {
   if (!match) return null;
   const home = teams.find((t) => t.name === match.home) || {
     name: match.home,
@@ -469,10 +475,15 @@ const KnockoutCard = ({match, teams = [], index = 0, className=''}) => {
         {match.stage} {!index == 0 && `${index}경기`} {match.date}
       </div>
       <div className="knockout-team">
-        <div className="knockout-team-name-section">
+        <div className={`knockout-team-name-section 
+          ${isFinal ? match.winner===home?.name ? "s1st" : "s2nd" : ""}
+          ${isPlfs ? match.winner===home?.name ? "s3rd" : "" : ""}`
+        }>
           {home.logo && (
             <div className="team-logo">
-              <img src={home.logo} alt="로고" className="team-logo-img" />
+              <img src={home.logo} alt="로고"  className={`team-logo-img ${
+                        home.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                      }`} />
             </div>
           )}
           <div className="team-name">{home.name}</div>
@@ -480,10 +491,16 @@ const KnockoutCard = ({match, teams = [], index = 0, className=''}) => {
         <div className="knockout-team-score">{match.homeScore}</div>
       </div>
       <div className="knockout-team">
-        <div className="knockout-team-name-section">
+        <div 
+        className={`knockout-team-name-section 
+          ${isFinal ? match.winner===away?.name ? "s1st" : "s2nd" : ""}
+          ${isPlfs ? match.winner===away?.name ? "s3rd" : "" : ""}`
+        }>
           {away?.logo && (
             <div className="team-logo">
-              <img src={away.logo} alt="로고" className="team-logo-img" />
+              <img src={away.logo} alt="로고"  className={`team-logo-img ${
+                        away.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                      }`} />
             </div>
           )}
           <div className="team-name">{away.name}</div>
@@ -513,28 +530,23 @@ function KnockoutBracket({currentDivision, teams = []}) {
         <KnockoutCard match={qf[1]} teams={teams} index={2} />
       </div>
       <div className="SF-container">
-        <KnockoutCard match={sf[0]} teams={teams} index={1}/>
+        <KnockoutCard match={sf[0]} teams={teams} index={1} />
       </div>
       <div className="line-container">
         <div className="up-section"></div>
         <div className="down-section"></div>
       </div>
       <div className="F-container">
-        <div className='trophy-img-box'>
-          <img
-          src={Trophy}
-          alt='trophy Img'
-          className='trophyImg'
-          />
+        <div className="trophy-img-box">
+          <img src={Trophy} alt="trophy Img" className="trophyImg" />
         </div>
 
-                <div className='final-row'>
+        <div className="final-row">
+          <KnockoutCard match={fin} teams={teams} isFinal={true}  />
 
-                        <KnockoutCard match={fin} teams={teams}  />
-
-        <KnockoutCard match={plfs} teams={teams} className='plfs'/>
+          <KnockoutCard match={plfs} teams={teams} className="plfs" isPlfs={true} />
+        </div>
       </div>
-              </div>
 
       <div className="line-container">
         <div className="up-section"></div>
@@ -558,6 +570,37 @@ function KnockoutBracket({currentDivision, teams = []}) {
   );
 }
 
+function KnockoutBracket2({currentDivision, teams = []}) {
+  const sf = currentDivision?.semiFinals || [];
+  const fin = (currentDivision?.final || [])[0];
+  const plfs = (currentDivision?.playoffs || [])[0];
+
+  return (
+    <div className="bracket-container2">
+      <div className="row1">
+        <div className="trophy-img-box2">
+          <img src={Trophy} alt="trophy Img" className="trophyImg" />
+        </div>
+      </div>
+      <div className="row2">
+        <KnockoutCard match={fin} teams={teams} />
+        <div className="empty-space"></div>
+        <KnockoutCard match={plfs} teams={teams} />
+      </div>
+      <div className="row3">
+        <KnockoutCard match={sf[0]} teams={teams} index={1} />
+        <div className="line-container">
+          <div className="upper">
+            <div className="upper-left"></div>
+            <div className="upper-right"></div>
+          </div>
+          <div className="down"></div>
+        </div>
+        <KnockoutCard match={sf[1]} teams={teams} index={2} />
+      </div>
+    </div>
+  );
+}
 /* ----------------------------------
  * Empty(예외) 페이지
  * ---------------------------------- */
@@ -790,10 +833,17 @@ export default function StatLeague({data, teams = []}) {
           <div className="tournament-section">
             {isExcepted && (
               <div className="excepted-league-containers">
-                <KnockoutBracket
-                  currentDivision={currentDivision}
-                  teams={teams}
-                />
+                {currentDivision?.quarterFinals?.length > 0 ? (
+                  <KnockoutBracket
+                    currentDivision={currentDivision}
+                    teams={teams}
+                  />
+                ) : (
+                  <KnockoutBracket2
+                    currentDivision={currentDivision}
+                    teams={teams}
+                  />
+                )}
               </div>
             )}
 
