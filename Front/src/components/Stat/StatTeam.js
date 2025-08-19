@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect, useMemo} from "react";
 import {FaChevronDown} from "react-icons/fa";
 import "./StatTeam.css";
 import NoGroupImg from "../../assets/images/png/NoGroup.png";
-import Trophy from '../../assets/images/png/trophy.png'
+import Trophy from "../../assets/images/png/trophy.png";
 
 const Dropdown = ({
   options = [],
@@ -452,7 +452,7 @@ function GroupMatches({currentDivision, group, teams = [], hasMultipleGroups}) {
   );
 }
 
-const KnockoutCard = ({match, teams = [], index = 0, className=''}) => {
+const KnockoutCard = ({match, teams = [], index = 0, className = ""}) => {
   if (!match) return null;
   const home = teams.find((t) => t.name === match.home) || {
     name: match.home,
@@ -513,28 +513,23 @@ function KnockoutBracket({currentDivision, teams = []}) {
         <KnockoutCard match={qf[1]} teams={teams} index={2} />
       </div>
       <div className="SF-container">
-        <KnockoutCard match={sf[0]} teams={teams} index={1}/>
+        <KnockoutCard match={sf[0]} teams={teams} index={1} />
       </div>
       <div className="line-container">
         <div className="up-section"></div>
         <div className="down-section"></div>
       </div>
       <div className="F-container">
-        <div className='trophy-img-box'>
-          <img
-          src={Trophy}
-          alt='trophy Img'
-          className='trophyImg'
-          />
+        <div className="trophy-img-box">
+          <img src={Trophy} alt="trophy Img" className="trophyImg" />
         </div>
 
-                <div className='final-row'>
+        <div className="final-row">
+          <KnockoutCard match={fin} teams={teams} />
 
-                        <KnockoutCard match={fin} teams={teams}  />
-
-        <KnockoutCard match={plfs} teams={teams} className='plfs'/>
+          <KnockoutCard match={plfs} teams={teams} className="plfs" />
+        </div>
       </div>
-              </div>
 
       <div className="line-container">
         <div className="up-section"></div>
@@ -558,6 +553,34 @@ function KnockoutBracket({currentDivision, teams = []}) {
   );
 }
 
+function KnockoutBracket2({currentDivision, teams = []}) {
+  const sf = currentDivision?.semiFinals || [];
+  const fin = (currentDivision?.final || [])[0];
+  const plfs = (currentDivision?.playoffs || [])[0];
+
+  return (
+    <div className="bracket-container2">
+      <div className="row1">
+        <div className="trophy-img-box">
+          <img src={Trophy} alt="trophy Img" className="trophyImg" />
+        </div>
+      </div>
+      <div className="row2">
+        <div className="empty-space"> </div>
+
+        <knockoutCard match={fin} teams={teams} />
+        <div className="line-container"></div>
+        <KnockoutCard match={plfs} teams={teams} />
+      </div>
+      <div className="row3">
+        <knockoutCard match={sf[0]} teams={teams} index={1} />
+        <div className="line-container"></div>
+        <KnockoutCard match={sf[1]} teams={teams} index={2} />
+        <div className="empty-space"> </div>
+      </div>
+    </div>
+  );
+}
 /* ----------------------------------
  * Empty(예외) 페이지
  * ---------------------------------- */
@@ -790,10 +813,17 @@ export default function StatLeague({data, teams = []}) {
           <div className="tournament-section">
             {isExcepted && (
               <div className="excepted-league-containers">
-                <KnockoutBracket
-                  currentDivision={currentDivision}
-                  teams={teams}
-                />
+                {currentDivision?.quarterFinals?.length > 0 ? (
+                  <KnockoutBracket
+                    currentDivision={currentDivision}
+                    teams={teams}
+                  />
+                ) : (
+                  <KnockoutBracket2
+                    currentDivision={currentDivision}
+                    teams={teams}
+                  />
+                )}
               </div>
             )}
 

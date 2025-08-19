@@ -553,3 +553,11 @@
   align-items: flex-end;
   justify-content: flex-end;
 }
+
+.bracket-container2{
+  padding-top: 3.75rem;
+  display: flex;
+  flex-direction: column;
+  height: 31rem;
+  width:100%;
+}

@@ -383,3 +383,4 @@ export const FALL_2024_DATA = {
   '챌린지볼':{},
 },
 }
+
