@@ -52,6 +52,7 @@ export default function AppRouter() {
                 <Route path="find" element={<AuthPages.FindPage />} />
                 <Route path="findcode" element={<AuthPages.FindCodePage />} />
                 <Route path="changepassword" element={<AuthPages.ChangePasswordPage />} />
+                <Route path="findsuccess" element={<AuthPages.FindSuccessPage />} />
                 <Route path="verify-email" element={<AuthPages.VerifyEmailPage />} />
             </Route>
             {/* 404 Not Found */}

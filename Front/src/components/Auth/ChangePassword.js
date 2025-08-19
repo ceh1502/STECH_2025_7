@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// This component is for a password reset form, including validation for password length and matching.
 const ChangePassword = () => {
-    // Use state to manage form data for password and password confirmation.
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         password: '',
         passwordConfirm: '',
     });
 
-    // Use state to manage validation errors.
     const [errors, setErrors] = useState({});
 
-    // Handle input changes, updating the form data and clearing any related errors.
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData((prev) => ({
@@ -24,34 +23,30 @@ const ChangePassword = () => {
         }
     };
 
-    // Validate the form data before submission.
     const validateForm = () => {
         const newErrors = {};
 
-        // Password validation: must be at least 8 characters long.
         if (!formData.password) {
-            newErrors.password = '비밀번호를 입력해주세요.'; // Please enter your password.
+            newErrors.password = '비밀번호를 입력해주세요.';
         } else if (formData.password.length < 8) {
-            newErrors.password = '비밀번호는 최소 8자 이상이어야 합니다.'; // Password must be at least 8 characters long.
+            newErrors.password = '비밀번호는 최소 8자 이상이어야 합니다.';
         }
 
-        // Password confirmation validation: must match the password field.
         if (!formData.passwordConfirm) {
-            newErrors.passwordConfirm = '비밀번호 확인을 입력해주세요.'; // Please enter your password confirmation.
+            newErrors.passwordConfirm = '비밀번호 확인을 입력해주세요.';
         } else if (formData.password !== formData.passwordConfirm) {
-            newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.'; // Passwords do not match.
+            newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle form submission.
     const handleSubmit = () => {
         if (validateForm()) {
             console.log('Form is valid. Submitting data:', formData);
-            // Here you would add the logic to send the new password to your backend.
             alert('비밀번호가 성공적으로 변경되었습니다!');
+            navigate('../findsuccess')
         } else {
             console.log('Form has errors.');
         }
@@ -63,7 +58,6 @@ const ChangePassword = () => {
                 <h2 className="find-title">비밀번호 재설정</h2>
                 <p className="find-description">새로운 비밀번호를 입력해주세요.</p>
 
-                {/* Password input group */}
                 <div className="find-input-group">
                     <label htmlFor="password">비밀번호</label>
                     <input
@@ -71,12 +65,11 @@ const ChangePassword = () => {
                         id="password"
                         value={formData.password}
                         onChange={handleChange}
-                        placeholder="최소 8자" // At least 8 characters
+                        placeholder="최소 8자"
                     />
                     {errors.password && <p className="errorMessage">⚠️ {errors.password}</p>}
                 </div>
 
-                {/* Password confirmation input group */}
                 <div className="find-input-group">
                     <label htmlFor="passwordConfirm">비밀번호 확인</label>
                     <input
@@ -84,17 +77,16 @@ const ChangePassword = () => {
                         id="passwordConfirm"
                         value={formData.passwordConfirm}
                         onChange={handleChange}
-                        placeholder="비밀번호 다시 입력" // Re-enter password
+                        placeholder="비밀번호 다시 입력"
                     />
                     {errors.passwordConfirm && <p className="errorMessage">⚠️ {errors.passwordConfirm}</p>}
                 </div>
 
-                {/* Submission button */}
                 <button
                     className="find-code-button"
                     onClick={handleSubmit}
                 >
-                    비밀번호 변경 → {/* Change Password */}
+                    비밀번호 변경 →
                 </button>
 
                 <div className="find-links-group">
