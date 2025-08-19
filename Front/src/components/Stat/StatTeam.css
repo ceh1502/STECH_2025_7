@@ -620,6 +620,17 @@ height: 100%;
 .down{
   height: 3.125rem;
   width:100%;
-
   border-top: 2px solid #fff;
 } 
+
+.knockout-team-name-section.s1st {
+  border: 2px solid #D5A11E;
+}
+
+.knockout-team-name-section.s2nd {
+  border: 2px solid #FFF;
+}
+
+.knockout-team-name-section.s3rd {
+  border: 2px solid #CD7F32;
+}

@@ -458,7 +458,7 @@ function GroupMatches({currentDivision, group, teams = [], hasMultipleGroups}) {
   );
 }
 
-const KnockoutCard = ({match, teams = [], index = 0, className = ""}) => {
+const KnockoutCard = ({match, teams = [], index = 0, className = "", isFinal=false, isPlfs=false}) => {
   if (!match) return null;
   const home = teams.find((t) => t.name === match.home) || {
     name: match.home,
@@ -475,10 +475,15 @@ const KnockoutCard = ({match, teams = [], index = 0, className = ""}) => {
         {match.stage} {!index == 0 && `${index}경기`} {match.date}
       </div>
       <div className="knockout-team">
-        <div className="knockout-team-name-section">
+        <div className={`knockout-team-name-section 
+          ${isFinal ? match.winner===home?.name ? "s1st" : "s2nd" : ""}
+          ${isPlfs ? match.winner===home?.name ? "s3rd" : "" : ""}`
+        }>
           {home.logo && (
             <div className="team-logo">
-              <img src={home.logo} alt="로고" className="team-logo-img" />
+              <img src={home.logo} alt="로고"  className={`team-logo-img ${
+                        home.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                      }`} />
             </div>
           )}
           <div className="team-name">{home.name}</div>
@@ -486,10 +491,16 @@ const KnockoutCard = ({match, teams = [], index = 0, className = ""}) => {
         <div className="knockout-team-score">{match.homeScore}</div>
       </div>
       <div className="knockout-team">
-        <div className="knockout-team-name-section">
+        <div 
+        className={`knockout-team-name-section 
+          ${isFinal ? match.winner===away?.name ? "s1st" : "s2nd" : ""}
+          ${isPlfs ? match.winner===away?.name ? "s3rd" : "" : ""}`
+        }>
           {away?.logo && (
             <div className="team-logo">
-              <img src={away.logo} alt="로고" className="team-logo-img" />
+              <img src={away.logo} alt="로고"  className={`team-logo-img ${
+                        away.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                      }`} />
             </div>
           )}
           <div className="team-name">{away.name}</div>
@@ -531,9 +542,9 @@ function KnockoutBracket({currentDivision, teams = []}) {
         </div>
 
         <div className="final-row">
-          <KnockoutCard match={fin} teams={teams} />
+          <KnockoutCard match={fin} teams={teams} isFinal={true}  />
 
-          <KnockoutCard match={plfs} teams={teams} className="plfs" />
+          <KnockoutCard match={plfs} teams={teams} className="plfs" isPlfs={true} />
         </div>
       </div>
 
