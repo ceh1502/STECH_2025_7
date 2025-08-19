@@ -556,8 +556,64 @@
 
 .bracket-container2{
   padding-top: 3.75rem;
-  display: flex;
-  flex-direction: column;
+  padding-left:18.75rem;
+  padding-right: 18.75rem;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  align-content:flex-end;
   height: 31rem;
   width:100%;
 }
+
+.row1{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.row2{
+  display:flex;
+  justify-content: flex-end;
+}
+.row3{
+  display:flex;
+  justify-content: flex-start;
+}
+
+.line-container{
+  width:  18.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 3.438rem;
+  padding-right: 3.438rem;
+
+}
+.empty-space{
+  width:9.375rem;
+}
+.trophy-img-box2{
+  justify-self: baseline;
+  height:11.25rem;
+  width: 11.25rem;
+}
+
+.upper{
+  height: 3.125rem;
+  display:flex;
+}
+.upper-left{
+  width:9.375rem;
+  height: 100%;
+  border-right:0.5px solid #fff;
+}
+.upper-right{
+  width:9.375rem;
+  height:100%;
+  border-left:0.5px solid #fff;
+}
+.down{
+  height: 3.125rem;
+  width:100%;
+
+  border-top: 2px solid #fff;
+} 

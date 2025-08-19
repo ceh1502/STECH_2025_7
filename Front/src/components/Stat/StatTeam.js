@@ -561,22 +561,26 @@ function KnockoutBracket2({currentDivision, teams = []}) {
   return (
     <div className="bracket-container2">
       <div className="row1">
-        <div className="trophy-img-box">
+        <div className="trophy-img-box2">
           <img src={Trophy} alt="trophy Img" className="trophyImg" />
         </div>
       </div>
       <div className="row2">
-        <div className="empty-space"> </div>
 
-        <knockoutCard match={fin} teams={teams} />
-        <div className="line-container"></div>
+        <KnockoutCard match={fin} teams={teams} />
+        <div className='empty-space'></div>
         <KnockoutCard match={plfs} teams={teams} />
       </div>
       <div className="row3">
-        <knockoutCard match={sf[0]} teams={teams} index={1} />
-        <div className="line-container"></div>
+        <KnockoutCard match={sf[0]} teams={teams} index={1} />
+        <div className="line-container">
+          <div className='upper'>
+            <div className='upper-left'></div>
+            <div className='upper-right'></div>
+          </div>
+          <div className='down'></div>
+        </div>
         <KnockoutCard match={sf[1]} teams={teams} index={2} />
-        <div className="empty-space"> </div>
       </div>
     </div>
   );
