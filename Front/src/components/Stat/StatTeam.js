@@ -232,7 +232,9 @@ export function GroupStandings({currentDivision, group, teams = []}) {
                     <img
                       src={teamInfo.logo}
                       alt={`${team.name} 로고`}
-                      className="team-logo-img"
+                      className={`team-logo-img ${
+                        teamInfo.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                      }`}
                     />
                   </div>
                 )}
@@ -302,18 +304,22 @@ function MatchRow({
               <img
                 src={homeTeam.logo}
                 alt={`${homeTeam.name} 로고`}
-                className="team-logo-img"
+                className={`team-logo-img ${
+                  homeTeam.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                }`}
               />
             </div>
             <div className="team-name">{homeTeam.name}</div>
           </div>
           <div className="match-score">{getScore()}</div>
-          <div className="away-team">
+          <div className="away-team"> 
             <div className="team-logo">
               <img
                 src={awayTeam.logo}
                 alt={`${awayTeam.name} 로고`}
-                className="team-logo-img"
+                className={`team-logo-img ${
+                  awayTeam.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
+                }`}
               />
             </div>
             <div className="team-name">{awayTeam.name}</div>
@@ -566,19 +572,18 @@ function KnockoutBracket2({currentDivision, teams = []}) {
         </div>
       </div>
       <div className="row2">
-
         <KnockoutCard match={fin} teams={teams} />
-        <div className='empty-space'></div>
+        <div className="empty-space"></div>
         <KnockoutCard match={plfs} teams={teams} />
       </div>
       <div className="row3">
         <KnockoutCard match={sf[0]} teams={teams} index={1} />
         <div className="line-container">
-          <div className='upper'>
-            <div className='upper-left'></div>
-            <div className='upper-right'></div>
+          <div className="upper">
+            <div className="upper-left"></div>
+            <div className="upper-right"></div>
           </div>
-          <div className='down'></div>
+          <div className="down"></div>
         </div>
         <KnockoutCard match={sf[1]} teams={teams} index={2} />
       </div>

@@ -139,11 +139,17 @@
   align-items: center;
   justify-content: center;
 }
-.team-logo-img {
+.team-logo-img.svg-logo{
   width: 4rem;
   height: 4rem;             
   object-fit: cover;       
   object-position: center;   
+}
+.team-logo-img.png-logo{
+width:100%;
+height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 /* 팀명 셀 */
 .team-cell {
