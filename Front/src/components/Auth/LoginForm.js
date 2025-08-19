@@ -5,23 +5,14 @@ import Eye from '../../assets/images/png/AuthPng/Eye.png';
 import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
 
-const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true, redirectPath = '/service', className = '' }) => {
+const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    const [rememberMe, setRememberMe] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const savedEmail = localStorage.getItem('rememberedEmail');
-        if (savedEmail) {
-            setFormData((prev) => ({ ...prev, email: savedEmail }));
-            setRememberMe(true);
-        }
-    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,10 +21,6 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
             [name]: value,
         }));
         if (error) setError(null);
-    };
-
-    const handleRememberMeChange = (e) => {
-        setRememberMe(e.target.checked);
     };
 
     const validateForm = () => {
@@ -59,11 +46,6 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
             console.log('로그인 시도:', formData);
             const success = true;
             if (success) {
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', formData.email);
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                }
                 console.log('Login Successful!');
                 if (onSuccess) {
                     onSuccess();
@@ -85,7 +67,7 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
         <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
             <div className="tab-container">
                 <button type="button" className="loginTitle">로그인</button>
-                <a href="auth/signup" type="button" className="loginTitleTosignup">회원가입</a>
+                <a href="./signup" type="button" className="loginTitleTosignup">회원가입</a>
             </div>
 
             <div className="formGroup">
@@ -137,14 +119,6 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
                 </div>
             </div>
 
-            {showRememberMe && (
-                <div className="formOptions">
-                    <label className="LoginrememberMeLabel">
-                        <input type="checkbox" checked={rememberMe} onChange={handleRememberMeChange} className="LoginrememberCheckbox" disabled={isFormLoading} />
-                        <span className="rememberText">Remember me</span>
-                    </label>
-                </div>
-            )}
 
             {error && <div className="errorMessage">⚠️ {error}</div>}
 
