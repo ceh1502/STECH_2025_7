@@ -18,7 +18,10 @@ const SignupForm = ({ onSuccess, className = '' }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
-    // New states for dynamic validation messages
+    // Separate states for intermediate checks
+    const [isEmailChecking, setIsEmailChecking] = useState(false);
+    const [isAuthCodeVerifying, setIsAuthCodeVerifying] = useState(false);
+
     const [emailStatus, setEmailStatus] = useState(null); // 'idle', 'checking', 'available', 'unavailable'
     const [emailMessage, setEmailMessage] = useState('');
     const [authCodeStatus, setAuthCodeStatus] = useState(null); // 'idle', 'verifying', 'valid', 'invalid'
@@ -30,17 +33,95 @@ const SignupForm = ({ onSuccess, className = '' }) => {
             ...prev,
             [name]: value,
         }));
-        // Clear general error when user starts typing
         if (error) setError(null);
     };
-    const validateForm = () => {
-        if (!formData.email || !formData.password) {
-            setError('아이디와 비밀번호 모두 입력해주세요.');
-            return false;
+
+    const handleEmailCheck = async () => {
+        if (!formData.email) {
+            setEmailStatus('idle');
+            setEmailMessage('아이디를 입력해주세요.');
+            return;
         }
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
-            setError('유효한 이메일을 입력해주세요.');
+            setEmailStatus('invalid');
+            setEmailMessage('유효한 이메일을 입력해주세요.');
+            return;
+        }
+
+        setEmailStatus('checking');
+        setEmailMessage('');
+        setIsEmailChecking(true);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (formData.email === 'test@test.com') {
+                setEmailStatus('unavailable');
+                setEmailMessage('중복된 아이디입니다.');
+            } else {
+                setEmailStatus('available');
+                setEmailMessage('사용 가능한 아이디입니다.');
+            }
+        } catch (err) {
+            setEmailStatus('invalid');
+            setEmailMessage('아이디 확인 중 오류가 발생했습니다.');
+        } finally {
+            setIsEmailChecking(false);
+        }
+    };
+
+    const handleAuthCodeVerification = async () => {
+        if (!formData.authCode) {
+            setAuthCodeStatus('idle');
+            setAuthCodeMessage('인증코드를 입력해주세요.');
+            return;
+        }
+
+        setAuthCodeStatus('verifying');
+        setAuthCodeMessage('');
+        setIsAuthCodeVerifying(true);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (formData.authCode === '123456') {
+                setAuthCodeStatus('valid');
+                setAuthCodeMessage('유효한 인증코드입니다.');
+            } else {
+                setAuthCodeStatus('invalid');
+                setAuthCodeMessage('유효하지 않은 인증코드입니다.');
+            }
+        } catch (err) {
+            setAuthCodeStatus('invalid');
+            setAuthCodeMessage('인증코드 확인 중 오류가 발생했습니다.');
+        } finally {
+            setIsAuthCodeVerifying(false);
+        }
+    };
+
+    const validateForm = () => {
+        if (!formData.email || !formData.password || !formData.passwordConfirm || !formData.authCode) {
+            setError('모든 필수 항목을 입력해주세요.');
+            return false;
+        }
+        if (formData.password.length < 8) {
+            setError('비밀번호를 8글자 이상 입력해주세요.');
+            return false;
+        }
+        if (formData.password !== formData.passwordConfirm) {
+            setError('비밀번호가 일치하지 않습니다.');
+            return false;
+        }
+        if (!agreedToTerms) {
+            setError('이용 약관 및 개인정보 보호정책에 동의해야 합니다.');
+            return false;
+        }
+        if (emailStatus !== 'available') {
+            setError('아이디 중복 확인이 필요합니다.');
+            return false;
+        }
+        if (authCodeStatus !== 'valid') {
+            setError('인증코드 확인이 필요합니다.');
             return false;
         }
         return true;
@@ -49,54 +130,73 @@ const SignupForm = ({ onSuccess, className = '' }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
+
         setIsSubmitting(true);
         setError(null);
 
         try {
-            console.log('로그인 시도:', formData);
-            const success = true;
-            if (success) {
-                console.log('Login Successful!');
-                if (onSuccess) {
-                    onSuccess();
-                }
-            } else {
-                setError('Login failed. Please check your credentials.');
+            console.log('회원가입 시도:', formData);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            console.log('Signup Successful!');
+            if (onSuccess) {
+                onSuccess();
             }
         } catch (err) {
-            console.error('Login Error:', err);
-            setError('An unexpected error occurred. Please try again later.');
+            console.error('Signup Error:', err);
+            setError('예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const isFormLoading = isSubmitting;
+    const isSubmitButtonDisabled = isSubmitting || emailStatus !== 'available' || authCodeStatus !== 'valid' || !agreedToTerms;
+
+    const getStatusClass = (status) => {
+        if (status === 'available' || status === 'valid') return 'status-message status-success';
+        if (status === 'unavailable' || status === 'invalid') return 'status-message status-error';
+        return 'status-message';
+    };
 
     return (
-        <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
+        <form onSubmit={handleSubmit} className={`signupForm ${className}`}>
             <div className="tab-container">
-                <button type="button" className="loginTitle">로그인</button>
-                <a href="./signup" type="button" className="loginTitleTosignup">회원가입</a>
+                <a href="/auth" className="signupTitle">로그인</a>
+                <button type="button" className="signupTitleTosignup">회원가입</button>
             </div>
 
             <div className="formGroup">
-                <label className="LoginformLabel ID" htmlFor="email">아이디</label>
-                <input
-                    type="text"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="LoginformInput"
-                    placeholder=""
-                    required
-                    autoComplete="email"
-                    disabled={isFormLoading}
-                />
+                <label className="SignupformLabel ID" htmlFor="email">아이디</label>
+                <div className="input-with-button-group">
+                    <input
+                        type="text"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="SignupformInput"
+                        placeholder=""
+                        required
+                        autoComplete="email"
+                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                    />
+                    <button
+                        type="button"
+                        onClick={handleEmailCheck}
+                        disabled={isSubmitting || isEmailChecking || !formData.email}
+                        className={`valid-checking ${isEmailChecking ? 'loading' : ''}`}
+                    >
+                        {isEmailChecking ? '확인 중...' : '중복 확인'}
+                    </button>
+                </div>
+                {emailMessage && (
+                    <div className={getStatusClass(emailStatus)}>
+                        {emailMessage}
+                    </div>
+                )}
             </div>
 
             <div className="formGroup">
-                <label className="LoginformLabel PW" htmlFor="password">
+                <label className="SignupformLabel PW" htmlFor="password">
                     비밀번호
                 </label>
                 <div className="passwordInputContainer">
@@ -105,82 +205,110 @@ const SignupForm = ({ onSuccess, className = '' }) => {
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="LoginformInput"
+                        className="SignupformInput"
                         placeholder="최소 8자"
                         required
-                        autoComplete="current-password"
-                        disabled={isFormLoading}
+                        autoComplete="new-password"
+                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
                     />
                     <button
                         type="button"
-                        className="LoginpasswordToggleButton"
+                        className="SignuppasswordToggleButton"
                         onClick={() => setShowPassword(!showPassword)}
-                        disabled={isFormLoading}
+                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
                     >
                         {showPassword ? (
-                            <img src={EyeActive} alt="showPassword" className="showPassword" />
+                            <img src={EyeActive} alt="hide Password" />
                         ) : (
-                            <img src={Eye} alt="showPassword" className="showPasswordActive" />
-                        )}
-                    </button>
-                </div>
-            </div>
-
-                        <div className="formGroup">
-                <label className="LoginformLabel PW" htmlFor="password">
-                    비밀번호 확인
-                </label>
-                <div className="passwordInputContainer">
-                    <input
-                        type={showPasswordConfirm ? 'text' : 'password'}
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="LoginformInput"
-                        placeholder="비밀번호 다시 입력"
-                        required
-                        autoComplete="current-password"
-                        disabled={isFormLoading}
-                    />
-                    <button
-                        type="button"
-                        className="LoginpasswordToggleButton"
-                        onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                        disabled={isFormLoading}
-                    >
-                        {showPasswordConfirm ? (
-                            <img src={EyeActive} alt="showPassword" className="showPassword" />
-                        ) : (
-                            <img src={Eye} alt="showPassword" className="showPasswordActive" />
+                            <img src={Eye} alt="show Password" />
                         )}
                     </button>
                 </div>
             </div>
 
             <div className="formGroup">
-                <label className="LoginformLabel ID" htmlFor="email">인증코드</label>
-                <input
-                    type="text"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="LoginformInput"
-                    placeholder=""
-                    required
-                    autoComplete="email"
-                    disabled={isFormLoading}
-                />
+                <label className="SignupformLabel PW" htmlFor="passwordConfirm">
+                    비밀번호 확인
+                </label>
+                <div className="passwordInputContainer">
+                    <input
+                        type={showPasswordConfirm ? 'text' : 'password'}
+                        name="passwordConfirm"
+                        value={formData.passwordConfirm}
+                        onChange={handleChange}
+                        className="SignupformInput"
+                        placeholder="비밀번호 다시 입력"
+                        required
+                        autoComplete="new-password"
+                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                    />
+                    <button
+                        type="button"
+                        className="SignuppasswordToggleButton"
+                        onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                    >
+                        {showPasswordConfirm ? (
+                            <img src={EyeActive} alt="hide Password" />
+                        ) : (
+                            <img src={Eye} alt="show Password" />
+                        )}
+                    </button>
+                </div>
             </div>
 
+            <div className="formGroup">
+                <label className="SignupformLabel ID" htmlFor="authCode">인증코드</label>
+                <div className="input-with-button-group">
+                    <input
+                        type="text"
+                        name="authCode"
+                        value={formData.authCode}
+                        onChange={handleChange}
+                        className="SignupformInput"
+                        placeholder="인증코드 입력"
+                        required
+                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                    />
+                    <button
+                        type="button"
+                        onClick={handleAuthCodeVerification}
+                        disabled={isSubmitting || isAuthCodeVerifying || !formData.authCode}
+                        className={`valid-checking ${isAuthCodeVerifying ? 'loading' : ''}`}
+                    >
+                        {isAuthCodeVerifying ? '확인 중...' : '인증'}
+                    </button>
+                </div>
+                {authCodeMessage && (
+                    <div className={getStatusClass(authCodeStatus)}>
+                        {authCodeMessage}
+                    </div>
+                )}
+            </div>
+
+            <div className="formGroup">
+                <input
+                    type="checkbox"
+                    id="agreedToTerms"
+                    checked={agreedToTerms}
+                    onChange={() => setAgreedToTerms(!agreedToTerms)}
+                    disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                    className="agreewithtermsCheckbox"
+                />
+                <label htmlFor="agreedToTerms" className="agreewithterms">
+                    Stech
+                    <a href="/terms" className="terms-link"> 이용 약관</a> 및 <a href="/privacy" className="terms-link">개인정보 보호정책</a>에 동의합니다.
+                </label>
+            </div>
 
             {error && <div className="errorMessage">⚠️ {error}</div>}
 
             <button
                 type="submit"
-                disabled={isFormLoading}
-                className={`LoginsubmitButton ${isFormLoading ? 'loading' : ''}`}
+                disabled={isSubmitButtonDisabled}
+                className={`SignupsubmitButton ${isSubmitting ? 'loading' : ''}`}
             >
-                {isFormLoading ? 'Loading...' : '회원가입'}
+                {isSubmitting ? '회원가입 중...' : '회원가입'}
             </button>
 
             <div className="divider-container">
@@ -192,11 +320,11 @@ const SignupForm = ({ onSuccess, className = '' }) => {
             <div className="social-buttons-container">
                 <button type="button" className="socialButton google-button">
                     <img src={Google} alt="google" className="socialicon" />
-                    구글로 로그인
+                    구글로 회원가입
                 </button>
                 <button type="button" className="socialButton kakao-button">
                     <img src={Kakao} alt="kakao" className="socialicon" />
-                    카카오로 로그인
+                    카카오로 회원가입
                 </button>
             </div>
         </form>

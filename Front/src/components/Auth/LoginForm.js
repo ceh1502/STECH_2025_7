@@ -67,7 +67,7 @@ const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => 
         <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
             <div className="tab-container">
                 <button type="button" className="loginTitle">로그인</button>
-                <a href="./signup" type="button" className="loginTitleTosignup">회원가입</a>
+                <a href="/auth/signup" type="button" className="loginTitleTosignup">회원가입</a>
             </div>
 
             <div className="formGroup">
