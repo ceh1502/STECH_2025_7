@@ -1,5 +1,6 @@
 export { default as LoginPage } from './Login';
 export { default as SignupPage } from './Signup';
+export { default as SignupProfilePage } from './Signup/SignupProfile';
 export { default as FindPage } from './Find';
 export { default as FindCodePage } from './Find/FindCode';
 export { default as ChangePasswordPage } from './Find/ChangePassword';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
 import Google from '../../assets/images/png/AuthPng/Google.png';
 import Eye from '../../assets/images/png/AuthPng/Eye.png';
@@ -7,7 +7,7 @@ import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
 const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => {
     const [formData, setFormData] = useState({
-        email: '',
+        id: '',
         password: '',
     });
     const [showPassword, setShowPassword] = useState(false);
@@ -24,13 +24,13 @@ const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => 
     };
 
     const validateForm = () => {
-        if (!formData.email || !formData.password) {
+        if (!formData.id || !formData.password) {
             setError('아이디와 비밀번호 모두 입력해주세요.');
             return false;
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            setError('유효한 이메일을 입력해주세요.');
+        const idRegex = /^[a-zA-Z0-9]+$/;
+        if (!idRegex.test(formData.id)) {
+            setError('존재하지 않는 아이디입니다.');
             return false;
         }
         return true;
@@ -71,16 +71,15 @@ const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => 
             </div>
 
             <div className="formGroup">
-                <label className="LoginformLabel ID" htmlFor="email">아이디</label>
+                <label className="LoginformLabel ID" htmlFor="id">아이디</label>
                 <input
                     type="text"
-                    name="email"
-                    value={formData.email}
+                    name="id"
+                    value={formData.id}
                     onChange={handleChange}
                     className="LoginformInput"
-                    placeholder=""
                     required
-                    autoComplete="email"
+                    autoComplete="id"
                     disabled={isFormLoading}
                 />
             </div>
@@ -99,7 +98,6 @@ const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => 
                         value={formData.password}
                         onChange={handleChange}
                         className="LoginformInput"
-                        placeholder=""
                         required
                         autoComplete="current-password"
                         disabled={isFormLoading}

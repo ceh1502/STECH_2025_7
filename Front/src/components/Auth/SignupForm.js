@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
 import Google from '../../assets/images/png/AuthPng/Google.png';
 import Eye from '../../assets/images/png/AuthPng/Eye.png';
@@ -6,8 +7,10 @@ import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
 
 const SignupForm = ({ onSuccess, className = '' }) => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
-        email: '',
+        id: '',
         password: '',
         passwordConfirm: '',
         authCode: '',
@@ -18,11 +21,11 @@ const SignupForm = ({ onSuccess, className = '' }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
-    const [isEmailChecking, setIsEmailChecking] = useState(false);
+    const [isidChecking, setIsidChecking] = useState(false);
     const [isAuthCodeVerifying, setIsAuthCodeVerifying] = useState(false);
 
-    const [emailStatus, setEmailStatus] = useState(null);
-    const [emailMessage, setEmailMessage] = useState('');
+    const [idStatus, setidStatus] = useState(null);
+    const [idMessage, setidMessage] = useState('');
     const [authCodeStatus, setAuthCodeStatus] = useState(null);
     const [authCodeMessage, setAuthCodeMessage] = useState('');
 
@@ -35,38 +38,38 @@ const SignupForm = ({ onSuccess, className = '' }) => {
         if (error) setError(null);
     };
 
-    const handleEmailCheck = async () => {
-        if (!formData.email) {
-            setEmailStatus('idle');
-            setEmailMessage('아이디를 입력해주세요.');
+    const handleidCheck = async () => {
+        if (!formData.id) {
+            setidStatus('idle');
+            setidMessage('아이디를 입력해주세요.');
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            setEmailStatus('invalid');
-            setEmailMessage('유효한 이메일을 입력해주세요.');
+        const idRegex = /^[a-zA-Z0-9]+$/;
+        if (!idRegex.test(formData.id)) {
+            setidStatus('unavailable');
+            setidMessage('영어 및 숫자 조합만 입력해주세요.');
             return;
-        }
+        }        
 
-        setEmailStatus('checking');
-        setEmailMessage('');
-        setIsEmailChecking(true);
+        setidStatus('checking');
+        setidMessage('');
+        setIsidChecking(true);
 
         try {
             await new Promise(resolve => setTimeout(resolve, 1000));
-            if (formData.email === 'test@test.com') {
-                setEmailStatus('unavailable');
-                setEmailMessage('중복된 아이디입니다.');
+            if (formData.id === 'test') {
+                setidStatus('unavailable');
+                setidMessage('중복된 아이디입니다.');
             } else {
-                setEmailStatus('available');
-                setEmailMessage('사용 가능한 아이디입니다.');
+                setidStatus('available');
+                setidMessage('사용 가능한 아이디입니다.');
             }
         } catch (err) {
-            setEmailStatus('invalid');
-            setEmailMessage('아이디 확인 중 오류가 발생했습니다.');
+            setidStatus('invalid');
+            setidMessage('아이디 확인 중 오류가 발생했습니다.');
         } finally {
-            setIsEmailChecking(false);
+            setIsidChecking(false);
         }
     };
 
@@ -83,7 +86,7 @@ const SignupForm = ({ onSuccess, className = '' }) => {
 
         try {
             await new Promise(resolve => setTimeout(resolve, 1000));
-            if (formData.authCode === '123456') {
+            if (formData.authCode === '123123') {
                 setAuthCodeStatus('valid');
                 setAuthCodeMessage('유효한 인증코드입니다.');
             } else {
@@ -99,7 +102,7 @@ const SignupForm = ({ onSuccess, className = '' }) => {
     };
 
     const validateForm = () => {
-        if (!formData.email || !formData.password || !formData.passwordConfirm || !formData.authCode) {
+        if (!formData.id || !formData.password || !formData.passwordConfirm || !formData.authCode) {
             setError('모든 필수 항목을 입력해주세요.');
             return false;
         }
@@ -115,7 +118,7 @@ const SignupForm = ({ onSuccess, className = '' }) => {
             setError('이용 약관 및 개인정보 보호정책에 동의해야 합니다.');
             return false;
         }
-        if (emailStatus !== 'available') {
+        if (idStatus !== 'available') {
             setError('아이디 중복 확인이 필요합니다.');
             return false;
         }
@@ -141,6 +144,7 @@ const SignupForm = ({ onSuccess, className = '' }) => {
             if (onSuccess) {
                 onSuccess();
             }
+            navigate('../signupprofile')
         } catch (err) {
             console.error('Signup Error:', err);
             setError('예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
@@ -149,7 +153,7 @@ const SignupForm = ({ onSuccess, className = '' }) => {
         }
     };
 
-    const isSubmitButtonDisabled = isSubmitting || emailStatus !== 'available' || authCodeStatus !== 'valid' || !agreedToTerms;
+    const isSubmitButtonDisabled = isSubmitting || idStatus !== 'available' || authCodeStatus !== 'valid' || !agreedToTerms;
 
     const getStatusClass = (status) => {
         if (status === 'available' || status === 'valid') return 'status-message status-success';
@@ -165,31 +169,31 @@ const SignupForm = ({ onSuccess, className = '' }) => {
             </div>
 
             <div className="formGroup">
-                <label className="SignupformLabel ID" htmlFor="email">아이디</label>
+                <label className="SignupformLabel ID" htmlFor="id">아이디</label>
                 <div className="input-with-button-group">
                     <input
                         type="text"
-                        name="email"
-                        value={formData.email}
+                        name="id"
+                        value={formData.id}
                         onChange={handleChange}
                         className="SignupformInput"
                         placeholder=""
                         required
-                        autoComplete="email"
-                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                        autoComplete="id"
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     />
                     <button
                         type="button"
-                        onClick={handleEmailCheck}
-                        disabled={isSubmitting || isEmailChecking || !formData.email}
-                        className={`valid-checking ${isEmailChecking ? 'loading' : ''}`}
+                        onClick={handleidCheck}
+                        disabled={isSubmitting || isidChecking || !formData.id}
+                        className={`valid-checking ${isidChecking ? 'loading' : ''}`}
                     >
-                        {isEmailChecking ? '확인 중...' : '중복 확인'}
+                        {isidChecking ? '확인 중...' : '중복 확인'}
                     </button>
                 </div>
-                {emailMessage && (
-                    <div className={getStatusClass(emailStatus)}>
-                        {emailMessage}
+                {idMessage && (
+                    <div className={getStatusClass(idStatus)}>
+                        {idMessage}
                     </div>
                 )}
             </div>
@@ -208,13 +212,13 @@ const SignupForm = ({ onSuccess, className = '' }) => {
                         placeholder="최소 8자"
                         required
                         autoComplete="new-password"
-                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     />
                     <button
                         type="button"
                         className="SignuppasswordToggleButton"
                         onClick={() => setShowPassword(!showPassword)}
-                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     >
                         {showPassword ? (
                             <img src={EyeActive} alt="hide Password" />
@@ -239,13 +243,13 @@ const SignupForm = ({ onSuccess, className = '' }) => {
                         placeholder="비밀번호 다시 입력"
                         required
                         autoComplete="new-password"
-                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     />
                     <button
                         type="button"
                         className="SignuppasswordToggleButton"
                         onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     >
                         {showPasswordConfirm ? (
                             <img src={EyeActive} alt="hide Password" />
@@ -267,7 +271,7 @@ const SignupForm = ({ onSuccess, className = '' }) => {
                         className="SignupformInput"
                         placeholder="인증코드 입력"
                         required
-                        disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     />
                     <button
                         type="button"
@@ -291,12 +295,12 @@ const SignupForm = ({ onSuccess, className = '' }) => {
                     id="agreedToTerms"
                     checked={agreedToTerms}
                     onChange={() => setAgreedToTerms(!agreedToTerms)}
-                    disabled={isSubmitting || isEmailChecking || isAuthCodeVerifying}
+                    disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     className="agreewithtermsCheckbox"
                 />
                 <label htmlFor="agreedToTerms" className="agreewithterms">
                     Stech
-                    <a href="/terms" className="terms-link"> 이용 약관</a> 및 <a href="/privacy" className="terms-link">개인정보 보호정책</a>에 동의합니다.
+                    <a href="https://calico-mass-cad.notion.site/Stech-Pro-24d7c5431d5d80eab2dfe595b3fac4eb" className="terms-link"> 이용 약관</a> 및 <a href="https://calico-mass-cad.notion.site/Stech-Pro-24d7c5431d5d8022936be7a2894849f0" className="terms-link">개인정보 보호정책</a>에 동의합니다.
                 </label>
             </div>
 

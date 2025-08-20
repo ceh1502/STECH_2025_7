@@ -49,6 +49,7 @@ export default function AppRouter() {
             <Route path="auth" element={<AuthPages.AuthLayout />}>
                 <Route index element={<AuthPages.LoginPage />} />
                 <Route path="signup" element={<AuthPages.SignupPage />} />
+                <Route path="signupprofile" element={<AuthPages.SignupProfilePage />} />
                 <Route path="find" element={<AuthPages.FindPage />} />
                 <Route path="findcode" element={<AuthPages.FindCodePage />} />
                 <Route path="changepassword" element={<AuthPages.ChangePasswordPage />} />
