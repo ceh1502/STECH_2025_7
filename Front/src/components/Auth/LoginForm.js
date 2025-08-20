@@ -1,28 +1,18 @@
-// src/components/Auth/LoginForm.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
 import Google from '../../assets/images/png/AuthPng/Google.png';
 import Eye from '../../assets/images/png/AuthPng/Eye.png';
 import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
 
-const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true, redirectPath = '/service', className = '' }) => {
+const LoginForm = ({ onSuccess, showForgotPassword = true, className = '' }) => {
     const [formData, setFormData] = useState({
-        email: '',
+        id: '',
         password: '',
     });
-    const [rememberMe, setRememberMe] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const savedEmail = localStorage.getItem('rememberedEmail');
-        if (savedEmail) {
-            setFormData((prev) => ({ ...prev, email: savedEmail }));
-            setRememberMe(true);
-        }
-    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,18 +23,14 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
         if (error) setError(null);
     };
 
-    const handleRememberMeChange = (e) => {
-        setRememberMe(e.target.checked);
-    };
-
     const validateForm = () => {
-        if (!formData.email || !formData.password) {
+        if (!formData.id || !formData.password) {
             setError('아이디와 비밀번호 모두 입력해주세요.');
             return false;
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            setError('유효한 이메일을 입력해주세요.');
+        const idRegex = /^[a-zA-Z0-9]+$/;
+        if (!idRegex.test(formData.id)) {
+            setError('존재하지 않는 아이디입니다.');
             return false;
         }
         return true;
@@ -60,11 +46,6 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
             console.log('로그인 시도:', formData);
             const success = true;
             if (success) {
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', formData.email);
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                }
                 console.log('Login Successful!');
                 if (onSuccess) {
                     onSuccess();
@@ -86,20 +67,19 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
         <form onSubmit={handleSubmit} className={`loginForm ${className}`}>
             <div className="tab-container">
                 <button type="button" className="loginTitle">로그인</button>
-                <a href="auth/signup" type="button" className="loginTitleTosignup">회원가입</a>
+                <a href="/auth/signup" type="button" className="loginTitleTosignup">회원가입</a>
             </div>
 
             <div className="formGroup">
-                <label className="LoginformLabel ID" htmlFor="email">아이디</label>
+                <label className="LoginformLabel ID" htmlFor="id">아이디</label>
                 <input
                     type="text"
-                    name="email"
-                    value={formData.email}
+                    name="id"
+                    value={formData.id}
                     onChange={handleChange}
                     className="LoginformInput"
-                    placeholder=""
                     required
-                    autoComplete="email"
+                    autoComplete="id"
                     disabled={isFormLoading}
                 />
             </div>
@@ -118,7 +98,6 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
                         value={formData.password}
                         onChange={handleChange}
                         className="LoginformInput"
-                        placeholder=""
                         required
                         autoComplete="current-password"
                         disabled={isFormLoading}
@@ -138,14 +117,6 @@ const LoginForm = ({ onSuccess, showRememberMe = true, showForgotPassword = true
                 </div>
             </div>
 
-            {showRememberMe && (
-                <div className="formOptions">
-                    <label className="LoginrememberMeLabel">
-                        <input type="checkbox" checked={rememberMe} onChange={handleRememberMeChange} className="LoginrememberCheckbox" disabled={isFormLoading} />
-                        <span className="rememberText">Remember me</span>
-                    </label>
-                </div>
-            )}
 
             {error && <div className="errorMessage">⚠️ {error}</div>}
 

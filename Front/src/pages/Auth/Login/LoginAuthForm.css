@@ -58,7 +58,6 @@
 
 .formGroup {
     width: 100%;
-    margin-top: 10px;
     margin-bottom: 20px;
 }
 
@@ -133,6 +132,7 @@
     color: #ffffff;
     font-size: 0.875rem;
     cursor: pointer;
+    transform: translateY(-40%);
 }
 
 .LoginrememberCheckbox {

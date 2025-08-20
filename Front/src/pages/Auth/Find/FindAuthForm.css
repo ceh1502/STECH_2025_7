@@ -25,11 +25,12 @@
 .find-description {
   text-align: center;
   color: #aaaaaa;
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 0px !important;
 }
 
 .find-input-group {
+  position: relative;
   margin-top: 15px;
   margin-bottom: 20px;
 }
@@ -50,6 +51,8 @@
     border-radius: 0.5rem;
     font-size: 1rem;
     transition: all 0.3s ease;
+    margin-bottom: 5px;
+    padding-right: 150px;
 }
 
 .find-input-group input:focus {
@@ -69,7 +72,7 @@
     transition: all 0.3s ease;
     background: linear-gradient(135deg, #f77705 0%, #f79c05 100%);
     color: white;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .find-code-button:hover:not(:disabled) {
@@ -119,4 +122,41 @@
 .find-help-section a:hover{
     color: #4299e1;
     text-decoration: underline;
+}
+
+.find-input-group a{
+  margin-top: 10px;
+}
+
+.resend-link {
+  color: #63b3ed;
+  text-decoration: none;
+  margin-top: 50px;
+}
+
+.resend-link:hover {
+    color: #4299e1;
+    text-decoration: underline;
+}
+
+.password-toggle-button {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-5%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.find-page-card h2 {
+  text-align: center;
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.find-page-card p {
+  font-size: 14px;
+  color: white;
 }

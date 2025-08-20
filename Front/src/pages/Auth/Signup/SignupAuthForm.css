@@ -1,640 +1,276 @@
-/* src/components/Auth/AuthForm.css */
-
-/* ===== 폼 공통 스타일 ===== */
-.loginForm,
 .signupForm {
-    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #444444;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ffffff;
+}
+
+.tab-container {
+    display: flex;
     width: 100%;
-    display: block;
-    width: 100%;
-    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.signupTitle {
+    flex: 1;
+    padding: 5px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+}
+
+.signupTitleTosignup {
+    flex: 1;
+    padding: 5px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #f77705;
+    font-size: 20px;
+    font-weight: 600;
+    color: #f77705;
 }
 
 .formGroup {
-}
-
-.formLabel {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
-}
-
-.formInput {
     width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.SignupformLabel {
+    display: block;
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.password-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.agreewithterms {
+    color: white;
+    font-size: 14px;
+}
+
+.agreewithterms a {
+    color: #63b3ed;
+    font-size: 14px;
+    transition: color 0.3s;
+    margin-left: px;
+}
+
+.agreewithterms a:hover {
+    color: #4299e1;
+    text-decoration: underline;
+}
+
+.SignupformInput {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #444444;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 0.5rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
-    background-color: #ffffff;
 }
 
-.formInput:focus {
+.SignupformInput:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: #f77705;
 }
 
-.formInput:disabled {
-    background-color: #f9fafb;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.formInput.error {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-/* ===== 비밀번호 입력 ===== */
 .passwordInputContainer {
     position: relative;
 }
 
-.passwordToggleButton {
+.SignuppasswordToggleButton {
     position: absolute;
-    right: 12px;
+    right: 0.75rem;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-45%);
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
-    padding: 4px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+    padding: 0.25rem;
 }
 
-.passwordToggleButton:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
 
-.passwordToggleButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-/* ===== 비밀번호 일치 표시 ===== */
-.passwordMatch {
-    margin-top: 8px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.passwordMatch.match {
-    color: #10b981;
-}
-
-.passwordMatch.mismatch {
-    color: #ef4444;
-}
-
-/* ===== 폼 옵션 ===== */
 .formOptions {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    margin-bottom: 24px;
-    gap: 16px;
 }
 
-.rememberMeLabel {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #6b7280;
-    cursor: pointer;
+.agreewithtermsrCheckbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #f77705;
 }
 
-.rememberCheckbox {
-    width: 16px;
-    height: 16px;
-    accent-color: #4f46e5;
-}
-
-.rememberText {
-    user-select: none;
-}
-
-.forgotPasswordButton {
-    background: none;
-    border: none;
-    color: #4f46e5;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 0;
-}
-
-.forgotPasswordButton:hover {
-    color: #3730a3;
-}
-
-.forgotPasswordButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-/* ===== 약관 동의 ===== */
-.agreementSection {
-    margin: 24px 0;
-    padding: 20px;
-    background-color: #f9fafb;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-}
-
-.agreementTitle {
-    font-size: 16px;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 16px;
-}
-
-.agreementItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.agreementItem:last-child {
-    border-bottom: none;
-}
-
-.allAgreement {
-    background-color: #ffffff;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    border: 2px solid #e5e7eb;
-}
-
-.agreementLabel {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    flex: 1;
-}
-
-.agreementCheckbox {
-    width: 18px;
-    height: 18px;
-    accent-color: #4f46e5;
-}
-
-.checkmark {
-    /* 커스텀 체크박스 스타일을 원한다면 사용 */
-}
-
-.agreementText {
-    font-size: 14px;
-    color: #374151;
-    user-select: none;
-}
-
-.required {
-    color: #ef4444;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.optional {
-    color: #6b7280;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.viewTermsButton {
-    background: none;
-    border: 1px solid #d1d5db;
-    color: #6b7280;
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.viewTermsButton:hover {
-    background-color: #f3f4f6;
-    border-color: #9ca3af;
-    color: #374151;
-}
-
-.viewTermsButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.agreementDivider {
-    height: 1px;
-    background-color: #d1d5db;
-    margin: 8px 0;
-}
-
-/* ===== 에러 메시지 ===== */
 .errorMessage {
     background-color: #fef2f2;
     border: 1px solid #fecaca;
     color: #dc2626;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 20px;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
 }
 
-.errorMessage::before {
-    content: '⚠️';
-    font-size: 16px;
-}
-
-/* ===== 제출 버튼 ===== */
-.submitButton {
+.SignupsubmitButton {
     display: block;
     width: 100%;
-    max-width: 100%;
-    padding: 14px 20px;
+    padding: 1rem;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 0.5rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.signupButton {
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    background: linear-gradient(135deg, #f77705 0%, #f79c05 100%);
     color: white;
 }
 
-.submitButton:hover:not(:disabled) {
+.SignupsubmitButton:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 4px 12px rgba(247, 119, 5, 0.3);
 }
 
-.submitButton:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.submitButton:disabled,
-.submitButton.disabled {
-    background: #d1d5db;
-    color: #9ca3af;
+.SignupsubmitButton:disabled {
+    background: #6b6b6b;
+    color: #aaa;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-.submitButton.loading {
+.SignupsubmitButton.loading {
     cursor: not-allowed;
+    opacity: 0.7;
 }
 
-.submitButton.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    margin: auto;
-    border: 2px solid transparent;
-    border-top-color: #ffffff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.divider-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 1.5rem 0;
 }
 
-@keyframes spin {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
+.divider {
+    flex: 1;
+    height: 1px;
+    background-color: #ffffff;
 }
 
-/* ===== 반응형 ===== */
-@media (max-width: 768px) {
-    .formOptions {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .agreementSection {
-        padding: 16px;
-    }
-
-    .agreementItem {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .viewTermsButton {
-        align-self: flex-end;
-    }
+.divider-text {
+    margin: 0 1rem;
+    color: #ffffff;
+    font-size: 15px;
 }
 
-/* ===== 다크모드 지원 ===== */
-@media (prefers-color-scheme: dark) {
-    .formLabel {
-        color: #6b7280;
-        /* color: #d1d5db; */
-    }
-
-    .formInput {
-        background-color: #374151;
-        border-color: #4b5563;
-        color: #f9fafb;
-    }
-
-    .formInput:focus {
-        border-color: #6366f1;
-    }
-
-    .agreementSection {
-        background-color: #374151;
-        border-color: #4b5563;
-    }
-
-    .allAgreement {
-        background-color: #4b5563;
-        border-color: #6b7280;
-    }
-
-    .agreementText {
-        color: #d1d5db;
-    }
-
-    .viewTermsButton {
-        background-color: #4b5563;
-        border-color: #6b7280;
-        color: #d1d5db;
-    }
-
-    .viewTermsButton:hover {
-        background-color: #6b7280;
-        color: #f9fafb;
-    }
+.social-buttons-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.passwordRules {
-    margin-top: 12px;
-    padding: 16px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-    transition: all 0.3s ease;
+.socialButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.passwordRules.allValid {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+.socialButton.google-button {
+    background-color: #eee;
+    color: #333;
 }
 
-.passwordRule {
+.socialButton.google-button:hover {
+    background-color: #ddd;
+}
+
+.socialButton.kakao-button {
+    background-color: #fcdc00;
+    color: #3b1e1e;
+}
+
+.socialButton.kakao-button:hover {
+    background-color: #e5c900;
+}
+
+.socialicon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 10px;
+}
+
+.input-with-button-group {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    transition: all 0.2s ease;
 }
 
-.passwordRule:last-child {
-    margin-bottom: 0;
-}
-
-.passwordRule.valid {
-    color: #155724;
-}
-
-.passwordRule.invalid {
-    color: #721c24;
-}
-
-.ruleIcon {
+.status-message {
+    margin-top: 5px;
     font-size: 14px;
-    min-width: 16px;
-    text-align: center;
 }
 
-.ruleText {
-    font-weight: 500;
+.status-message.status-success {
+    color: #34d399;
 }
 
-/* ===== 비밀번호 일치 표시 개선 ===== */
-.passwordMatch {
-    margin-top: 8px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+.status-message.status-error {
+    color: #ef4444;
+}
+
+.valid-checking {
+    width: 40%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
     transition: all 0.3s ease;
-}
-
-.passwordMatch.match {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.passwordMatch.mismatch {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* ===== 약관 동의 섹션 개선 ===== */
-.agreementSection {
-    margin: 24px 0;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
-}
-
-.agreementTitle {
-    font-size: 16px;
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 16px;
-    text-align: center;
-}
-
-.agreementItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.agreementItem:last-child {
-    border-bottom: none;
-}
-
-.allAgreement {
-    background-color: #ffffff;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    border: 2px solid #007bff;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
-}
-
-.agreementLabel {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    flex: 1;
-    user-select: none;
-}
-
-.agreementCheckbox {
-    width: 18px;
-    height: 18px;
-    accent-color: #007bff;
-    cursor: pointer;
-}
-
-.agreementCheckbox:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.checkmark {
-    /* 커스텀 체크박스 스타일을 원한다면 사용 */
-    position: relative;
-}
-
-.agreementText {
-    font-size: 14px;
-    color: #495057;
-    line-height: 1.4;
-}
-
-.required {
-    color: #dc3545;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.optional {
-    color: #6c757d;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.viewTermsButton {
-    background: none;
-    border: 1px solid #6c757d;
-    color: #6c757d;
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    background: linear-gradient(135deg, #f77705 0%, #f79c05 100%);
+    color: white;
     white-space: nowrap;
 }
 
-.viewTermsButton:hover:not(:disabled) {
-    background-color: #6c757d;
-    color: white;
-    transform: translateY(-1px);
-}
-
-.viewTermsButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.agreementDivider {
-    height: 1px;
-    background-color: #dee2e6;
-    margin: 12px 0;
-}
-
-/* ===== 제출 버튼 개선 ===== */
-.submitButton.signupButton {
-    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.submitButton.signupButton:hover:not(:disabled) {
-    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+.valid-checking:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px #4f46e5;
+    box-shadow: 0 4px 12px rgba(247, 119, 5, 0.3);
 }
 
-.submitButton.signupButton:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.submitButton.signupButton.disabled,
-.submitButton.signupButton:disabled {
-    background: #6c757d;
-    color: #adb5bd;
+.valid-checking:disabled {
+    background: #6b6b6b;
+    color: #aaa;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-.submitButton.loading {
+.valid-checking.loading {
     cursor: not-allowed;
-    background: #6c757d;
-}
-
-.submitButton.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid transparent;
-    border-top-color: #ffffff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-@keyframes spin {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-
-.eye {
-    color: white;
-    vertical-align: middle;
+    opacity: 0.7;
 }

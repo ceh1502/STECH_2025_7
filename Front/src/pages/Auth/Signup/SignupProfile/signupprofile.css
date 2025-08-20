@@ -1,9 +1,9 @@
-.findcodePage {
+.signupprofilePage {
     box-sizing: border-box;
     background-color: rgb(255, 255, 255);
     align-items: center;
     justify-content: center;
-    max-width: 400px;
+    max-width: 800px;
     margin: 50px auto;
     margin-bottom: 50px;
     border-radius: 20px;

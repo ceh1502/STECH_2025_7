@@ -1,10 +1,10 @@
 import PasswordFindCode from '../../../../components/Auth/PasswordFindCode';
-import './FindCodeAuthForm.css';
-import './findcode.css';
+import '../FindAuthForm.css';
+import '../find.css';
 
 const FindCodePage = () => {
     return (
-        <div className="findcodePage">
+        <div className="findPage">
             <PasswordFindCode />
         </div>
     );

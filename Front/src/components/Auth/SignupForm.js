@@ -1,412 +1,336 @@
-// src/components/Auth/SignupForm.js
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TermsModal from './TermsModal';
-import { PiEye, PiEyeClosed } from 'react-icons/pi';
+import Kakao from '../../assets/images/png/AuthPng/Kakao.png';
+import Google from '../../assets/images/png/AuthPng/Google.png';
+import Eye from '../../assets/images/png/AuthPng/Eye.png';
+import EyeActive from '../../assets/images/png/AuthPng/EyeActive.png';
 
-const SignupForm = ({ onSuccess, showAgreements = true, autoLoginAfterSignup = true, redirectPath = '/service', className = '' }) => {
-    // 폼 데이터
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-    });
 
-    // 약관 동의 상태
-    const [agreements, setAgreements] = useState({
-        termsOfService: false,
-        privacyPolicy: false,
-        allAgreed: false,
-    });
-
-    // UI 상태
-    const [uiState, setUiState] = useState({
-        showPassword: false,
-        showConfirmPassword: false,
-        isSubmitting: false,
-    });
-
-    // 모달 상태
-    const [modal, setModal] = useState({
-        isOpen: false,
-        termType: null,
-    });
-
-    // 비밀번호 검증 상태
-    const [passwordValidation, setPasswordValidation] = useState({
-        isValid: false,
-        rules: {
-            length: false,
-            number: false,
-            specialChar: false,
-        },
-    });
-
-    const { signup, loading, error, clearError, isAuthenticated } = useAuth();
+const SignupForm = ({ onSuccess, className = '' }) => {
     const navigate = useNavigate();
 
-    // 로그인 성공시 리다이렉트
-    useEffect(() => {
-        if (isAuthenticated && autoLoginAfterSignup) {
-            if (onSuccess) {
-                onSuccess();
-            } else {
-                navigate(redirectPath);
-            }
-        }
-    }, [isAuthenticated, navigate, redirectPath, onSuccess, autoLoginAfterSignup]);
+    const [formData, setFormData] = useState({
+        id: '',
+        password: '',
+        passwordConfirm: '',
+        authCode: '',
+    });
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
 
-    // 비밀번호 유효성 검사
-    useEffect(() => {
-        const password = formData.password;
-        const rules = validatePassword(password);
-        const isValid = Object.values(rules).every(Boolean);
+    const [isidChecking, setIsidChecking] = useState(false);
+    const [isAuthCodeVerifying, setIsAuthCodeVerifying] = useState(false);
 
-        setPasswordValidation({ isValid, rules });
-    }, [formData.password]);
+    const [idStatus, setidStatus] = useState(null);
+    const [idMessage, setidMessage] = useState('');
+    const [authCodeStatus, setAuthCodeStatus] = useState(null);
+    const [authCodeMessage, setAuthCodeMessage] = useState('');
 
-    // 비밀번호 검증 함수
-    const validatePassword = (password) => {
-        if (!password) {
-            return {
-                length: false,
-                number: false,
-                specialChar: false,
-            };
-        }
-
-        return {
-            length: password.length >= 8 && password.length <= 30,
-            number: /[0-9]/.test(password),
-            specialChar: /[!@#$%^&*()_+[\]{};':"\\|,.<>/?`~-]/.test(password),
-        };
-    };
-
-    // 폼 데이터 변경 핸들러
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-
-        if (error) clearError();
-    };
-
-    // UI 상태 변경 핸들러
-    const togglePasswordVisibility = (field) => {
-        setUiState((prev) => ({
+        setFormData((prev) => ({
             ...prev,
-            [field]: !prev[field],
+            [name]: value,
         }));
+        if (error) setError(null);
     };
 
-    // 약관 동의 핸들러
-    const handleAgreementChange = (e) => {
-        const { name, checked } = e.target;
+    const handleidCheck = async () => {
+        if (!formData.id) {
+            setidStatus('idle');
+            setidMessage('아이디를 입력해주세요.');
+            return;
+        }
 
-        if (name === 'allAgreed') {
-            setAgreements({
-                termsOfService: checked,
-                privacyPolicy: checked,
-                allAgreed: checked,
-            });
-        } else {
-            setAgreements((prev) => {
-                const newAgreements = { ...prev, [name]: checked };
-                newAgreements.allAgreed = newAgreements.termsOfService && newAgreements.privacyPolicy;
-                return newAgreements;
-            });
+        const idRegex = /^[a-zA-Z0-9]+$/;
+        if (!idRegex.test(formData.id)) {
+            setidStatus('unavailable');
+            setidMessage('영어 및 숫자 조합만 입력해주세요.');
+            return;
+        }        
+
+        setidStatus('checking');
+        setidMessage('');
+        setIsidChecking(true);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (formData.id === 'test') {
+                setidStatus('unavailable');
+                setidMessage('중복된 아이디입니다.');
+            } else {
+                setidStatus('available');
+                setidMessage('사용 가능한 아이디입니다.');
+            }
+        } catch (err) {
+            setidStatus('invalid');
+            setidMessage('아이디 확인 중 오류가 발생했습니다.');
+        } finally {
+            setIsidChecking(false);
         }
     };
 
-    // 모달 관련 함수들
-    const openModal = (termType) => {
-        console.log('Opening modal for:', termType);
-        setModal({
-            isOpen: true,
-            termType: termType,
-        });
+    const handleAuthCodeVerification = async () => {
+        if (!formData.authCode) {
+            setAuthCodeStatus('idle');
+            setAuthCodeMessage('인증코드를 입력해주세요.');
+            return;
+        }
+
+        setAuthCodeStatus('verifying');
+        setAuthCodeMessage('');
+        setIsAuthCodeVerifying(true);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (formData.authCode === '123123') {
+                setAuthCodeStatus('valid');
+                setAuthCodeMessage('유효한 인증코드입니다.');
+            } else {
+                setAuthCodeStatus('invalid');
+                setAuthCodeMessage('유효하지 않은 인증코드입니다.');
+            }
+        } catch (err) {
+            setAuthCodeStatus('invalid');
+            setAuthCodeMessage('인증코드 확인 중 오류가 발생했습니다.');
+        } finally {
+            setIsAuthCodeVerifying(false);
+        }
     };
 
-    const closeModal = () => {
-        console.log('Closing modal');
-        setModal({
-            isOpen: false,
-            termType: null,
-        });
-    };
-
-    const handleModalAgree = (termType) => {
-        console.log('Modal agree for:', termType);
-        setAgreements((prev) => {
-            const newAgreements = { ...prev, [termType]: true };
-            newAgreements.allAgreed = newAgreements.termsOfService && newAgreements.privacyPolicy;
-            return newAgreements;
-        });
-    };
-
-    // 폼 유효성 검사
     const validateForm = () => {
-        const { firstName, lastName, email, password, confirmPassword } = formData;
-
-        console.log('=== Form Validation ===');
-        console.log('Form Data:', {
-            firstName: firstName ? 'OK' : 'MISSING',
-            lastName: lastName ? 'OK' : 'MISSING',
-            email: email ? 'OK' : 'MISSING',
-            password: password ? 'OK' : 'MISSING',
-            confirmPassword: confirmPassword ? 'OK' : 'MISSING',
-        });
-
-        if (!firstName || !lastName || !email || !password || !confirmPassword) {
-            alert('Please fill in all required fields.');
+        if (!formData.id || !formData.password || !formData.passwordConfirm || !formData.authCode) {
+            setError('모든 필수 항목을 입력해주세요.');
             return false;
         }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address.');
+        if (formData.password.length < 8) {
+            setError('비밀번호를 8글자 이상 입력해주세요.');
             return false;
         }
-
-        if (!passwordValidation.isValid) {
-            alert('Please meet all password requirements.');
+        if (formData.password !== formData.passwordConfirm) {
+            setError('비밀번호가 일치하지 않습니다.');
             return false;
         }
-
-        if (password !== confirmPassword) {
-            alert('Passwords do not match.');
+        if (!agreedToTerms) {
+            setError('이용 약관 및 개인정보 보호정책에 동의해야 합니다.');
             return false;
         }
-
-        if (showAgreements && (!agreements.termsOfService || !agreements.privacyPolicy)) {
-            alert('Please agree to the required terms and policies.');
+        if (idStatus !== 'available') {
+            setError('아이디 중복 확인이 필요합니다.');
             return false;
         }
-
+        if (authCodeStatus !== 'valid') {
+            setError('인증코드 확인이 필요합니다.');
+            return false;
+        }
         return true;
     };
 
-    // 폼 제출 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted!');
-
         if (!validateForm()) return;
 
-        setUiState((prev) => ({ ...prev, isSubmitting: true }));
+        setIsSubmitting(true);
+        setError(null);
 
         try {
-            const signupData = {
-                email: formData.email,
-                password: formData.password,
-                name: `${formData.firstName} ${formData.lastName}`, // 합치기
-                // firstName, lastName 제거
-            };
-
-            if (showAgreements) {
-                signupData.agreements = {
-                    termsOfService: agreements.termsOfService,
-                    privacyPolicy: agreements.privacyPolicy,
-                };
+            console.log('회원가입 시도:', formData);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            console.log('Signup Successful!');
+            if (onSuccess) {
+                onSuccess();
             }
-
-            console.log('Sending signup data:', signupData);
-
-            const result = await signup(signupData);
-
-            if (result.success) {
-                console.log('Signup successful!');
-
-                if (onSuccess) {
-                    onSuccess(result);
-                } else if (!autoLoginAfterSignup || !result.autoLogin) {
-                    navigate('/auth');
-                }
-            }
+            navigate('../signupprofile')
         } catch (err) {
-            console.error('Signup error:', err);
+            console.error('Signup Error:', err);
+            setError('예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         } finally {
-            setUiState((prev) => ({ ...prev, isSubmitting: false }));
+            setIsSubmitting(false);
         }
     };
 
-    // 계산된 상태들
-    const isFormLoading = loading || uiState.isSubmitting;
-    const isRequiredAgreementsValid = showAgreements ? agreements.termsOfService && agreements.privacyPolicy : true;
-    const isPasswordMatch = formData.confirmPassword && formData.password === formData.confirmPassword;
-    const isPasswordMismatch = formData.confirmPassword && formData.password !== formData.confirmPassword;
+    const isSubmitButtonDisabled = isSubmitting || idStatus !== 'available' || authCodeStatus !== 'valid' || !agreedToTerms;
+
+    const getStatusClass = (status) => {
+        if (status === 'available' || status === 'valid') return 'status-message status-success';
+        if (status === 'unavailable' || status === 'invalid') return 'status-message status-error';
+        return 'status-message';
+    };
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className={`signupForm ${className}`}>
-                {/* First Name */}
-                <div className="formGroup">
-                    <label className="formLabel">First Name</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="formInput" placeholder="John" required disabled={isFormLoading} />
-                </div>
+        <form onSubmit={handleSubmit} className={`signupForm ${className}`}>
+            <div className="tab-container">
+                <a href="/auth" className="signupTitle">로그인</a>
+                <button type="button" className="signupTitleTosignup">회원가입</button>
+            </div>
 
-                {/* Last Name */}
-                <div className="formGroup">
-                    <label className="formLabel">Last Name</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="formInput" placeholder="Doe" required disabled={isFormLoading} />
-                </div>
-
-                {/* Email */}
-                <div className="formGroup">
-                    <label className="formLabel">Email</label>
+            <div className="formGroup">
+                <label className="SignupformLabel ID" htmlFor="id">아이디</label>
+                <div className="input-with-button-group">
                     <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
+                        type="text"
+                        name="id"
+                        value={formData.id}
                         onChange={handleChange}
-                        className="formInput"
-                        placeholder="example@email.com"
+                        className="SignupformInput"
+                        placeholder=""
                         required
-                        autoComplete="email"
-                        disabled={isFormLoading}
+                        autoComplete="id"
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
                     />
+                    <button
+                        type="button"
+                        onClick={handleidCheck}
+                        disabled={isSubmitting || isidChecking || !formData.id}
+                        className={`valid-checking ${isidChecking ? 'loading' : ''}`}
+                    >
+                        {isidChecking ? '확인 중...' : '중복 확인'}
+                    </button>
                 </div>
-
-                {/* Password */}
-                <div className="formGroup">
-                    <label className="formLabel">Password</label>
-                    <div className="passwordInputContainer">
-                        <input
-                            type={uiState.showPassword ? 'text' : 'password'}
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="formInput"
-                            placeholder="Password"
-                            required
-                            disabled={isFormLoading}
-                        />
-                        <button type="button" onClick={() => togglePasswordVisibility('showPassword')} className="passwordToggleButton" tabIndex={-1} disabled={isFormLoading}>
-                            {uiState.showPassword ? <PiEye className="eye" /> : <PiEyeClosed className="eye" />}
-                        </button>
-                    </div>
-
-                    {/* Password Rules */}
-                    {formData.password && (
-                        <div className={`passwordRules ${passwordValidation.isValid ? 'allValid' : ''}`}>
-                            <div className={`passwordRule ${passwordValidation.rules.length ? 'valid' : 'invalid'}`}>
-                                <span className="ruleIcon">{passwordValidation.rules.length ? '✅' : '❌'}</span>
-                                <span className="ruleText">8 to 30 characters</span>
-                            </div>
-                            <div className={`passwordRule ${passwordValidation.rules.number ? 'valid' : 'invalid'}`}>
-                                <span className="ruleIcon">{passwordValidation.rules.number ? '✅' : '❌'}</span>
-                                <span className="ruleText">At least one number</span>
-                            </div>
-                            <div className={`passwordRule ${passwordValidation.rules.specialChar ? 'valid' : 'invalid'}`}>
-                                <span className="ruleIcon">{passwordValidation.rules.specialChar ? '✅' : '❌'}</span>
-                                <span className="ruleText">At least one special character</span>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Confirm Password */}
-                <div className="formGroup">
-                    <label className="formLabel">Confirm Password</label>
-                    <div className="passwordInputContainer">
-                        <input
-                            type={uiState.showConfirmPassword ? 'text' : 'password'}
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className={`formInput ${isPasswordMismatch ? 'error' : ''}`}
-                            placeholder="Confirm Password"
-                            required
-                            disabled={isFormLoading}
-                        />
-                        <button type="button" onClick={() => togglePasswordVisibility('showConfirmPassword')} className="passwordToggleButton" tabIndex={-1} disabled={isFormLoading}></button>
-                    </div>
-
-                    {/* Password Match Status */}
-                    {formData.confirmPassword && (
-                        <div className={`passwordMatch ${isPasswordMatch ? 'match' : 'mismatch'}`}>{isPasswordMatch ? '✅ Passwords match' : '❌ Passwords do not match'}</div>
-                    )}
-                </div>
-
-                {/* Terms Agreement */}
-                {showAgreements && (
-                    <div className="agreementSection">
-                        <h3 className="agreementTitle">Terms Agreement</h3>
-
-                        {/* All Agreement */}
-                        <div className="agreementItem allAgreement">
-                            <label className="agreementLabel">
-                                <input type="checkbox" name="allAgreed" checked={agreements.allAgreed} onChange={handleAgreementChange} className="agreementCheckbox" disabled={isFormLoading} />
-                                <span className="checkmark"></span>
-                                <span className="agreementText">Agree to ALL</span>
-                            </label>
-                        </div>
-
-                        <div className="agreementDivider"></div>
-
-                        {/* Terms of Service */}
-                        <div className="agreementItem">
-                            <label className="agreementLabel">
-                                <input
-                                    type="checkbox"
-                                    name="termsOfService"
-                                    checked={agreements.termsOfService}
-                                    onChange={handleAgreementChange}
-                                    className="agreementCheckbox"
-                                    disabled={isFormLoading}
-                                />
-                                <span className="checkmark"></span>
-                                <span className="agreementText">
-                                    <span className="required">[Required]</span> Agree to Terms of Service
-                                </span>
-                            </label>
-                            <button type="button" className="viewTermsButton" onClick={() => openModal('termsOfService')} disabled={isFormLoading}>
-                                view
-                            </button>
-                        </div>
-
-                        {/* Privacy Policy */}
-                        <div className="agreementItem">
-                            <label className="agreementLabel">
-                                <input
-                                    type="checkbox"
-                                    name="privacyPolicy"
-                                    checked={agreements.privacyPolicy}
-                                    onChange={handleAgreementChange}
-                                    className="agreementCheckbox"
-                                    disabled={isFormLoading}
-                                />
-                                <span className="checkmark"></span>
-                                <span className="agreementText">
-                                    <span className="required">[Required]</span> Agree to Privacy Policy
-                                </span>
-                            </label>
-                            <button type="button" className="viewTermsButton" onClick={() => openModal('privacyPolicy')} disabled={isFormLoading}>
-                                view
-                            </button>
-                        </div>
+                {idMessage && (
+                    <div className={getStatusClass(idStatus)}>
+                        {idMessage}
                     </div>
                 )}
+            </div>
 
-                {/* Error Message */}
-                {error && <div className="errorMessage">{error}</div>}
+            <div className="formGroup">
+                <label className="SignupformLabel PW" htmlFor="password">
+                    비밀번호
+                </label>
+                <div className="passwordInputContainer">
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="SignupformInput"
+                        placeholder="최소 8자"
+                        required
+                        autoComplete="new-password"
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
+                    />
+                    <button
+                        type="button"
+                        className="SignuppasswordToggleButton"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
+                    >
+                        {showPassword ? (
+                            <img src={EyeActive} alt="hide Password" />
+                        ) : (
+                            <img src={Eye} alt="show Password" />
+                        )}
+                    </button>
+                </div>
+            </div>
 
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    disabled={isFormLoading || !isRequiredAgreementsValid || !passwordValidation.isValid || !isPasswordMatch}
-                    className={`submitButton signupButton ${isFormLoading ? 'loading' : ''}`}
-                    style={{ textAlign: 'center' }}
-                >
-                    {isFormLoading ? 'Signing up...' : 'Sign up'}
+            <div className="formGroup">
+                <label className="SignupformLabel PW" htmlFor="passwordConfirm">
+                    비밀번호 확인
+                </label>
+                <div className="passwordInputContainer">
+                    <input
+                        type={showPasswordConfirm ? 'text' : 'password'}
+                        name="passwordConfirm"
+                        value={formData.passwordConfirm}
+                        onChange={handleChange}
+                        className="SignupformInput"
+                        placeholder="비밀번호 다시 입력"
+                        required
+                        autoComplete="new-password"
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
+                    />
+                    <button
+                        type="button"
+                        className="SignuppasswordToggleButton"
+                        onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
+                    >
+                        {showPasswordConfirm ? (
+                            <img src={EyeActive} alt="hide Password" />
+                        ) : (
+                            <img src={Eye} alt="show Password" />
+                        )}
+                    </button>
+                </div>
+            </div>
+
+            <div className="formGroup">
+                <label className="SignupformLabel ID" htmlFor="authCode">인증코드</label>
+                <div className="input-with-button-group">
+                    <input
+                        type="text"
+                        name="authCode"
+                        value={formData.authCode}
+                        onChange={handleChange}
+                        className="SignupformInput"
+                        placeholder="인증코드 입력"
+                        required
+                        disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
+                    />
+                    <button
+                        type="button"
+                        onClick={handleAuthCodeVerification}
+                        disabled={isSubmitting || isAuthCodeVerifying || !formData.authCode}
+                        className={`valid-checking ${isAuthCodeVerifying ? 'loading' : ''}`}
+                    >
+                        {isAuthCodeVerifying ? '확인 중...' : '인증'}
+                    </button>
+                </div>
+                {authCodeMessage && (
+                    <div className={getStatusClass(authCodeStatus)}>
+                        {authCodeMessage}
+                    </div>
+                )}
+            </div>
+
+            <div className="formGroup">
+                <input
+                    type="checkbox"
+                    id="agreedToTerms"
+                    checked={agreedToTerms}
+                    onChange={() => setAgreedToTerms(!agreedToTerms)}
+                    disabled={isSubmitting || isidChecking || isAuthCodeVerifying}
+                    className="agreewithtermsCheckbox"
+                />
+                <label htmlFor="agreedToTerms" className="agreewithterms">
+                    Stech
+                    <a href="https://calico-mass-cad.notion.site/Stech-Pro-24d7c5431d5d80eab2dfe595b3fac4eb" className="terms-link"> 이용 약관</a> 및 <a href="https://calico-mass-cad.notion.site/Stech-Pro-24d7c5431d5d8022936be7a2894849f0" className="terms-link">개인정보 보호정책</a>에 동의합니다.
+                </label>
+            </div>
+
+            {error && <div className="errorMessage">⚠️ {error}</div>}
+
+            <button
+                type="submit"
+                disabled={isSubmitButtonDisabled}
+                className={`SignupsubmitButton ${isSubmitting ? 'loading' : ''}`}
+            >
+                {isSubmitting ? '회원가입 중...' : '회원가입'}
+            </button>
+
+            <div className="divider-container">
+                <div className="divider"></div>
+                <span className="divider-text">or</span>
+                <div className="divider"></div>
+            </div>
+
+            <div className="social-buttons-container">
+                <button type="button" className="socialButton google-button">
+                    <img src={Google} alt="google" className="socialicon" />
+                    구글로 회원가입
                 </button>
-            </form>
-
-            {/* Terms Modal */}
-            <TermsModal isOpen={modal.isOpen} onClose={closeModal} onAgree={handleModalAgree} termType={modal.termType} currentAgreement={modal.termType ? agreements[modal.termType] : false} />
-        </>
+                <button type="button" className="socialButton kakao-button">
+                    <img src={Kakao} alt="kakao" className="socialicon" />
+                    카카오로 회원가입
+                </button>
+            </div>
+        </form>
     );
 };
 
