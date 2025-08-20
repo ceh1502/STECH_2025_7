@@ -1,4 +1,4 @@
-import StatLeague from "../../../../../components/Stat/StatTeam";
+import StatLeague from "../../../../../components/Stat/StatLeague";
 import {FALL_2024_DATA} from "../../../../../data/fall2024";
 import {TEAMS } from "../../../../../data/TEAMS";
 const LeaguePage = () => {

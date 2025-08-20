@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect, useMemo} from "react";
 import {FaChevronDown} from "react-icons/fa";
-import "./StatTeam.css";
+import "./StatLeague.css";
 import NoGroupImg from "../../assets/images/png/NoGroup.png";
 import Trophy from "../../assets/images/png/trophy.png";
 
