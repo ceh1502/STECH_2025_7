@@ -1,5 +1,5 @@
 import React, {useMemo, useState, useEffect, useRef} from "react";
-import {RxTriangleDown, RxTriangleUp} from "react-icons/rx";
+import {RxTriangleDown} from "react-icons/rx";
 import {FaChevronDown} from "react-icons/fa";
 import "./StatPosition.css";
 
@@ -23,10 +23,10 @@ function Dropdown({value, options, onChange, label}) {
         onClick={() => setOpen((o) => !o)}
       >
         <span className="dropdown-text">{value}</span>
-          <FaChevronDown
-                  size={16}
-                  className={`dropdown-arrow ${open ? "rotated" : ""}`}
-                />
+        <FaChevronDown
+          size={16}
+          className={`dropdown-arrow ${open ? "rotated" : ""}`}
+        />
       </button>
 
       {open && (
@@ -110,19 +110,19 @@ const positionCategories = {
 const statColumns = {
   QB: {
     pass: [
-      {key: "games", label: "경기 횟수"},
-      {key: "passing_attempts", label: "패스 시도 횟수"},
-      {key: "pass_completions", label: "패스 성공 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "passing_attempts", label: "패스 시도 수"},
+      {key: "pass_completions", label: "패스 성공 수"},
       {key: "completion_percentage", label: "패스 성공률"},
       {key: "passing_yards", label: "패싱 야드"},
       {key: "passing_td", label: "패싱 터치다운"},
       {key: "interceptions", label: "인터셉트"},
       {key: "longest_pass", label: "가장 긴 패스"},
-      {key: "sacks", label: "경기 당 색 허용 횟수"},
+      {key: "sacks", label: "경기 당 색 허용 수"},
     ],
     run: [
-      {key: "games", label: "경기 횟수"},
-      {key: "rushing_attempts", label: "러싱 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "rushing_attempts", label: "러싱 시도 수"},
       {key: "rushing_yards", label: "러싱 야드"},
       {key: "yards_per_carry", label: "볼 캐리 당 러싱 야드"},
       {key: "rushing_td", label: "러싱 터치다운"},
@@ -131,33 +131,33 @@ const statColumns = {
   },
   RB: {
     run: [
-      {key: "games", label: "경기 횟수"},
-      {key: "rushing_attempts", label: "러싱 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "rushing_attempts", label: "러싱 시도 수"},
       {key: "rushing_yards", label: "러싱 야드"},
       {key: "yards_per_carry", label: "볼 캐리 당 러싱 야드"},
       {key: "rushing_td", label: "러싱 터치다운"},
-      {key: "longest_rushing", label: "경기 중 가장 긴 러싱 야드"},
-      {key: "fumbles", label: "펌블 횟수"},
-      {key: "fumbles_lost", label: "펌블 턴오버 횟수"},
+      {key: "longest_rushing", label: "가장 긴 러싱 야드"},
+      {key: "fumbles", label: "펌블 수"},
+      {key: "fumbles_lost", label: "펌블 턴오버 수"},
     ],
     pass: [
-      {key: "games", label: "경기 횟수"},
-      {key: "targets", label: "패스 타겟 횟수"},
-      {key: "receptions", label: "패스 캐치 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "targets", label: "패스 타겟 수"},
+      {key: "receptions", label: "패스 캐치 수"},
       {key: "receiving_yards", label: "리시빙 야드"},
       {key: "yards_per_catch", label: "캐치 당 리시빙 야드"},
-      {key: "receiving_td", label: "리시빙 터치다운 횟수"},
+      {key: "receiving_td", label: "리시빙 터치다운 수"},
       {key: "longest_reception", label: "가장 긴 리시빙 야드"},
-      {key: "receiving_first_downs", label: "리시브 후 퍼스트 다운 횟수"},
-      {key: "fumbles", label: "펌블 횟수"},
-      {key: "fumbles_lost", label: "펌블 턴오버 횟수"},
+      {key: "receiving_first_downs", label: "리시브 후 퍼스트 다운 수"},
+      {key: "fumbles", label: "펌블 수"},
+      {key: "fumbles_lost", label: "펌블 턴오버 수"},
     ],
     ST: [
-      {key: "games", label: "경기 횟수"},
-      {key: "kick_returns", label: "킥 리턴 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "kick_returns", label: "킥 리턴 시도 수"},
       {key: "kick_return_yards", label: "킥 리턴 야드"},
       {key: "yards_per_kick_return", label: "킥 리턴 시도 당 리턴 야드"},
-      {key: "punt_returns", label: "펀트 리턴 시도 횟수"},
+      {key: "punt_returns", label: "펀트 리턴 시도 수"},
       {key: "punt_return_yards", label: "펀트 리턴 야드"},
       {key: "yards_per_punt_return", label: "펀트 리턴 시도 당 리턴 야드"},
       {key: "return_td", label: "리턴 터치다운"},
@@ -165,33 +165,33 @@ const statColumns = {
   },
   WR: {
     pass: [
-      {key: "games", label: "경기 횟수"},
-      {key: "targets", label: "패스 타겟 횟수"},
-      {key: "receptions", label: "패스 캐치 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "targets", label: "패스 타겟 수"},
+      {key: "receptions", label: "패스 캐치 수"},
       {key: "receiving_yards", label: "리시빙 야드"},
       {key: "yards_per_catch", label: "캐치당 리시빙 야드"},
       {key: "receiving_td", label: "리시빙 터치다운"},
       {key: "longest_reception", label: "가장 긴 리시빙 야드"},
-      {key: "receiving_first_downs", label: "리시브 후 퍼스트 다운 횟수"},
-      {key: "fumbles", label: "펌블 횟수"},
-      {key: "fumbles_lost", label: "펌블 턴오버 횟수"},
+      {key: "receiving_first_downs", label: "리시브 후 퍼스트 다운 수"},
+      {key: "fumbles", label: "펌블 수"},
+      {key: "fumbles_lost", label: "펌블 턴오버 수"},
     ],
     run: [
-      {key: "games", label: "경기 횟수"},
-      {key: "rushing_attempts", label: "러싱 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "rushing_attempts", label: "러싱 시도 수"},
       {key: "rushing_yards", label: "러싱 야드"},
       {key: "yards_per_carry", label: "볼 캐리 당 러싱 야드"},
       {key: "rushing_td", label: "러싱 터치다운"},
       {key: "longest_rushing", label: "가장 긴 러싱 야드"},
-      {key: "fumbles", label: "펌블 횟수"},
-      {key: "fumbles_lost", label: "펌블 턴오버 횟수"},
+      {key: "fumbles", label: "펌블 수"},
+      {key: "fumbles_lost", label: "펌블 턴오버 수"},
     ],
     ST: [
-      {key: "games", label: "경기 횟수"},
-      {key: "kick_returns", label: "킥 리턴 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "kick_returns", label: "킥 리턴 시도 수"},
       {key: "kick_return_yards", label: "킥 리턴 야드"},
       {key: "yards_per_kick_return", label: "킥 리턴 시도 당 리턴 야드"},
-      {key: "punt_returns", label: "펀트 리턴 시도 횟수"},
+      {key: "punt_returns", label: "펀트 리턴 시도 수"},
       {key: "punt_return_yards", label: "펀트 리턴 야드"},
       {key: "yards_per_punt_return", label: "펀트 리턴 시도 당 리턴 야드"},
       {key: "return_td", label: "리턴 터치다운"},
@@ -199,35 +199,35 @@ const statColumns = {
   },
   TE: {
     pass: [
-      {key: "games", label: "경기 횟수"},
-      {key: "targets", label: "패스 타겟 횟수"},
-      {key: "receptions", label: "패스 캐치 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "targets", label: "패스 타겟 수"},
+      {key: "receptions", label: "패스 캐치 수"},
       {key: "receiving_yards", label: "리시빙 야드"},
       {key: "yards_per_catch", label: "캐치 당 리시빙 야드"},
       {key: "receiving_td", label: "리시빙 터치다운"},
       {key: "longest_reception", label: "가장 긴 리시빙 야드"},
-      {key: "fumbles", label: "펌블 횟수"},
-      {key: "fumbles_lost", label: "펌블 턴오버 횟수"},
+      {key: "fumbles", label: "펌블 수"},
+      {key: "fumbles_lost", label: "펌블 턴오버 수"},
     ],
     run: [
-      {key: "games", label: "경기 횟수"},
-      {key: "rushing_attempts", label: "러싱 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "rushing_attempts", label: "러싱 시도 수"},
       {key: "rushing_yards", label: "러싱 야드"},
       {key: "yards_per_carry", label: "볼 캐리 당 러싱 야드"},
       {key: "rushing_td", label: "러싱 터치다운"},
       {key: "longest_rushing", label: "가장 긴 러싱 야드"},
-      {key: "fumbles", label: "펌블 횟수"},
-      {key: "fumbles_lost", label: "펌블 턴오버 횟수"},
+      {key: "fumbles", label: "펌블 수"},
+      {key: "fumbles_lost", label: "펌블 턴오버 수"},
     ],
   },
   K: {
     ST: [
-      {key: "games", label: "경기 횟수"},
-      {key: "extra_point_attempts", label: "PAT 시도 횟수"},
-      {key: "extra_point_made", label: "PAT 성공 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "extra_point_attempts", label: "PAT 시도 수"},
+      {key: "extra_point_made", label: "PAT 성공 수"},
       {key: "field_goal", label: "필드골 성공-필드골 시도"},
       {key: "field_goal_percentage", label: "필드골 성공률"},
-      {key: "field_goal_1_19", label: "1-19 야드 사이 성공률"},
+      {key: "field_goal_1_19", label: "1-19 야드 사이 성공"},
       {key: "field_goal_20_29", label: "20-29 야드 사이 성공"},
       {key: "field_goal_30_39", label: "30-39 야드 사이 성공"},
       {key: "field_goal_40_49", label: "40-49 야드 사이 성공"},
@@ -238,10 +238,10 @@ const statColumns = {
   },
   P: {
     ST: [
-      {key: "games", label: "경기 횟수"},
-      {key: "punts", label: "펀트 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "punts", label: "펀트 수"},
       {key: "average_punt_yards", label: "평균 펀트 거리"},
-      {key: "longest_punt", label: "가장 긴 펀트 거리"},
+      {key: "longest_punt", label: "가장 긴 펀트"},
       {key: "punt_yards", label: "펀트 야드"},
       {key: "touchback_percentage", label: "터치백 퍼센티지"},
       {key: "punts_inside_20", label: "20 야드 안쪽 펀트 퍼센티지"},
@@ -251,18 +251,18 @@ const statColumns = {
     default: [
       {key: "offensive_snaps_played", label: "공격 플레이 스냅 참여 수"},
       {key: "penalties", label: "반칙 수"},
-      {key: "sacks_allowed", label: "색 허용 횟수"},
+      {key: "sacks_allowed", label: "색 허용 수"},
     ],
   },
   DL: {
     default: [
-      {key: "games", label: "경기 횟수"},
-      {key: "tackles", label: "태클 횟수"},
-      {key: "sacks", label: "색 횟수"},
-      {key: "forced_fumbles", label: "펌블 유도 횟수"},
-      {key: "fumble_recovery", label: "펌블 리커버리 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "tackles", label: "태클 수"},
+      {key: "sacks", label: "색 수"},
+      {key: "forced_fumbles", label: "펌블 유도 수"},
+      {key: "fumble_recovery", label: "펌블 리커버리 수"},
       {key: "fumble_recovered_yards", label: "펌블 리커버리 야드"},
-      {key: "pass_defended", label: "패스를 막은 횟수"},
+      {key: "pass_defended", label: "패스를 막은 수"},
       {key: "interceptions", label: "인터셉션"},
       {key: "interception_yards", label: "인터셉션 야드"},
       {key: "touchdowns", label: "수비 터치다운"},
@@ -270,13 +270,13 @@ const statColumns = {
   },
   LB: {
     default: [
-      {key: "games", label: "경기 횟수"},
-      {key: "tackles", label: "태클 횟수"},
-      {key: "sacks", label: "색 횟수"},
-      {key: "forced_fumbles", label: "펌블 유도 횟수"},
-      {key: "fumble_recovery", label: "펌블 리커버리 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "tackles", label: "태클 수"},
+      {key: "sacks", label: "색 수"},
+      {key: "forced_fumbles", label: "펌블 유도 수"},
+      {key: "fumble_recovery", label: "펌블 리커버리 수"},
       {key: "fumble_recovered_yards", label: "펌블 리커버리 야드"},
-      {key: "pass_defended", label: "패스를 막은 횟수"},
+      {key: "pass_defended", label: "패스를 막은 수"},
       {key: "interceptions", label: "인터셉션"},
       {key: "interception_yards", label: "인터셉션 야드"},
       {key: "touchdowns", label: "수비 터치다운"},
@@ -284,23 +284,23 @@ const statColumns = {
   },
   DB: {
     defense: [
-      {key: "games", label: "경기 횟수"},
-      {key: "tackles", label: "태클 횟수"},
-      {key: "sacks", label: "색 횟수"},
-      {key: "forced_fumbles", label: "펌블 유도 횟수"},
-      {key: "fumble_recovery", label: "펌블 리커버리 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "tackles", label: "태클 수"},
+      {key: "sacks", label: "색 수"},
+      {key: "forced_fumbles", label: "펌블 유도 수"},
+      {key: "fumble_recovery", label: "펌블 리커버리 수"},
       {key: "fumble_recovered_yards", label: "펌블 리커버리 야드"},
-      {key: "pass_defended", label: "패스를 막은 횟수"},
+      {key: "pass_defended", label: "패스를 막은 수"},
       {key: "interceptions", label: "인터셉션"},
       {key: "interception_yards", label: "인터셉션 야드"},
       {key: "touchdowns", label: "수비 터치다운"},
     ],
     ST: [
-      {key: "games", label: "경기 횟수"},
-      {key: "kick_returns", label: "킥 리턴 시도 횟수"},
+      {key: "games", label: "경기 수"},
+      {key: "kick_returns", label: "킥 리턴 시도 수"},
       {key: "kick_return_yards", label: "킥 리턴 야드"},
       {key: "yards_per_kick_return", label: "킥 리턴 시도 당 리턴 야드"},
-      {key: "punt_returns", label: "펀트 리턴 시도 횟수"},
+      {key: "punt_returns", label: "펀트 리턴 시도 수"},
       {key: "punt_return_yards", label: "펀트 리턴 야드"},
       {key: "yards_per_punt_return", label: "펀트 리턴 시도 당 리턴 야드"},
       {key: "return_td", label: "리턴 터치다운"},
@@ -311,29 +311,34 @@ export default function StatPosition({data, teams = []}) {
   const [division, setDivision] = useState("1부");
   const [position, setPosition] = useState("QB");
   const [category, setCategory] = useState("pass");
+  const categories = positionCategories[position] || ["default"];
 
   // 다단 정렬 상태: [{key, direction}] (direction: 'desc' | 'asc')
   const [sortChain, setSortChain] = useState([]);
 
   // 포지션/카테고리 변경 시 기본(주황) 정렬 1개를 세팅
   useEffect(() => {
-    const cat = positionCategories[position][0];
-    const initialCategory = positionCategories[position].includes(category)
+    const nextCategory = categories.includes(category)
       ? category
-      : cat;
-    setCategory(initialCategory);
+      : categories[0];
+    setCategory(nextCategory);
 
-    const baseKey = PRIMARY_METRIC[position]?.[initialCategory];
-    if (baseKey) {
-      setSortChain([{key: baseKey, direction: "desc"}]); // 기본은 내림차순(많을수록 좋음)
-    } else {
-      setSortChain([]);
-    }
+    const baseKey =
+      PRIMARY_METRIC[position]?.[nextCategory] ??
+      PRIMARY_METRIC[position]?.default;
+    if (baseKey) setSortChain([{key: baseKey, direction: "desc"}]);
+    else setSortChain([]);
   }, [position]);
 
   useEffect(() => {
-    // 카테고리만 바뀌면 그 카테고리의 기본 지표로 초기화
-    const baseKey = PRIMARY_METRIC[position]?.[category];
+    const safeCategory = categories.includes(category)
+      ? category
+      : categories[0];
+    if (safeCategory !== category) setCategory(safeCategory);
+
+    const baseKey =
+      PRIMARY_METRIC[position]?.[safeCategory] ??
+      PRIMARY_METRIC[position]?.default;
     if (baseKey) setSortChain([{key: baseKey, direction: "desc"}]);
     else setSortChain([]);
   }, [category, position]);
@@ -347,7 +352,7 @@ export default function StatPosition({data, teams = []}) {
       const idx = prev.findIndex((s) => s.key === key);
       if (idx === -1) {
         // 새로 추가(우선순위 가장 높음)
-        return [{key, direction: "desc"}, ...prev];
+        return [...prev, {key, direction: "desc"}];
       }
       const cur = prev[idx];
       if (cur.direction === "desc") {
@@ -409,12 +414,15 @@ export default function StatPosition({data, teams = []}) {
             options={POSITION_OPTIONS}
             onChange={(v) => setPosition(v)}
           />
-          <Dropdown
-            label="Category"
-            value={category}
-            options={positionCategories[position]}
-            onChange={(v) => setCategory(v)}
-          />
+
+          {categories.length > 1 && (
+            <Dropdown
+              label="Category"
+              value={category}
+              options={categories}
+              onChange={(v) => setCategory(v)}
+            />
+          )}
         </div>
       </div>
 
@@ -432,7 +440,10 @@ export default function StatPosition({data, teams = []}) {
                 <th className="table-header-cell team-logo"></th>
                 <th className="table-header-cell team-column">소속팀</th>
               </div>
-              <div className="table-row2" style={{ '--cols': currentColumns.length }}>
+              <div
+                className="table-row2"
+                style={{"--cols": currentColumns.length}}
+              >
                 {currentColumns.map((col) => {
                   const active = sortChain.find((s) => s.key === col.key);
                   const order = active ? active.direction : null;
@@ -443,35 +454,28 @@ export default function StatPosition({data, teams = []}) {
                     <th
                       key={col.key}
                       className={`table-header-cell stat-column sortable
-                      ${active ? "active-blue" : ""}
-                      ${isPrimary && !active ? "primary-orange" : ""}
-                    `}
-                      onClick={() => toggleSort(col.key)}
-                      title={
-                        active
-                          ? `정렬: ${
-                              order === "desc" ? "내림차순" : "오름차순"
-                            }`
-                          : "정렬 적용"
-                      }
+            ${active ? "active-blue" : ""}
+            ${isPrimary && !active ? "primary-orange" : ""}
+          `}
                     >
-                      <div className="sort">
+                      <button
+                        type="button"
+                        className={`sort-toggle one ${order ?? "none"}`}
+                        onClick={() => toggleSort(col.key)}
+                        title={
+                          order
+                            ? `정렬: ${
+                                order === "desc" ? "내림차순" : "오름차순"
+                              }`
+                            : "정렬 적용"
+                        }
+                      >
                         <span className="column-label">{col.label}</span>
-                        <div className="sort-arrows">
-                          <RxTriangleDown
-                            size={10}
-                            className={`sort-arrow ${
-                              active && order === "asc" ? "active" : ""
-                            }`}
-                          />
-                          <RxTriangleUp
-                            size={10}
-                            className={`sort-arrow ${
-                              active && order === "desc" ? "active" : ""
-                            }`}
-                          />
-                        </div>
-                      </div>
+                        <RxTriangleDown
+                          className={`chev ${order === "asc" ? "asc" : ""}`}
+                          size={30}
+                        />
+                      </button>
                     </th>
                   );
                 })}
@@ -496,15 +500,20 @@ export default function StatPosition({data, teams = []}) {
                             src={teamInfo.logo}
                             alt={`${row.team} 로고`}
                             className={`team-logo-img ${
-                        teamInfo.logo.endsWith(".svg") ? "svg-logo" : "png-logo"
-                      }`}
+                              teamInfo.logo.endsWith(".svg")
+                                ? "svg-logo"
+                                : "png-logo"
+                            }`}
                           />
                         </div>
                       )}
                     </td>
                     <td className="table-cell team-name">{row.team}</td>
                   </div>
-                  <div className="table-row2" style={{ '--cols': currentColumns.length }}>
+                  <div
+                    className="table-row2"
+                    style={{"--cols": currentColumns.length}}
+                  >
                     {currentColumns.map((col) => (
                       <td key={col.key} className="table-cell">
                         {typeof row[col.key] === "number" &&
