@@ -18,13 +18,12 @@ const SignupForm = ({ onSuccess, className = '' }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
-    // Separate states for intermediate checks
     const [isEmailChecking, setIsEmailChecking] = useState(false);
     const [isAuthCodeVerifying, setIsAuthCodeVerifying] = useState(false);
 
-    const [emailStatus, setEmailStatus] = useState(null); // 'idle', 'checking', 'available', 'unavailable'
+    const [emailStatus, setEmailStatus] = useState(null);
     const [emailMessage, setEmailMessage] = useState('');
-    const [authCodeStatus, setAuthCodeStatus] = useState(null); // 'idle', 'verifying', 'valid', 'invalid'
+    const [authCodeStatus, setAuthCodeStatus] = useState(null);
     const [authCodeMessage, setAuthCodeMessage] = useState('');
 
     const handleChange = (e) => {
