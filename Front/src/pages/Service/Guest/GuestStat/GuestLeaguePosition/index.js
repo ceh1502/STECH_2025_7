@@ -1,8 +1,12 @@
+import StatPosition from "../../../../../components/Stat/StatPosition";
+import {mockData} from './../../../../../data/mockData';
+import {TEAMS} from "../../../../../data/TEAMS";
+
+
 const GuestLeagueLPositionPage = () => {
     return (
         <div>
-            <h1>Guest League Position Page</h1>
-            <p>This is the Guest League Position page content.</p>
+            <StatPosition data={mockData} teams={TEAMS} />
         </div>
     );
 }

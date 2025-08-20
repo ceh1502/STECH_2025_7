@@ -1,10 +1,3 @@
-const GamePage = () => {
-    return (
-        <div>
-            <h1>Game Page</h1>
-            <p>This is the Game page content.</p>
-        </div>
-    );
-}
-
-export default GamePage;
+export {default as GameLayout} from './GameLayout';
+export {default as GamePage} from './Game';
+export {default as ClipPage} from './Clip';
