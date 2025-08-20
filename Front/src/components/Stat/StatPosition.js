@@ -1,18 +1,78 @@
-import React, { useState, useMemo } from 'react';
-import { FaChevronDown , FaChevronUp } from 'react-icons/fa';
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import { RxTriangleDown, RxTriangleUp } from "react-icons/rx";
 import './StatPosition.css'; 
-import {  RxTriangleDown, RxTriangleUp } from "react-icons/rx";
 
+ function Dropdown({ value, options, onChange, label }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
 
+  useEffect(() => {
+    const onClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
 
-const StatPosition = ({ data, teams=[] }) => {
-  const [selectedDivision, setSelectedDivision] = useState("1부");
-  const [selectedPosition, setSelectedPosition] = useState('QB');
-  const [selectedStatType, setSelectedStatType] = useState('pass');
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'desc' });
+  return (
+    <div className="dropdown-container" ref={ref} aria-label={label}>
+      <button
+        type="button"
+        className={`dropdown-trigger ${open ? "open" : ""}`}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span className="dropdown-text">{value}</span>
+        <span className={`dropdown-arrow ${open ? "rotated" : ""}`}>▾</span>
+      </button>
 
+      {open && (
+        <div className="dropdown-menu" role="listbox">
+          <ul className="dropdown-list">
+            {options.map((opt) => (
+              <li key={opt}>
+                <button
+                  className={`dropdown-option ${value === opt ? "selected" : ""}`}
+                  onClick={() => {
+                    onChange(opt);
+                    setOpen(false);
+                  }}
+                  role="option"
+                  aria-selected={value === opt}
+                >
+                  {opt}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
 
-  // 포지션별 사용 가능한 통계 카테고리
+const DIVISION_OPTIONS = ["1부", "2부"];
+const POSITION_OPTIONS = ["QB","RB","WR","TE","K","P","OL","DL","LB","DB"];
+
+// “적을수록 좋은” 지표
+const LOWER_IS_BETTER = new Set([
+  "interceptions", "sacks", "fumbles", "fumbles_lost",
+  "penalties", "sacks_allowed",
+  "touchback_percentage", // 필요시
+]);
+
+// 포지션/카테고리별 기본(주황) 정렬 컬럼
+const PRIMARY_METRIC = {
+  QB: { pass: "passing_yards", run: "rushing_yards" },
+  RB: { run: "rushing_yards", pass: "receiving_yards", ST: "kick_return_yards" },
+  WR: { pass: "receiving_yards", run: "rushing_yards", ST: "kick_return_yards" },
+  TE: { pass: "receiving_yards", run: "rushing_yards" },
+  K:  { ST: "field_goal_percentage" },
+  P:  { ST: "average_punt_yards" },
+  OL: { default: "offensive_snaps_played" },
+  DL: { default: "sacks" },
+  LB: { default: "tackles" },
+  DB: { defense: "interceptions", ST: "kick_return_yards" },
+};
   const positionCategories = {
     'QB': ['pass', 'run'],
     'RB': ['run', 'pass','ST'],
@@ -26,7 +86,6 @@ const StatPosition = ({ data, teams=[] }) => {
     'DB': ['defense', 'ST'],
   };
 
-  // 포지션별, 플레이별 스탯 컬럼 정의
   const statColumns = {
     'QB': {
       'pass': [
@@ -227,177 +286,205 @@ const StatPosition = ({ data, teams=[] }) => {
       ]
     }
   };
+export default function StatPosition({ data, teams = [] }) {
+  const [division, setDivision] = useState("1부");
+  const [position, setPosition] = useState("QB");
+  const [category, setCategory] = useState("pass");
 
-  // 정렬 함수
-  const handleSort = (key) => {
-    let direction = 'desc';
-    if (sortConfig.key === key && sortConfig.direction === 'desc') {
-      direction = 'asc';
+  // 다단 정렬 상태: [{key, direction}] (direction: 'desc' | 'asc')
+  const [sortChain, setSortChain] = useState([]);
+
+  // 포지션/카테고리 변경 시 기본(주황) 정렬 1개를 세팅
+  useEffect(() => {
+    const cat = positionCategories[position][0];
+    const initialCategory = positionCategories[position].includes(category) ? category : cat;
+    setCategory(initialCategory);
+
+    const baseKey = PRIMARY_METRIC[position]?.[initialCategory];
+    if (baseKey) {
+      setSortChain([{ key: baseKey, direction: "desc" }]); // 기본은 내림차순(많을수록 좋음)
+    } else {
+      setSortChain([]);
     }
-    setSortConfig({ key, direction });
+  }, [position]);
+
+  useEffect(() => {
+    // 카테고리만 바뀌면 그 카테고리의 기본 지표로 초기화
+    const baseKey = PRIMARY_METRIC[position]?.[category];
+    if (baseKey) setSortChain([{ key: baseKey, direction: "desc" }]);
+    else setSortChain([]);
+  }, [category, position]);
+
+  const currentColumns = statColumns[position]?.[category] || [];
+
+  // 헤더 클릭 → 미적용 → desc → asc → 해제
+  const toggleSort = (key) => {
+    setSortChain((prev) => {
+      // 이미 체인에 있나?
+      const idx = prev.findIndex((s) => s.key === key);
+      if (idx === -1) {
+        // 새로 추가(우선순위 가장 높음)
+        return [{ key, direction: "desc" }, ...prev];
+      }
+      const cur = prev[idx];
+      if (cur.direction === "desc") {
+        const next = [...prev];
+        next[idx] = { key, direction: "asc" };
+        return next;
+      }
+      // asc였다면 제거(해제)
+      const next = [...prev];
+      next.splice(idx, 1);
+      return next;
+    });
   };
 
-  // 정렬된 데이터
+  // 다단 정렬
   const sortedPlayers = useMemo(() => {
-    const filteredPlayers = data.filter(data => 
-      data.division === selectedDivision && 
-      data.position === selectedPosition
+    const rows = data.filter(
+      (d) => d.division === division && d.position === position
     );
-    
-    if (!sortConfig.key) return filteredPlayers;
 
-    return [...filteredPlayers].sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
+    if (sortChain.length === 0) return rows;
 
-      if (aValue < bValue) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
+    const cmp = (a, b) => {
+      for (const { key, direction } of sortChain) {
+        const av = a[key] ?? 0;
+        const bv = b[key] ?? 0;
+
+        // lower-is-better면 비교 부호를 뒤집어 줌
+        const base =
+          av < bv ? -1 : av > bv ? 1 : 0;
+        const sign = direction === "asc" ? 1 : -1;
+        const lowBetter = LOWER_IS_BETTER.has(key) ? -1 : 1;
+
+        const out = base * sign * lowBetter;
+        if (out !== 0) return out;
       }
       return 0;
-    });
-  }, [sortConfig, selectedDivision, selectedPosition, data]);
+    };
 
-  // 현재 선택된 통계 타입의 컬럼들
-  const currentColumns = statColumns[selectedPosition]?.[selectedStatType] || [];
+    return [...rows].sort(cmp);
+  }, [data, division, position, sortChain]);
 
   return (
-    <div className={`stat-position`}>
+    <div className="stat-position">
+      {/* 드롭다운들 */}
       <div className="stat-header">
-        <div className="division-buttons">
-          {['1부', '2부'].map((division) => (
-            <button
-              key={division}
-              className={`division-button ${selectedDivision === division ? 'active' : ''}`}
-              onClick={() => {
-                setSelectedDivision(division);
-                setSortConfig({ key: null, direction: 'desc' });
-              }}
-            >
-              {division}
-            </button>
-          ))}
+        <div className="dropdown-group">
+          <Dropdown
+            label="Division"
+            value={division}
+            options={DIVISION_OPTIONS}
+            onChange={(v) => {
+              setDivision(v);
+              // 디비전만 바뀌면 정렬 체인은 유지
+            }}
+          />
+          <Dropdown
+            label="Position"
+            value={position}
+            options={POSITION_OPTIONS}
+            onChange={(v) => setPosition(v)}
+          />
+          <Dropdown
+            label="Category"
+            value={category}
+            options={positionCategories[position]}
+            onChange={(v) => setCategory(v)}
+          />
         </div>
       </div>
 
-      {/* 포지션 선택 */}
-      <div className="position-container">
-        {Object.keys(positionCategories).map((position) => (
-          <button
-            key={position}
-            className={`position-button ${selectedPosition === position ? 'active' : 'inactive'}`}
-            onClick={() => {
-              setSelectedPosition(position);
-              setSelectedStatType(positionCategories[position][0]);
-              setSortConfig({ key: null, direction: 'desc' });
-            }}
-          >
-            {position}
-          </button>
-        ))}
-      </div>
-
-      {/* 통계 카테고리 선택 */}
-      <div className="category-container">
-        {positionCategories[selectedPosition]?.map((category) => (
-          <button
-            key={category}
-            className={`category-button ${selectedStatType === category ? 'active' : 'inactive'}`}
-            onClick={() => {
-              setSelectedStatType(category);
-              setSortConfig({ key: null, direction: 'desc' });
-            }}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      {/* 테이블 헤더 */}
       <div className="table-header">
         <div className="table-title">포지션별 선수 순위</div>
       </div>
 
-      {/* 통계 테이블 */}
       <div className="table-wrapper">
         <table className="stat-table">
           <thead className="table-head">
-            <tr className="table-row">             
+            <tr className="table-row">
               <th className="table-header-cell rank-column">순위</th>
               <th className="table-header-cell player-column">선수 이름</th>
-              <th className='table-header-cell team-logo'></th>
+              <th className="table-header-cell team-logo"></th>
               <th className="table-header-cell team-column">소속팀</th>
-              <div className='sort-container' style={{'--cols':currentColumns.length}}>
-              {currentColumns.map((column) => (
-                <th
-                  key={column.key}
-                  className="table-header-cell stat-column sortable"
-                  onClick={() => handleSort(column.key)}
-                >
-                  <div className="sort"                   >
-                    <span className="column-label">{column.label}</span>
-                    <div className="sort-arrows">
-                      
-                      <RxTriangleDown
-                        size={10} 
-                        className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'asc' ? 'active' : ''}`}
-                      />
-                      <RxTriangleUp
-                        size={10} 
-                        className={`sort-arrow ${sortConfig.key === column.key && sortConfig.direction === 'desc' ? 'active' : ''}`}
-                      />
+
+              {currentColumns.map((col) => {
+                const active = sortChain.find((s) => s.key === col.key);
+                const order = active ? active.direction : null;
+                const isPrimary =
+                  PRIMARY_METRIC[position]?.[category] === col.key;
+
+                return (
+                  <th
+                    key={col.key}
+                    className={`table-header-cell stat-column sortable
+                      ${active ? "active-blue" : ""}
+                      ${isPrimary && !active ? "primary-orange" : ""}
+                    `}
+                    onClick={() => toggleSort(col.key)}
+                    title={
+                      active
+                        ? `정렬: ${order === "desc" ? "내림차순" : "오름차순"}`
+                        : "정렬 적용"
+                    }
+                  >
+                    <div className="sort">
+                      <span className="column-label">{col.label}</span>
+                      <div className="sort-arrows">
+                        <RxTriangleDown
+                          size={10}
+                          className={`sort-arrow ${
+                            active && order === "asc" ? "active" : ""
+                          }`}
+                        />
+                        <RxTriangleUp
+                          size={10}
+                          className={`sort-arrow ${
+                            active && order === "desc" ? "active" : ""
+                          }`}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </th>
-              ))}
-              </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
+
           <tbody className="table-body">
-            {sortedPlayers.map((data, index) => {
-              const teamInfo = teams.find((t) => t.name === data.team);
-            return(
-              <tr 
-                key={data.id || data.name}
-                className={`table-rows`}
-              >
-                <td className="table-cell">{data.rank || index + 1}위</td>
-                <td 
-                  className="table-cell player-name clickable"                >
-                  {data.name}
-                </td>
-              <td className="table-cell team-logo-cell">
-        {teamInfo?.logo && (
-          <div className="team-logo">
-            <img 
-              src={teamInfo.logo} 
-              alt={`${data.team} 로고`} 
-              className="team-logo-img" 
-            />
-          </div>
-        )}
-      </td>
-                <td className="table-cell team-name">{data.team}</td>
-                <div className="sort-container" style={{'--cols':currentColumns.length}}>
-                {currentColumns.map((column) => (
-                  <td key={column.key} className="table-cell">
-                    {typeof data[column.key] === 'number' && data[column.key] % 1 !== 0
-                      ? data[column.key].toFixed(1)
-                      : data[column.key] || '0'
-                    }
+            {sortedPlayers.map((row, idx) => {
+              const teamInfo = teams.find((t) => t.name === row.team);
+              return (
+                <tr key={row.id || row.name} className="table-rows">
+                  <td className="table-cell">{row.rank || idx + 1}위</td>
+                  <td className="table-cell player-name clickable">{row.name}</td>
+                  <td className="table-cell team-logo-cell">
+                    {teamInfo?.logo && (
+                      <div className="team-logo">
+                        <img
+                          src={teamInfo.logo}
+                          alt={`${row.team} 로고`}
+                          className="team-logo-img"
+                        />
+                      </div>
+                    )}
                   </td>
-                ))}
-                  </div>
-              </tr>
-            )})}
+                  <td className="table-cell team-name">{row.team}</td>
+
+                  {currentColumns.map((col) => (
+                    <td key={col.key} className="table-cell">
+                      {typeof row[col.key] === "number" && row[col.key] % 1 !== 0
+                        ? row[col.key].toFixed(1)
+                        : row[col.key] ?? "0"}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-
     </div>
   );
-};
-
-export default StatPosition;
+}
