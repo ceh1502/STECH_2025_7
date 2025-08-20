@@ -115,8 +115,8 @@ const PasswordFind = () => {
                 </button>
 
                 <div className="find-links-group">
-                    <p>이미 계정이 있습니다. <a href="#" className="find-link">로그인하기</a></p>
-                    <p>계정이 없다면? <a href="#" className="find-link">회원가입</a></p>
+                    <p>이미 계정이 있습니다. <a href="/auth" className="find-link">로그인하기</a></p>
+                    <p>계정이 없다면? <a href="/auth/signup" className="find-link">회원가입</a></p>
                 </div>
 
                 <hr className="find-divider" />
