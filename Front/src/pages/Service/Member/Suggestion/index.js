@@ -1,8 +1,11 @@
+import SuggestionModal from '../../../../components/SuggestionModal';
+import { useNavigate } from 'react-router-dom';
+
 const SuggetsionPage = () => {
+    const navigate = useNavigate();
     return (
         <div>
-            <h1>Suggestion Page</h1>
-            {/* Add your suggestion page content here */}
+            <SuggestionModal onClose={() => navigate(-1)} />
         </div>
     );
 }
