@@ -17,14 +17,13 @@ body {
 }
 
 :lang(ko) {
-  font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 /* 모든 요소에 box-sizing 적용 */
 * {
     box-sizing: border-box;
 }
-
 
 /* 공통 섹션 스타일 */
 .section {
@@ -121,6 +120,7 @@ p {
     transform: scale(1.1);
     border-radius: 50%;
     filter: blur(80px);
+    object-fit: cotain;
     -webkit-mask-image: radial-gradient(circle, black 40%, transparent 80%);
     mask-image: radial-gradient(circle, black 40%, transparent 80%);
     z-index: 0;
@@ -135,6 +135,7 @@ p {
     border-radius: 50%;
     opacity: 0.5;
     border: none;
+    object-fit: contain;
     background: radial-gradient(circle at center, #f58524 0%, #dfec26 100%, transparent 100%);
 }
 .hero-wrap img {
