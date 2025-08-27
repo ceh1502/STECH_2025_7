@@ -105,7 +105,6 @@
     padding: 0.25rem;
 }
 
-
 .formOptions {
     width: 100%;
     display: flex;
@@ -197,7 +196,7 @@
     border-radius: 0.5rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform-color 0.3s;
 }
 
 .socialButton.google-button {
