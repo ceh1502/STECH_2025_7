@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: 30px;
     padding: 16px 24px;
-    background: #111214; /* 거의 검정 */
+    background: #141414; /* 거의 검정 */
     color: #e5e7eb; /* 연한 회색 텍스트 */
 }
 
@@ -238,7 +238,8 @@
 }
 
 /* 이미지 크기 재사용 */
-.oppsItem img,.teamItem img {
+.oppsItem img,
+.teamItem img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
