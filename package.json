@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "lucide-react": "^0.539.0",
+    "pdfjs-dist": "^5.4.54",
+    "react-pdf": "^7.7.3",
     "swagger-ui": "^5.27.0",
     "swagger-ui-dist": "^5.27.0",
     "swagger-ui-react": "^5.27.0"
