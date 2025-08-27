@@ -94,6 +94,8 @@ p {
     display: flex;
     justify-content: space-between;
     background: linear-gradient(303deg, #4f46e5 13.1%, #0711d9 91.43%);
+    positon: relative;
+    overflow: hidden;
     gap: 0px;
 }
 .hero-container {
@@ -566,6 +568,8 @@ p {
     }
     .hero-section {
         text-align: center;
+        position: relative;
+        overflow: hidden;
     }
     .hero-content {
         align-items: center;
