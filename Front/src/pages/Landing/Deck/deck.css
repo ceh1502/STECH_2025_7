@@ -1,10 +1,6 @@
 .deckContainer {
     width: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(5, 9, 214, 0.7) 50px,
-        transparent 100px
-    );
+    background: linear-gradient(to bottom, rgba(5, 9, 214, 0.7) 50px, transparent 100px);
 }
 
 .deckheader {
@@ -34,15 +30,17 @@
 }
 
 .deckmain {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* 가로 중앙 */
+    margin: 40px 0;
 }
 
-.deckmainimage {
-    width: 100%;
-    height: auto;
-    display: block;
+.pdfViewer {
+    width: 1200px;
+    height: 675px;
+    overflow-y: auto; /* 내부 스크롤 */
+    border: 1px solid #ccc; /* 테두리 optional */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* optional */
 }
 
 .deckmessage p {
