@@ -1,0 +1,49 @@
+{
+    "games": [
+        {
+            "gameId": "game000", // Unique identifier for the game
+            "date": "0000-00-00", // Date of the game in YYYY-MM-DD format
+            "opponent": "0000", // Name of the opposing team
+            "type": "0000", // Type of the game (e.g., League, Scrimmage, Friendly match)
+            "location": "0000", // Location of the game (e.g., 운동장 정식 명칭)
+            "Video": [
+                //1개의 경기
+                {
+                    "videoId": "vid000", // Unique identifier for the whole game video
+                    "videourl": "https://example.com/videos/vid000.mp4" // URL to the whole game video
+                }
+            ]
+            // "significantPlays": [{ "label": "Touchdown", "timestamp": 12.3 }] // Significant plays within the video clip
+        },
+        {
+            "clips": [
+                // List of clips for the game (클립 갯수만큼 필요함!)
+                {
+                    "clipId": "clip000", // Unique identifier for the video clip
+                    "clipUrl": "https://example.com/videos/vid000.mp4", // URL to the video clip
+                    "quarter": "00", // Quarter of the game (e.g., 1Q=1, 2Q=2, 3Q=3, 4Q=3)
+                    "playType": "0000", // Type of play (e.g., Run, Pass)
+                    "success": true, //  Indicates if the play was successful (e.g., true, false)
+                    "startYard": { "side": "own", "yard": 00 }, // Starting yard position of the play
+                    "endYard": { "side": "opp", "yard": 00 }, // Ending yard position of the play
+                    "gainedYard": 00, // Yards gained during the play
+                    "players": [{ "playerId": "p1", "name": "John Doe", "number": 10, "position": "OFF" }], // List of players involved in the play [position:"OFF or DEF"]
+                    "significantPlays": [{ "label": "Touchdown", "timestamp": 12.3 }] // Significant plays within the video clip
+                },
+                {
+                    "clipId": "clip000", // Unique identifier for the video clip
+                    "clipUrl": "https://example.com/videos/vid000.mp4", // URL to the video clip
+                    "quarter": "00", // Quarter of the game (e.g., 1Q=1, 2Q=2, 3Q=3, 4Q=3)
+                    "playType": "0000", // Type of play (e.g., Run, Pass)
+                    "success": true, //  Indicates if the play was successful
+                    "startYard": { "side": "own", "yard": 00 }, // Starting yard position of the play
+                    "endYard": { "side": "opp", "yard": 00 }, // Ending yard position of the play
+                    "gainedYard": 00, // Yards gained during the play
+                    "players": [{ "playerId": "p1", "name": "John Doe", "number": 10, "position": "DEF" }], // List of players involved in the play [position:"OFF or DEF"]
+                    "significantPlays": [{ "label": "Touchdown", "timestamp": 12.3 }] // Significant plays within the video clip
+                }
+            ]
+        }
+    ],
+    "createdAt": "0000-00-00T00:00:00.000Z" // Timestamp of when the data was created [e.g., 2023-10-01T12:59:59.000Z]
+}

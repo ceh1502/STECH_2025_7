@@ -1,12 +1,10 @@
-.MainheaderBox {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 20px;
-    padding-bottom: 15px;
-    z-index: 5;
-    background: linear-gradient(90deg, #0711d9 0%, #4f46e5 100%);
+.headerBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  z-index: 5;
 }
 
 .logoBox {
@@ -25,9 +23,8 @@
 }
 .menu {
     display: flex;
-    gap: 30px !important;
-    margin-left: 20px;
-    margin-right: 50px;
+    gap: 30px !important; /* !important로 우선순위 강제 */
+    padding: 0 20px !important;
 }
 
 .homeButton,
